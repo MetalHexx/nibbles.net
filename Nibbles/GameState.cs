@@ -5,6 +5,13 @@
         public Snake Snake { get; private set; }
         public Food? Food { get; private set; }
         public GameBoard GameBoard { get; private set; } = new GameBoard();
+        public int AmountEaten = -1;
+
+        public int PreviousAmountEaten
+        {
+            get { return AmountEaten - 1; }
+        }
+
 
         public GameState()
         {
@@ -38,12 +45,14 @@
 
         public void CreateFood()
         {
+            AmountEaten++;
+
             var positionsToAvoidFoodPlacement = Snake
                         .GetParts()
                         .Select(sp => sp.Position)
                         .ToArray();
 
-            Food =  Food.Create(GameBoard.MaxX - 1, GameBoard.MaxY - 1, positionsToAvoidFoodPlacement);
+            Food = new Food(GameBoard.MaxX - 1, GameBoard.MaxY - 1, positionsToAvoidFoodPlacement);
         }
 
         private bool _touchedSelf => Snake.GetParts()

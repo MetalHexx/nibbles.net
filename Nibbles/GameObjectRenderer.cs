@@ -3,10 +3,12 @@
     internal class GameObjectRenderer : IGameObjectRenderer
     {
         private const ConsoleColor SNAKE_COLOR = ConsoleColor.Cyan;
-        private const ConsoleColor FOOD_COLOR = ConsoleColor.Red;
-        private const ConsoleColor BOARD_BORDER_COLOR = ConsoleColor.White;
+        private const ConsoleColor FOOD_BACKGROUND_COLOR = ConsoleColor.Red;
+        private const ConsoleColor FOOD_FOREGROUND_COLOR = ConsoleColor.White;
+        private const ConsoleColor BOARD_BORDER_BACKGROUND_COLOR = ConsoleColor.White;
+        private const ConsoleColor BOARD_BORDER_FOREGROUND_COLOR = ConsoleColor.Black;
         private const ConsoleColor BOARD_BACKGROUND_COLOR = ConsoleColor.DarkBlue;
-        private const char SPACE_CHAR = ' ';
+        private const string GAME_TITLE = "Nibbles.net";
         public GameObjectRenderer()
         {
             Console.CursorVisible = false;            
@@ -16,7 +18,12 @@
             foreach (var obj in gameObjects)
             {
                 if (obj is null) continue;
-                WriteCharacter(SPACE_CHAR, GetGameObjectColor(obj), obj.Position.XPosition, obj.Position.YPosition);
+
+                var objMetaData = GetGameObjectMetadata(obj);
+                
+                if (objMetaData is null) throw new Exception("A game object was found to be null");
+
+                WriteText(objMetaData.Text, objMetaData.ForegroundColor, objMetaData.BackgroundColor, obj.Position.XPosition, obj.Position.YPosition);
             }
         }
 
@@ -25,8 +32,27 @@
             foreach (var obj in gameObjects)
             {
                 if (obj is null) continue;
-                WriteCharacter(SPACE_CHAR, BOARD_BACKGROUND_COLOR, obj.Position.XPosition, obj.Position.YPosition);
+
+                var objMetaData = GetGameObjectMetadata(obj);
+
+                if (objMetaData is null) throw new Exception("A game object was found to be null");
+
+                WriteText(ReplaceTextWithEmptyString(objMetaData.Text), 
+                    BOARD_BACKGROUND_COLOR, 
+                    BOARD_BACKGROUND_COLOR, 
+                    obj.Position.XPosition, 
+                    obj.Position.YPosition);
             }
+        }
+
+        private string ReplaceTextWithEmptyString(string text)
+        {
+            var charArray = text.ToCharArray();
+            foreach (var character in charArray)
+            {
+                text.Replace(character, ' ');
+            }
+            return text;
         }
 
         public void RenderBoard(GameBoard board)
@@ -40,33 +66,60 @@
                         || x == board.MaxX
                         || y == board.MaxY;
 
-                    WriteCharacter(' ', BOARD_BACKGROUND_COLOR, x, y);
-                    if (isBorder) WriteCharacter(' ', BOARD_BORDER_COLOR, x, y);
+                    WriteText(" ", BOARD_BACKGROUND_COLOR, BOARD_BACKGROUND_COLOR, x, y);
+                    if (isBorder) WriteText(" ", BOARD_BORDER_BACKGROUND_COLOR, BOARD_BORDER_BACKGROUND_COLOR, x, y);
                 }
             }
+            WriteText(GAME_TITLE, BOARD_BORDER_FOREGROUND_COLOR, BOARD_BORDER_BACKGROUND_COLOR, 1, 0);
         }
 
-        private ConsoleColor GetGameObjectColor(IGameObject gameObject)
+        public void RenderScore(GameState state)
+        {
+            var scorePrefix = " | Amount Eaten: ";
+            var previousScore = $"{scorePrefix}{state.PreviousAmountEaten}           ";
+
+            WriteText(ReplaceTextWithEmptyString(previousScore),
+                BOARD_BORDER_FOREGROUND_COLOR,
+                BOARD_BORDER_BACKGROUND_COLOR,
+                GAME_TITLE.Length + 1, 0);
+
+            WriteText($"{scorePrefix}{state.AmountEaten}           ", 
+                BOARD_BORDER_FOREGROUND_COLOR, 
+                BOARD_BORDER_BACKGROUND_COLOR, 
+                GAME_TITLE.Length + 1, 0);
+        }
+
+        private GameObjectMetadata? GetGameObjectMetadata(IGameObject gameObject)
         {
             switch (gameObject)
             {
-                case SnakePart snakePartType:
-                    return SNAKE_COLOR;
+                case SnakePart snake:
+                    return new GameObjectMetadata
+                    {
+                        BackgroundColor = SNAKE_COLOR,
+                        ForegroundColor = SNAKE_COLOR,
+                        Text = " "
+                    };
 
-                case Food foodType:
-                    return FOOD_COLOR;
+                case Food food:
+                    return new GameObjectMetadata
+                    {
+                        BackgroundColor = FOOD_BACKGROUND_COLOR,
+                        ForegroundColor = FOOD_FOREGROUND_COLOR,
+                        Text = $" "
+                    };
 
                 default:
-                    return BOARD_BACKGROUND_COLOR;
+                    return null;
             }
         }
         
-        private void WriteCharacter(char character, ConsoleColor color, int xPosition, int yPosition)
+        private void WriteText(string text, ConsoleColor foregroundColor, ConsoleColor backgroundColor, int xPosition, int yPosition)
         {
-            Console.ForegroundColor = color;
-            Console.BackgroundColor = color;
+            Console.ForegroundColor = foregroundColor;
+            Console.BackgroundColor = backgroundColor;
             Console.SetCursorPosition(xPosition, yPosition);
-            Console.Write(character);
+            Console.Write(text);
             Console.ResetColor();
         }
     }
