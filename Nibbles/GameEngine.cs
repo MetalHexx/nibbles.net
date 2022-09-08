@@ -10,6 +10,7 @@
         {
             _gameState = new GameState();
             _renderer.RenderBoard(_gameState.GameBoard);
+            _renderer.RenderScore(_gameState);
         }
         public void Start()
         {
@@ -34,6 +35,7 @@
             {
                 _gameState.Snake.Feed();
                 _gameState.CreateFood();
+                _renderer.RenderScore(_gameState);
             }
         }               
     }
