@@ -6,25 +6,34 @@
         public Food? Food { get; set; }
         public GameBoard GameBoard { get; set; } = new GameBoard();
 
-        public GameState(Snake initialSnake, Food initialFood)
+        public GameState(Snake initialSnake, Food? initialFood)
         {
             Snake = initialSnake;
             Food = initialFood;
         }
 
-        public GameStateOutcome DetermineState()
+        public GameEvent DetermineGameEvents()
         {
             if (_touchedSelf || _gameBoardCollision)
             {
                 Console.WriteLine("You lose! :(");
-                return GameStateOutcome.Lose;
+                return GameEvent.Lose;
             }
             if (Food is null)
             {
                 Console.WriteLine("You win! :)");
-                return GameStateOutcome.Win;
+                return GameEvent.Win;
             }
-            return GameStateOutcome.Continue;
+            return GameEvent.Continue;
+        }
+
+        public List<IGameObject?> GetGameObjects()
+        {
+            var gameObjects = Snake.GetParts()
+                .Select(sp => sp as IGameObject)
+                .ToList();
+            gameObjects.Add(Food);
+            return gameObjects;
         }
 
         private bool _touchedSelf => Snake.GetParts()

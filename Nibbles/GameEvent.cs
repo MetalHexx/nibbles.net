@@ -1,6 +1,6 @@
 ﻿namespace Nibbles
 {
-    public enum GameStateOutcome
+    public enum GameEvent
     {
         Win,
         Lose,

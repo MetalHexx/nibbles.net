@@ -1,50 +1,50 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Nibbles
+﻿namespace Nibbles
 {
     internal class GameEngine
     {
-        private SnakerRenderer _snakeRenderer = new SnakerRenderer();
-        private FoodGenerator _foodGenerator = new FoodGenerator();
         private SnakeInputHandler _snakeInputHandler = new SnakeInputHandler();
+        private GameObjectRenderer _renderer = new GameObjectRenderer();
         private GameState _gameState;
 
         public GameEngine()
         {   
             var snake = new Snake();
-            var food = NextFood(snake); 
+            var food = Food.Create(snake.Position); 
             _gameState = new GameState(snake, food);
         }
         public void Start()
         {
-            var currentState = GameStateOutcome.Continue;
+            var currentEvent = GameEvent.Continue;
 
-            while (currentState == GameStateOutcome.Continue)
+            while (currentEvent == GameEvent.Continue)
             {
-                RenderSnake();
+                _renderer.Render(_gameState.GetGameObjects());
                 Thread.Sleep(100);
 
                 var directionChange = _snakeInputHandler.GetDirection();
-
-                if (_gameState.Snake.Position == _gameState.Food?.Position)
-                {
-                    _gameState.Snake.Feed();
-                    _gameState.Food = NextFood(_gameState.Snake);
-                }
-                ClearSnake();
+                MaybeFeedSnakeAndCreateFood();
+                _renderer.Clear(_gameState.GetGameObjects());
                 _gameState.Snake.MoveSnake(directionChange);
-                currentState = _gameState.DetermineState();
+                currentEvent = _gameState.DetermineGameEvents();
             }
         }
 
-        private void RenderSnake() => _snakeRenderer.Render(_gameState.Snake.GetParts());
-        private void ClearSnake() => _snakeRenderer.Clear(_gameState.Snake.GetParts());
-        private Food? NextFood(Snake snake) => _foodGenerator.Next(snake
-            .GetParts()
-            .Select(p => p.Position));
+        private void MaybeFeedSnakeAndCreateFood()
+        {
+            if (_gameState.Snake.Position == _gameState.Food?.Position)
+            {
+                _gameState.Snake.Feed();
+                CreateFood();
+            }
+        }
+        private void CreateFood()
+        {
+            var positionsToAvoidFoodPlacement = _gameState.Snake
+                        .GetParts()
+                        .Select(sp => sp.Position)
+                        .ToArray();
+
+            _gameState.Food = Food.Create(positionsToAvoidFoodPlacement);
+        }               
     }
 }

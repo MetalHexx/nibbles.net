@@ -1,6 +1,6 @@
 ﻿namespace Nibbles
 {
-    public class Snake
+    public class Snake: IGameObject
     {
         public GameObjectPosition Position => _snakeParts.First().Position;
 

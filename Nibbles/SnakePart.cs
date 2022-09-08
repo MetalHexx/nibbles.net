@@ -1,6 +1,6 @@
 ﻿namespace Nibbles
 {
-    public record SnakePart
+    public record SnakePart: IGameObject
     {
         public GameObjectPosition Position { get; init; }
 
