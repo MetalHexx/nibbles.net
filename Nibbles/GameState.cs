@@ -2,14 +2,14 @@
 {
     public class GameState
     {
-        public Snake Snake { get; set; } = new Snake();
-        public Food? Food { get; set; }
-        public GameBoard GameBoard { get; set; } = new GameBoard();
+        public Snake Snake { get; private set; }
+        public Food? Food { get; private set; }
+        public GameBoard GameBoard { get; private set; } = new GameBoard();
 
-        public GameState(Snake initialSnake, Food? initialFood)
+        public GameState()
         {
-            Snake = initialSnake;
-            Food = initialFood;
+            Snake = new Snake();
+            CreateFood();
         }
 
         public GameEvent DetermineGameEvents()
@@ -34,6 +34,16 @@
                 .ToList();
             gameObjects.Add(Food);
             return gameObjects;
+        }
+
+        public void CreateFood()
+        {
+            var positionsToAvoidFoodPlacement = Snake
+                        .GetParts()
+                        .Select(sp => sp.Position)
+                        .ToArray();
+
+            Food =  Food.Create(GameBoard.MaxX - 1, GameBoard.MaxY - 1, positionsToAvoidFoodPlacement);
         }
 
         private bool _touchedSelf => Snake.GetParts()

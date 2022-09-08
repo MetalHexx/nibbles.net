@@ -7,10 +7,8 @@
         private GameState _gameState;
 
         public GameEngine()
-        {   
-            var snake = new Snake();
-            var food = Food.Create(snake.Position); 
-            _gameState = new GameState(snake, food);
+        {
+            _gameState = new GameState();
             _renderer.RenderBoard(_gameState.GameBoard);
         }
         public void Start()
@@ -35,17 +33,8 @@
             if (_gameState.Snake.Position == _gameState.Food?.Position)
             {
                 _gameState.Snake.Feed();
-                CreateFood();
+                _gameState.CreateFood();
             }
-        }
-        private void CreateFood()
-        {
-            var positionsToAvoidFoodPlacement = _gameState.Snake
-                        .GetParts()
-                        .Select(sp => sp.Position)
-                        .ToArray();
-
-            _gameState.Food = Food.Create(positionsToAvoidFoodPlacement);
         }               
     }
 }

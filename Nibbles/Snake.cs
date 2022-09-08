@@ -2,18 +2,12 @@
 {
     public class Snake: IGameObject
     {
+        private List<SnakePart> _snakeParts = new List<SnakePart>() { new SnakePart(5, 5) };
         public GameObjectPosition Position => _snakeParts.First().Position;
-
         private SnakeDirection _currentDirection = SnakeDirection.Right;
-        private List<SnakePart> _snakeParts = new List<SnakePart>();
-        private bool _isFed = false;
+        private int _feedCount = 0;
 
-        public Snake()
-        {
-            _snakeParts.Add(new SnakePart(5, 5));
-        }
-
-        public void Feed() => _isFed = true;
+        public void Feed() => _feedCount = 5;
 
         /// <summary>
         /// Calculate and do the next snake move
@@ -68,22 +62,17 @@
 
         private void DoMove(int xDelta, int yDelta)
         {
-            var tail = _snakeParts.Last();
             var head = _snakeParts.First();
-            var newHead = Clone(head, xDelta, yDelta);            
+            var newHead = Clone(head, xDelta, yDelta);
             _snakeParts.Insert(0, newHead);
-            RemoveTailWhenNotFed(tail);
-        }
 
-        private void RemoveTailWhenNotFed(SnakePart tail)
-        {
-            if (_isFed)
-            {
-                _isFed = false;
+            if (_feedCount > 0)
+            {   
+                _feedCount--;
             }
             else
             {
-                _snakeParts.Remove(tail);
+                _snakeParts.Remove(_snakeParts.Last());
             }
         }
 

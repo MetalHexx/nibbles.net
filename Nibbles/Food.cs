@@ -16,18 +16,18 @@
             Position = position;
         }
 
-        public static Food? Create(params GameObjectPosition[] excludedPositions)
+        public static Food? Create(int maxXPosition, int maxYPosition, params GameObjectPosition[] excludedPositions)
         {
-            var newFoodPosition = GetRandomPosition();
+            var newFoodPosition = GetRandomPosition(maxXPosition, maxYPosition);
 
             while (excludedPositions.Any(position => position == newFoodPosition))
             {
-                newFoodPosition = GetRandomPosition();
+                newFoodPosition = GetRandomPosition(maxXPosition, maxYPosition);
             }
             return new Food(newFoodPosition);
         }
 
-        private static GameObjectPosition GetRandomPosition() =>
-            new GameObjectPosition(_random.Next(1, 10), _random.Next(1, 10));
+        private static GameObjectPosition GetRandomPosition(int maxXPosition, int maxYPosition) =>
+            new GameObjectPosition(_random.Next(1, maxXPosition), _random.Next(1, maxYPosition));
     }
 }
