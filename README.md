@@ -1,2 +1,8 @@
 # nibbles.net
-A fun little interpretation of the old qbasic game "nibbles" (which was based on snakes) written in .net core
+I was inspired to a video I saw on YouTube with this dude creating "snakes" on an Apple ][.
+https://www.youtube.com/watch?v=7r83N3c2kPw&t=1088s  So I decided to give it a go for fun and made my own with a .net console app.
+
+The name was inspired from a QBasic variation I used to tinker around with and modify -- one of my first programming acitivites when I was a kid. :)
+https://www.youtube.com/watch?v=rTzev59RUGw
+
+This is a rough draft. I may come back to this and add a menuing system, some 2 player action, and maybe make the snakes shoot venom!
