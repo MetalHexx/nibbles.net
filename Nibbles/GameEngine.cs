@@ -22,6 +22,9 @@
                 Thread.Sleep(100);
 
                 var directionChange = _snakeInputHandler.GetDirection();
+
+                if (directionChange != SnakeDirection.NoChange) _gameState.TotalMoves++;
+                
                 MaybeFeedSnakeAndCreateFood();
                 _renderer.Clear(_gameState.GetGameObjects());
                 _gameState.Snake.MoveSnake(directionChange);

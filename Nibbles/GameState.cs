@@ -5,12 +5,17 @@
         public Snake Snake { get; private set; }
         public Food? Food { get; private set; }
         public GameBoard GameBoard { get; private set; } = new GameBoard();
-        public int AmountEaten = -1;
-
-        public int PreviousAmountEaten
+        public int TotalMoves { get; set; }
+        public int AmountEaten = -1;      
+        public int CurrentScore
         {
-            get { return AmountEaten - 1; }
+            get { return AmountEaten * _scorePerFeeding - (_penaltyPerMove * TotalMoves); }
         }
+
+        private const int _scorePerFeeding = 100;
+        private const int _penaltyPerMove = 1;
+
+
 
 
         public GameState()

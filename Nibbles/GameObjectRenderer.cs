@@ -9,6 +9,7 @@
         private const ConsoleColor BOARD_BORDER_FOREGROUND_COLOR = ConsoleColor.Black;
         private const ConsoleColor BOARD_BACKGROUND_COLOR = ConsoleColor.DarkBlue;
         private const string GAME_TITLE = "Nibbles.net";
+        private const string CLEAR_SCORE_TEXT = "                                                               ";
         public GameObjectRenderer()
         {
             Console.CursorVisible = false;            
@@ -75,15 +76,14 @@
 
         public void RenderScore(GameState state)
         {
-            var scorePrefix = " | Amount Eaten: ";
-            var previousScore = $"{scorePrefix}{state.PreviousAmountEaten}           ";
+            var scorePrefix = "";
 
-            WriteText(ReplaceTextWithEmptyString(previousScore),
+            WriteText(CLEAR_SCORE_TEXT,
                 BOARD_BORDER_FOREGROUND_COLOR,
                 BOARD_BORDER_BACKGROUND_COLOR,
                 GAME_TITLE.Length + 1, 0);
 
-            WriteText($"{scorePrefix}{state.AmountEaten}           ", 
+            WriteText($" | Amount Eaten: {state.AmountEaten} | Moves: {state.TotalMoves} | Score: {state.CurrentScore}", 
                 BOARD_BORDER_FOREGROUND_COLOR, 
                 BOARD_BORDER_BACKGROUND_COLOR, 
                 GAME_TITLE.Length + 1, 0);
