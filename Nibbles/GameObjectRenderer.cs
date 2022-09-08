@@ -8,7 +8,7 @@
         private const char SPACE_CHAR = ' ';
         public GameObjectRenderer()
         {
-            Console.CursorVisible = false;
+            Console.CursorVisible = false;            
         }
         public void Render(IEnumerable<IGameObject?> gameObjects)
         {
@@ -25,6 +25,22 @@
             {
                 if (obj is null) continue;
                 WriteCharacter(SPACE_CHAR, CLEAR_COLOR, obj.Position.XPosition, obj.Position.YPosition);
+            }
+        }
+
+        public void RenderBoard(GameBoard board)
+        {
+            for (int x = board.MinX; x <= board.MaxX; x++)
+            {
+                for (int y = board.MinY; y <= board.MaxY; y++)
+                {
+                    var isBorder = x == board.MinX
+                        || y == board.MinY
+                        || x == board.MaxX
+                        || y == board.MaxY;
+
+                    if(isBorder) WriteCharacter(' ', ConsoleColor.Cyan, x, y);
+                }
             }
         }
 

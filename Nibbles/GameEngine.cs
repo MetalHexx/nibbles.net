@@ -11,6 +11,7 @@
             var snake = new Snake();
             var food = Food.Create(snake.Position); 
             _gameState = new GameState(snake, food);
+            _renderer.RenderBoard(_gameState.GameBoard);
         }
         public void Start()
         {
