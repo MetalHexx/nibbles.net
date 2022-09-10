@@ -26,7 +26,7 @@
 
         public GameEvent DetermineGameEvents()
         {
-            if (_touchedSelf || _gameBoardCollision)
+            if (Snake.TouchingSelf || _gameBoardCollision)
             {
                 Console.WriteLine("You lose! :(");
                 return GameEvent.Lose;
@@ -59,10 +59,6 @@
 
             Food = new Food(GameBoard.MaxX - 1, GameBoard.MaxY - 1, positionsToAvoidFoodPlacement);
         }
-
-        private bool _touchedSelf => Snake.GetParts()
-            .Skip(1)
-            .Any(snakePart => Snake.Position == snakePart.Position);
 
         private bool _gameBoardCollision =>
             Snake.Position.XPosition == GameBoard.MinX
