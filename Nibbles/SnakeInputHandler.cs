@@ -2,38 +2,38 @@
 {
     public class SnakeInputHandler
     {
-        public SnakeDirection GetDirection()
+        public GameObjectDirection GetDirection()
         {
-            if (!Console.KeyAvailable) return SnakeDirection.NoChange;
+            if (!Console.KeyAvailable) return GameObjectDirection.NoChange;
 
             switch (Console.ReadKey(true).Key)
             {
                 case ConsoleKey.W:
-                    return SnakeDirection.Up;
+                    return GameObjectDirection.Up;
 
                 case ConsoleKey.UpArrow:
-                    return SnakeDirection.Up;
+                    return GameObjectDirection.Up;
 
                 case ConsoleKey.S:
-                    return SnakeDirection.Down;
+                    return GameObjectDirection.Down;
 
                 case ConsoleKey.DownArrow:
-                    return SnakeDirection.Down;
+                    return GameObjectDirection.Down;
 
                 case ConsoleKey.A:
-                    return SnakeDirection.Left;
+                    return GameObjectDirection.Left;
 
                 case ConsoleKey.LeftArrow:
-                    return SnakeDirection.Left;
+                    return GameObjectDirection.Left;
 
                 case ConsoleKey.D:
-                    return SnakeDirection.Right;
+                    return GameObjectDirection.Right;
 
                 case ConsoleKey.RightArrow:
-                    return SnakeDirection.Right;
+                    return GameObjectDirection.Right;
 
                 default:
-                    return SnakeDirection.NoChange;
+                    return GameObjectDirection.NoChange;
             }
         }
     }

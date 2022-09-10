@@ -1,6 +1,6 @@
 ﻿namespace Nibbles
 {
-    public enum SnakeDirection
+    public enum GameObjectDirection
     {
         Up,
         Down,

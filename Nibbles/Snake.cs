@@ -1,10 +1,10 @@
 ﻿namespace Nibbles
 {
-    public class Snake: IGameObject
+    public class Snake: IMoveableGameObject
     {
         private List<SnakePart> _snakeParts = new List<SnakePart>() { new SnakePart(5, 5) };
         public GameObjectPosition Position => _snakeParts.First().Position;
-        private SnakeDirection _currentDirection = SnakeDirection.Right;
+        private GameObjectDirection _currentDirection = GameObjectDirection.Right;
         private int _feedCount = 0;
 
         public void Feed() => _feedCount = 5;
@@ -13,25 +13,25 @@
         /// Calculate and do the next snake move
         /// </summary>
         /// <param name="nextDirection">Next potential snake move based on users input (or lack of input)</param>
-        public void MoveSnake(SnakeDirection nextDirection)
+        public void Move(GameObjectDirection nextDirection)
         {
             var finalDirection = DetermineFinalDirection(nextDirection);
 
             switch (finalDirection)
             {
-                case SnakeDirection.Up:
+                case GameObjectDirection.Up:
                     DoMove(0, -1);
                     break;
 
-                case SnakeDirection.Down:
+                case GameObjectDirection.Down:
                     DoMove(0, 1);
                     break;
 
-                case SnakeDirection.Left:
+                case GameObjectDirection.Left:
                     DoMove(-1, 0);
                     break;
 
-                case SnakeDirection.Right:
+                case GameObjectDirection.Right:
                     DoMove(1, 0);
                     break;
             }
@@ -40,15 +40,15 @@
         /// <summary>
         /// Prevents snake from moving in the opposite direction unless it's length is 1
         /// </summary>
-        private SnakeDirection DetermineFinalDirection(SnakeDirection nextDirection) 
+        private GameObjectDirection DetermineFinalDirection(GameObjectDirection nextDirection) 
         {
             if (_snakeParts.Count() == 1) nextDirection = nextDirection;
-            else if (_currentDirection == SnakeDirection.Up && nextDirection == SnakeDirection.Down) nextDirection = SnakeDirection.NoChange;
-            else if (_currentDirection == SnakeDirection.Down && nextDirection == SnakeDirection.Up) nextDirection =  SnakeDirection.NoChange;
-            else if (_currentDirection == SnakeDirection.Left && nextDirection == SnakeDirection.Right) nextDirection = SnakeDirection.NoChange;
-            else if (_currentDirection == SnakeDirection.Right && nextDirection == SnakeDirection.Left) nextDirection = SnakeDirection.NoChange;
+            else if (_currentDirection == GameObjectDirection.Up && nextDirection == GameObjectDirection.Down) nextDirection = GameObjectDirection.NoChange;
+            else if (_currentDirection == GameObjectDirection.Down && nextDirection == GameObjectDirection.Up) nextDirection =  GameObjectDirection.NoChange;
+            else if (_currentDirection == GameObjectDirection.Left && nextDirection == GameObjectDirection.Right) nextDirection = GameObjectDirection.NoChange;
+            else if (_currentDirection == GameObjectDirection.Right && nextDirection == GameObjectDirection.Left) nextDirection = GameObjectDirection.NoChange;
 
-            if (nextDirection == SnakeDirection.NoChange)
+            if (nextDirection == GameObjectDirection.NoChange)
             {
                 nextDirection = _currentDirection;
             }
@@ -80,6 +80,10 @@
         {
             return _snakeParts.Select(sp => Clone(sp));
         }
+
+        public bool TouchingSelf => GetParts()
+            .Skip(1)
+            .Any(snakePart => Position == snakePart.Position);
 
         /// <summary>
         /// Clone snake for immutability.  Only snake should move itself.
