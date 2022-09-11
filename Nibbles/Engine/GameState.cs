@@ -4,9 +4,9 @@ namespace Nibbles.Engine
 {
     public class GameState
     {
-        public event Action? GameLost, GameWon;
-        public Snake Snake { get; private set; }
-        public Food? Food { get; private set; }
+        public event Action? GameLost, GameWon, FoodEaten;
+        private Snake _snake;
+        private Food? _food;
         public Board GameBoard { get; private set; } = new Board();
         private PositionGenerator _positionGenerator = new PositionGenerator();
 
@@ -14,8 +14,8 @@ namespace Nibbles.Engine
 
         public GameState()
         {
-            Snake = new Snake();
-            Snake.TouchedSelf += OnTouchedSelf;
+            _snake = new Snake();
+            _snake.TouchedSelf += OnTouchedSelf;
             CreateFood();
         }
 
@@ -26,14 +26,19 @@ namespace Nibbles.Engine
 
         public List<ISprite?> GetGameObjects()
         {
-            var gameObjects = Snake.GetParts().ToList();
-            gameObjects.Add(Food);
+            var gameObjects = _snake.GetParts().ToList();
+            gameObjects.Add(_food);
             return gameObjects;
+        }
+        public void FeedSnake()
+        {
+            _snake.Feed();
+            Score.IncrementAmountEaten();
         }
 
         public void CreateFood()
         {
-            var positionsToAvoidFoodPlacement = Snake
+            var positionsToAvoidFoodPlacement = _snake
                         .GetParts()
                         .Select(sp => sp.Position)
                         .ToArray();
@@ -47,22 +52,41 @@ namespace Nibbles.Engine
 
             var foodPosition = _positionGenerator.GetUniqueRandomPosition(GameBoard.MaxX - 1, GameBoard.MaxY - 1, positionsToAvoidFoodPlacement);
 
-            Food = new Food(foodPosition);
+            _food = new Food(foodPosition);
+        }
+
+        internal void MoveSnake(PositionTransform transform)
+        {
+            _snake.Move(transform);
         }
 
         public void CheckGameBoardCollision()
         {
             var collisionCondition = 
-                Snake.Position.XPosition == GameBoard.MinX
+                _snake.Position.XPosition == GameBoard.MinX
                 ||
-                Snake.Position.XPosition == GameBoard.MaxX
+                _snake.Position.XPosition == GameBoard.MaxX
                 ||
-                Snake.Position.YPosition == GameBoard.MinY
+                _snake.Position.YPosition == GameBoard.MinY
                 ||
-                Snake.Position.YPosition == GameBoard.MaxY;
+                _snake.Position.YPosition == GameBoard.MaxY;
 
             if (collisionCondition) GameLost?.Invoke();
         }
-    }
-            
+
+        internal void IncrementMoves()
+        {
+            Score.IncrementMoves();
+        }
+
+        internal void DetectFoodCollision()
+        {
+            if(_snake.Position == _food?.Position)
+            {
+                FeedSnake();
+                CreateFood();
+                FoodEaten?.Invoke();
+            }
+        }
+    }            
 }

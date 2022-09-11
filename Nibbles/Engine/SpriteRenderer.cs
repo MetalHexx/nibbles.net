@@ -2,7 +2,7 @@
 
 namespace Nibbles.Engine
 {
-    internal class GameRenderer : ISpriteRenderer
+    internal class SpriteRenderer : ISpriteRenderer
     {
         private const ConsoleColor SNAKE_COLOR = ConsoleColor.Cyan;
         private const ConsoleColor FOOD_BACKGROUND_COLOR = ConsoleColor.Red;
@@ -12,7 +12,7 @@ namespace Nibbles.Engine
         private const ConsoleColor BOARD_BACKGROUND_COLOR = ConsoleColor.DarkBlue;
         private const string GAME_TITLE = "Nibbles.net";
         private const string CLEAR_SCORE_TEXT = "                                                               ";
-        public GameRenderer()
+        public SpriteRenderer()
         {
             Console.CursorVisible = false;
         }

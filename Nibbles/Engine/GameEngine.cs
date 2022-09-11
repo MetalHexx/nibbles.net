@@ -2,7 +2,7 @@
 {
     internal class GameEngine
     {
-        private GameRenderer _renderer = new GameRenderer();
+        private SpriteRenderer _renderer = new SpriteRenderer();
         private GameState _gameState;
         private bool _continueGame = true;
 
@@ -11,6 +11,7 @@
             _gameState = new GameState();
             _gameState.GameLost += OnGameLost;
             _gameState.GameWon += OnGameWin;
+            _gameState.FoodEaten += OnFoodEaten;
             _renderer.RenderBoard(_gameState.GameBoard);
             _renderer.RenderScore(_gameState);
         }
@@ -21,11 +22,11 @@
                 Render();
                 Thread.Sleep(100);
                 var playerInput = PlayerInput.Get();
-                HandlePlayerMoveScore(playerInput);
-                HandleFoodCollision();
+                HandlePlayerMoveScore(playerInput);                
                 ClearGameObjects();
-                MoveSnake(playerInput);
-                CheckGameBoardCollision();
+                _gameState.DetectFoodCollision();
+                _gameState.MoveSnake(playerInput.Transform);
+                _gameState.CheckGameBoardCollision();
             } 
             while (_continueGame);
         }
@@ -42,37 +43,24 @@
             _continueGame = false;
         }
 
+        private void OnFoodEaten()
+        {
+            _renderer.RenderScore(_gameState);
+        }
+
         private void Render()
         {
             var gameObjects = _gameState.GetGameObjects();
             _renderer.Render(gameObjects);
         }
 
-        private void MoveSnake(PlayerInput playerInput)
-        {
-            _gameState.Snake.Move(playerInput.Transform);
-        }
-
         private void HandlePlayerMoveScore(PlayerInput playerInput)
         {
             if (playerInput.Type == PlayerInputType.Move)
             {
-                _gameState.Score.IncrementMoves();
+                _gameState.IncrementMoves();
             }
         }
-
-        private void HandleFoodCollision()
-        {
-            if (_gameState.Snake.Position == _gameState.Food?.Position)
-            {
-                _gameState.Snake.Feed();
-                _gameState.Score.IncrementAmountEaten();
-                _gameState.CreateFood();
-                _renderer.RenderScore(_gameState);
-            }
-        }
-
-        private void CheckGameBoardCollision() => _gameState.CheckGameBoardCollision();
 
         private void ClearGameObjects()
         {
