@@ -4,6 +4,7 @@ namespace Nibbles.Engine
 {
     public class GameState
     {
+        public event Action? GameLost, GameWon;
         public Snake Snake { get; private set; }
         public Food? Food { get; private set; }
         public Board GameBoard { get; private set; } = new Board();
@@ -14,29 +15,18 @@ namespace Nibbles.Engine
         public GameState()
         {
             Snake = new Snake();
+            Snake.TouchedSelf += OnTouchedSelf;
             CreateFood();
         }
 
-        public GameEvent DetermineGameEvents()
+        public void OnTouchedSelf()
         {
-            if (Snake.IsTouchingSelf || _gameBoardCollision)
-            {
-                Console.WriteLine("You lose! :(");
-                return GameEvent.Lose;
-            }
-            if (Food is null)
-            {
-                Console.WriteLine("You win! :)");
-                return GameEvent.Win;
-            }
-            return GameEvent.Continue;
+            GameLost?.Invoke();
         }
 
         public List<ISprite?> GetGameObjects()
         {
-            var gameObjects = Snake.GetParts()
-                .Select(sp => sp as ISprite)
-                .ToList();
+            var gameObjects = Snake.GetParts().ToList();
             gameObjects.Add(Food);
             return gameObjects;
         }
@@ -48,18 +38,31 @@ namespace Nibbles.Engine
                         .Select(sp => sp.Position)
                         .ToArray();
 
-            var foodPosition = _positionGenerator.GetRandomPositionWithoutOverlap(GameBoard.MaxX - 1, GameBoard.MaxY - 1, positionsToAvoidFoodPlacement);
+            var totalPossible = (GameBoard.MaxX - 1) * (GameBoard.MaxY - 1);
+
+            if (totalPossible == positionsToAvoidFoodPlacement.Length)
+            {
+                GameWon?.Invoke();
+            }
+
+            var foodPosition = _positionGenerator.GetUniqueRandomPosition(GameBoard.MaxX - 1, GameBoard.MaxY - 1, positionsToAvoidFoodPlacement);
 
             Food = new Food(foodPosition);
         }
 
-        private bool _gameBoardCollision =>
-            Snake.Position.XPosition == GameBoard.MinX
-            ||
-            Snake.Position.XPosition == GameBoard.MaxX
-            ||
-            Snake.Position.YPosition == GameBoard.MinY
-            ||
-            Snake.Position.YPosition == GameBoard.MaxY;
+        public void CheckGameBoardCollision()
+        {
+            var collisionCondition = 
+                Snake.Position.XPosition == GameBoard.MinX
+                ||
+                Snake.Position.XPosition == GameBoard.MaxX
+                ||
+                Snake.Position.YPosition == GameBoard.MinY
+                ||
+                Snake.Position.YPosition == GameBoard.MaxY;
+
+            if (collisionCondition) GameLost?.Invoke();
+        }
     }
+            
 }

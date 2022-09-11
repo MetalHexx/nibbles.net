@@ -1,7 +1,10 @@
-﻿namespace Nibbles.GameObject
+﻿using System;
+
+namespace Nibbles.GameObject
 {
     public class Snake : IMoveableSprite
     {
+        public event Action? TouchedSelf, Moved;
         public Position Position => _snakeParts.First().Position;
         private List<SnakePart> _snakeParts = new List<SnakePart>() { new SnakePart(5, 5) };
         private PositionTransform _currentDirection = new PositionTransform(1, 0, DirectionType.Right);
@@ -21,7 +24,9 @@
         {
             var finalDirection = DetermineFinalDirection(transform);
             _currentDirection = finalDirection;
-            DoMove(_currentDirection);
+            DoMove(_currentDirection);            
+
+            if (IsTouchingSelf) TouchedSelf?.Invoke();
         }
 
         private void DoMove(PositionTransform transform)

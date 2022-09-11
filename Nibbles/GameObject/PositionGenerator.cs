@@ -4,7 +4,7 @@
     {
         private Random _random = new Random();
 
-        public Position GetRandomPositionWithoutOverlap(int maxXPosition, int maxYPosition, params Position[] excludedPositions)
+        public Position GetUniqueRandomPosition(int maxXPosition, int maxYPosition, params Position[] excludedPositions)
         {
             var newFoodPosition = GetRandomPosition(maxXPosition, maxYPosition);
 
