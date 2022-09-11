@@ -9,8 +9,8 @@ namespace Nibbles.Engine
         private PositionGenerator _positionGenerator = new PositionGenerator();
         private Snake _snake;
         private Food? _food;
-        private List<ISprite> _spritesToRender = new List<ISprite>();
-        private List<ISprite> _spritesToDestroy = new List<ISprite>();
+        private SpriteRenderUpdate _spritesToRender = new SpriteRenderUpdate();
+        
 
         public Score Score { get; private set; } = new Score();
 
@@ -24,19 +24,13 @@ namespace Nibbles.Engine
             CreateFood();
         }
 
-        public List<ISprite> GetSpritesToDestroy()
-        {
-            var spritesToDestroy = _spritesToDestroy;
-            _spritesToDestroy = new List<ISprite>();
-            return spritesToDestroy;
-        }
-
-        public List<ISprite> GetSpritesToRender()
+        public SpriteRenderUpdate GetSpritesToRender()
         {
             var spritesToRender = _spritesToRender;
-            _spritesToRender = new List<ISprite>();
+            _spritesToRender = new SpriteRenderUpdate();
             return spritesToRender;
         }
+
         public void FeedSnake()
         {
             _snake.Feed();
@@ -108,7 +102,7 @@ namespace Nibbles.Engine
 
         private void OnSpriteDestroyed(ISprite sprite)
         {
-            _spritesToDestroy.Add(sprite);
+            _spritesToRender.Remove(sprite);
         }
     }            
 }
