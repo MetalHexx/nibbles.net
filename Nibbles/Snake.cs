@@ -81,7 +81,7 @@
             return _snakeParts.Select(sp => Clone(sp));
         }
 
-        public bool TouchingSelf => GetParts()
+        public bool IsTouchingSelf => GetParts()
             .Skip(1)
             .Any(snakePart => Position == snakePart.Position);
 
