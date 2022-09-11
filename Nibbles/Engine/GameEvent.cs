@@ -1,4 +1,4 @@
-﻿namespace Nibbles
+﻿namespace Nibbles.Engine
 {
     public enum GameEvent
     {

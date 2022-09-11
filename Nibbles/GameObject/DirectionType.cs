@@ -1,6 +1,6 @@
-﻿namespace Nibbles
+﻿namespace Nibbles.GameObject
 {
-    public enum GameObjectDirection
+    public enum DirectionType
     {
         Up,
         Down,

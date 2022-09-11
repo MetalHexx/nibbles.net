@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Nibbles
+﻿namespace Nibbles.GameObject
 {
-    public class GameBoard
+    public class Board
     {
         public int MinX { get; private set; } = 0;
         public int MaxX { get; private set; } = 100;

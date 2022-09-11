@@ -1,20 +1,15 @@
-﻿namespace Nibbles
+﻿using Nibbles.GameObject;
+
+namespace Nibbles.Engine
 {
     public class GameState
     {
         public Snake Snake { get; private set; }
         public Food? Food { get; private set; }
-        public GameBoard GameBoard { get; private set; } = new GameBoard();
+        public Board GameBoard { get; private set; } = new Board();
         private PositionGenerator _positionGenerator = new PositionGenerator();
-        public int TotalMoves { get; set; }
-        public int AmountEaten = -1;      
-        public int CurrentScore
-        {
-            get { return AmountEaten * _scorePerFeeding - (_penaltyPerMove * TotalMoves); }
-        }
 
-        private const int _scorePerFeeding = 100;
-        private const int _penaltyPerMove = 1;
+        public Score Score { get; private set; } = new Score();
 
         public GameState()
         {
@@ -37,10 +32,10 @@
             return GameEvent.Continue;
         }
 
-        public List<IGameObject?> GetGameObjects()
+        public List<ISprite?> GetGameObjects()
         {
             var gameObjects = Snake.GetParts()
-                .Select(sp => sp as IGameObject)
+                .Select(sp => sp as ISprite)
                 .ToList();
             gameObjects.Add(Food);
             return gameObjects;
@@ -48,8 +43,6 @@
 
         public void CreateFood()
         {
-            AmountEaten++;
-
             var positionsToAvoidFoodPlacement = Snake
                         .GetParts()
                         .Select(sp => sp.Position)

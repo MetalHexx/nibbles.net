@@ -1,6 +1,8 @@
-﻿namespace Nibbles
+﻿using Nibbles.GameObject;
+
+namespace Nibbles.Engine
 {
-    internal class GameObjectRenderer : IGameObjectRenderer
+    internal class GameRenderer : ISpriteRenderer
     {
         private const ConsoleColor SNAKE_COLOR = ConsoleColor.Cyan;
         private const ConsoleColor FOOD_BACKGROUND_COLOR = ConsoleColor.Red;
@@ -10,25 +12,25 @@
         private const ConsoleColor BOARD_BACKGROUND_COLOR = ConsoleColor.DarkBlue;
         private const string GAME_TITLE = "Nibbles.net";
         private const string CLEAR_SCORE_TEXT = "                                                               ";
-        public GameObjectRenderer()
+        public GameRenderer()
         {
-            Console.CursorVisible = false;            
+            Console.CursorVisible = false;
         }
-        public void Render(IEnumerable<IGameObject?> gameObjects)
+        public void Render(IEnumerable<ISprite?> gameObjects)
         {
             foreach (var obj in gameObjects)
             {
                 if (obj is null) continue;
 
                 var objMetaData = GetGameObjectMetadata(obj);
-                
+
                 if (objMetaData is null) throw new Exception("A game object was found to be null");
 
                 WriteText(objMetaData.Text, objMetaData.ForegroundColor, objMetaData.BackgroundColor, obj.Position.XPosition, obj.Position.YPosition);
             }
         }
 
-        public void Clear(IEnumerable<IGameObject?> gameObjects)
+        public void Clear(IEnumerable<ISprite?> gameObjects)
         {
             foreach (var obj in gameObjects)
             {
@@ -38,10 +40,10 @@
 
                 if (objMetaData is null) throw new Exception("A game object was found to be null");
 
-                WriteText(ReplaceTextWithEmptyString(objMetaData.Text), 
-                    BOARD_BACKGROUND_COLOR, 
-                    BOARD_BACKGROUND_COLOR, 
-                    obj.Position.XPosition, 
+                WriteText(ReplaceTextWithEmptyString(objMetaData.Text),
+                    BOARD_BACKGROUND_COLOR,
+                    BOARD_BACKGROUND_COLOR,
+                    obj.Position.XPosition,
                     obj.Position.YPosition);
             }
         }
@@ -56,7 +58,7 @@
             return text;
         }
 
-        public void RenderBoard(GameBoard board)
+        public void RenderBoard(Board board)
         {
             for (int x = board.MinX; x <= board.MaxX; x++)
             {
@@ -83,18 +85,18 @@
                 BOARD_BORDER_BACKGROUND_COLOR,
                 GAME_TITLE.Length + 1, 0);
 
-            WriteText($" | Amount Eaten: {state.AmountEaten} | Moves: {state.TotalMoves} | Score: {state.CurrentScore}", 
-                BOARD_BORDER_FOREGROUND_COLOR, 
-                BOARD_BORDER_BACKGROUND_COLOR, 
+            WriteText($" | Amount Eaten: {state.Score.AmountEaten} | Moves: {state.Score.Moves} | Score: {state.Score.Total}",
+                BOARD_BORDER_FOREGROUND_COLOR,
+                BOARD_BORDER_BACKGROUND_COLOR,
                 GAME_TITLE.Length + 1, 0);
         }
 
-        private GameObjectMetadata? GetGameObjectMetadata(IGameObject gameObject)
+        private SpriteMetadata? GetGameObjectMetadata(ISprite gameObject)
         {
             switch (gameObject)
             {
                 case SnakePart snake:
-                    return new GameObjectMetadata
+                    return new SpriteMetadata
                     {
                         BackgroundColor = SNAKE_COLOR,
                         ForegroundColor = SNAKE_COLOR,
@@ -102,7 +104,7 @@
                     };
 
                 case Food food:
-                    return new GameObjectMetadata
+                    return new SpriteMetadata
                     {
                         BackgroundColor = FOOD_BACKGROUND_COLOR,
                         ForegroundColor = FOOD_FOREGROUND_COLOR,
@@ -113,7 +115,7 @@
                     return null;
             }
         }
-        
+
         private void WriteText(string text, ConsoleColor foregroundColor, ConsoleColor backgroundColor, int xPosition, int yPosition)
         {
             Console.ForegroundColor = foregroundColor;
