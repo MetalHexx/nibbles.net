@@ -89,7 +89,7 @@ namespace Nibbles.GameObject
             return _snakeParts.Select(sp => Copy(sp));
         }
 
-        public bool IsTouchingSelf => GetParts()
+        private bool IsTouchingSelf => GetParts()
             .Skip(1)
             .Any(snakePart => GetPosition() == snakePart.GetPosition());
 
