@@ -5,6 +5,7 @@
         public Snake Snake { get; private set; }
         public Food? Food { get; private set; }
         public GameBoard GameBoard { get; private set; } = new GameBoard();
+        private PositionGenerator _positionGenerator = new PositionGenerator();
         public int TotalMoves { get; set; }
         public int AmountEaten = -1;      
         public int CurrentScore
@@ -15,9 +16,6 @@
         private const int _scorePerFeeding = 100;
         private const int _penaltyPerMove = 1;
 
-
-
-
         public GameState()
         {
             Snake = new Snake();
@@ -26,7 +24,7 @@
 
         public GameEvent DetermineGameEvents()
         {
-            if (Snake.TouchingSelf || _gameBoardCollision)
+            if (Snake.IsTouchingSelf || _gameBoardCollision)
             {
                 Console.WriteLine("You lose! :(");
                 return GameEvent.Lose;
@@ -57,7 +55,9 @@
                         .Select(sp => sp.Position)
                         .ToArray();
 
-            Food = new Food(GameBoard.MaxX - 1, GameBoard.MaxY - 1, positionsToAvoidFoodPlacement);
+            var foodPosition = _positionGenerator.GetRandomPositionWithoutOverlap(GameBoard.MaxX - 1, GameBoard.MaxY - 1, positionsToAvoidFoodPlacement);
+
+            Food = new Food(foodPosition);
         }
 
         private bool _gameBoardCollision =>
