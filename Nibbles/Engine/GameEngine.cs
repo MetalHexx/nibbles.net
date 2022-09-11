@@ -2,7 +2,7 @@
 {
     internal class GameEngine
     {
-        private SpriteRenderer _renderer = new SpriteRenderer();
+        private ISpriteRenderer _renderer = new SpriteRenderer();
         private GameState _gameState;
         private bool _continueGame = true;
 

@@ -48,16 +48,6 @@ namespace Nibbles.Engine
             }
         }
 
-        private string ReplaceTextWithEmptyString(string text)
-        {
-            var charArray = text.ToCharArray();
-            foreach (var character in charArray)
-            {
-                text.Replace(character, ' ');
-            }
-            return text;
-        }
-
         public void RenderBoard(Board board)
         {
             for (int x = board.MinX; x <= board.MaxX; x++)
@@ -89,6 +79,16 @@ namespace Nibbles.Engine
                 BOARD_BORDER_FOREGROUND_COLOR,
                 BOARD_BORDER_BACKGROUND_COLOR,
                 GAME_TITLE.Length + 1, 0);
+        }
+
+        private string ReplaceTextWithEmptyString(string text)
+        {
+            var charArray = text.ToCharArray();
+            foreach (var character in charArray)
+            {
+                text.Replace(character, ' ');
+            }
+            return text;
         }
 
         private SpriteMetadata? GetGameObjectMetadata(ISprite gameObject)
