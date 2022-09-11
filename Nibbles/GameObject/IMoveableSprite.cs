@@ -1,6 +1,6 @@
 ﻿namespace Nibbles.GameObject
 {
-    internal interface IMoveableSprite
+    internal interface IMoveableSprite: ISprite
     {
         void Move(PositionTransform transform);
     }

@@ -2,11 +2,16 @@
 {
     public record SnakePart : ISprite
     {
-        public Position Position { get; init; }
+        private  Position _position;
 
         public SnakePart(int x, int y)
         {
-            Position = new Position(x, y);
+            _position = new Position(x, y);
+        }
+
+        public Position GetPosition()
+        {
+            return _position;
         }
     }
 }

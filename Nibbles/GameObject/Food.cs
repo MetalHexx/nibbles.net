@@ -2,18 +2,23 @@
 {
     public class Food : ISprite
     {
-        public Position Position { get; init; }
+        private Position _position;
 
         private Random _random = new Random();
 
         public Food(Position position)
         {
-            Position = position;
+            _position = position;
         }
 
         public Food(Position position, int number)
         {
-            Position = position;
+            _position = position;
+        }
+
+        public Position GetPosition()
+        {
+            return _position;
         }
     }
 }

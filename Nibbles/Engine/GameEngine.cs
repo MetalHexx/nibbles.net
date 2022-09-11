@@ -14,20 +14,21 @@
             _gameState.FoodEaten += OnFoodEaten;
             _renderer.RenderBoard(_gameState.GameBoard);
             _renderer.RenderScore(_gameState);
+            RenderSprites();
         }
         public void Start()
         {
             do
             {
-                Render();
                 Thread.Sleep(100);
                 var playerInput = PlayerInput.Get();
                 HandlePlayerMoveScore(playerInput);                
-                ClearGameObjects();
                 _gameState.DetectFoodCollision();
                 _gameState.MoveSnake(playerInput.Transform);
                 _gameState.CheckGameBoardCollision();
-            } 
+                DestroySprites();
+                RenderSprites();
+            }
             while (_continueGame);
         }
 
@@ -48,10 +49,15 @@
             _renderer.RenderScore(_gameState);
         }
 
-        private void Render()
+        private void RenderSprites()
         {
-            var gameObjects = _gameState.GetGameObjects();
-            _renderer.Render(gameObjects);
+            var spritesToRender = _gameState.GetSpritesToRender();            
+            _renderer.Render(spritesToRender);
+        }
+        private void DestroySprites()
+        {
+            var spritesToDestroy = _gameState.GetSpritesToDestroy();
+            _renderer.Destroy(spritesToDestroy);
         }
 
         private void HandlePlayerMoveScore(PlayerInput playerInput)
@@ -60,12 +66,6 @@
             {
                 _gameState.IncrementMoves();
             }
-        }
-
-        private void ClearGameObjects()
-        {
-            var gameObjects = _gameState.GetGameObjects();
-            _renderer.Clear(gameObjects);
         }
     }
 }

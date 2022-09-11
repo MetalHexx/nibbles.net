@@ -4,8 +4,10 @@ namespace Nibbles.GameObject
 {
     public class Snake : IMoveableSprite
     {
-        public event Action? TouchedSelf, Moved;
-        public Position Position => _snakeParts.First().Position;
+        public event Action? TouchedSelf;
+        public event Action<ISprite>? SnakePartCreated, SnakePartDestroyed;
+
+
         private List<SnakePart> _snakeParts = new List<SnakePart>() { new SnakePart(5, 5) };
         private PositionTransform _currentDirection = new PositionTransform(1, 0, DirectionType.Right);
         private int _remainingGrowth = 0;
@@ -15,6 +17,11 @@ namespace Nibbles.GameObject
         /// Feeding the snake will change the state to track growth
         /// </summary>
         public void Feed() => _remainingGrowth = GROWTH_AMOUNT;
+
+        public Position GetPosition()
+        {
+            return _snakeParts.First().GetPosition();
+        }
 
         /// <summary>
         /// Calculate and do the next snake move
@@ -31,10 +38,11 @@ namespace Nibbles.GameObject
 
         private void DoMove(PositionTransform transform)
         {
-            var head = _snakeParts.First();
-            var newHead = Clone(head, transform.X, transform.Y);
-            _snakeParts.Insert(0, newHead);
+            var newHead = Copy(_snakeParts.First(), transform.X, transform.Y);  
+
+            _snakeParts.Insert(0, newHead);            
             MaybeGrow();
+            SnakePartCreated?.Invoke(newHead);
         }
         /// <summary>
         /// Prevents snake from moving in the opposite direction unless it's length is 1
@@ -70,31 +78,26 @@ namespace Nibbles.GameObject
             if (_remainingGrowth > 0)
             {
                 _remainingGrowth--;
+                return;
             }
-            else
-            {
-                _snakeParts.Remove(_snakeParts.Last());
-            }
+            var partToRemove = _snakeParts.Last();
+            _snakeParts.Remove(partToRemove);
+            SnakePartDestroyed?.Invoke(partToRemove);
         }
         public IEnumerable<ISprite> GetParts()
         {
-            return _snakeParts.Select(sp => Clone(sp));
+            return _snakeParts.Select(sp => Copy(sp));
         }
 
         public bool IsTouchingSelf => GetParts()
             .Skip(1)
-            .Any(snakePart => Position == snakePart.Position);
+            .Any(snakePart => GetPosition() == snakePart.GetPosition());
 
-        private SnakePart Clone(SnakePart snakePart, int xDelta = 0, int yDelta = 0)
+        private SnakePart Copy(SnakePart snakePart, int xDelta = 0, int yDelta = 0)
         {
-            return snakePart with
-            {
-                Position = snakePart.Position with
-                {
-                    XPosition = snakePart.Position.XPosition + xDelta,
-                    YPosition = snakePart.Position.YPosition + yDelta
-                }
-            };
+            var newX = snakePart.GetPosition().XPosition + xDelta;
+            var newY = snakePart.GetPosition().YPosition + yDelta;
+            return new SnakePart(newX, newY);
         }
     }
 }

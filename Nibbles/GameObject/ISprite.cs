@@ -2,6 +2,6 @@
 {
     public interface ISprite
     {
-        public Position Position { get; }
+        public Position GetPosition();
     }
 }

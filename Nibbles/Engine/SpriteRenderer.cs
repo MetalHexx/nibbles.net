@@ -18,11 +18,15 @@ namespace Nibbles.Engine
 
                 if (objMetaData is null) throw new Exception("A game object was found to be null");
 
-                WriteText(objMetaData.Text, objMetaData.ForegroundColor, objMetaData.BackgroundColor, obj.Position.XPosition, obj.Position.YPosition);
+                WriteText(objMetaData.Text, 
+                    objMetaData.ForegroundColor, 
+                    objMetaData.BackgroundColor, 
+                    obj.GetPosition().XPosition, 
+                    obj.GetPosition().YPosition);
             }
         }
 
-        public void Clear(IEnumerable<ISprite?> gameObjects)
+        public void Destroy(IEnumerable<ISprite?> gameObjects)
         {
             foreach (var obj in gameObjects)
             {
@@ -35,8 +39,8 @@ namespace Nibbles.Engine
                 WriteText(ReplaceTextWithEmptyString(objMetaData.Text),
                     SpriteConfig.BOARD_BACKGROUND_COLOR,
                     SpriteConfig.BOARD_BACKGROUND_COLOR,
-                    obj.Position.XPosition,
-                    obj.Position.YPosition);
+                    obj.GetPosition().XPosition,
+                    obj.GetPosition().YPosition);
             }
         }
 
@@ -90,7 +94,11 @@ namespace Nibbles.Engine
             return text;
         }
 
-        private void WriteText(string text, ConsoleColor foregroundColor, ConsoleColor backgroundColor, int xPosition, int yPosition)
+        private void WriteText(string text, 
+            ConsoleColor foregroundColor, 
+            ConsoleColor backgroundColor, 
+            int xPosition, 
+            int yPosition)
         {
             Console.ForegroundColor = foregroundColor;
             Console.BackgroundColor = backgroundColor;

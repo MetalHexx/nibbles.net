@@ -3,32 +3,39 @@
 namespace Nibbles.Engine
 {
     public class GameState
-    {
-        public event Action? GameLost, GameWon, FoodEaten;
-        private Snake _snake;
-        private Food? _food;
+    {  
+        public event Action? GameLost, GameWon, FoodEaten;        
         public Board GameBoard { get; private set; } = new Board();
         private PositionGenerator _positionGenerator = new PositionGenerator();
+        private Snake _snake;
+        private Food? _food;
+        private List<ISprite> _spritesToRender = new List<ISprite>();
+        private List<ISprite> _spritesToDestroy = new List<ISprite>();
 
         public Score Score { get; private set; } = new Score();
 
         public GameState()
         {
             _snake = new Snake();
+            _spritesToRender.Add(_snake.GetParts().First());
             _snake.TouchedSelf += OnTouchedSelf;
+            _snake.SnakePartCreated += OnSpriteAdded;
+            _snake.SnakePartDestroyed += OnSpriteDestroyed;
             CreateFood();
         }
 
-        public void OnTouchedSelf()
+        public List<ISprite> GetSpritesToDestroy()
         {
-            GameLost?.Invoke();
+            var spritesToDestroy = _spritesToDestroy;
+            _spritesToDestroy = new List<ISprite>();
+            return spritesToDestroy;
         }
 
-        public List<ISprite?> GetGameObjects()
+        public List<ISprite> GetSpritesToRender()
         {
-            var gameObjects = _snake.GetParts().ToList();
-            gameObjects.Add(_food);
-            return gameObjects;
+            var spritesToRender = _spritesToRender;
+            _spritesToRender = new List<ISprite>();
+            return spritesToRender;
         }
         public void FeedSnake()
         {
@@ -40,7 +47,7 @@ namespace Nibbles.Engine
         {
             var positionsToAvoidFoodPlacement = _snake
                         .GetParts()
-                        .Select(sp => sp.Position)
+                        .Select(sp => sp.GetPosition())
                         .ToArray();
 
             var totalPossible = (GameBoard.MaxX - 1) * (GameBoard.MaxY - 1);
@@ -53,6 +60,7 @@ namespace Nibbles.Engine
             var foodPosition = _positionGenerator.GetUniqueRandomPosition(GameBoard.MaxX - 1, GameBoard.MaxY - 1, positionsToAvoidFoodPlacement);
 
             _food = new Food(foodPosition);
+            _spritesToRender.Add(_food);
         }
 
         internal void MoveSnake(PositionTransform transform)
@@ -63,13 +71,13 @@ namespace Nibbles.Engine
         public void CheckGameBoardCollision()
         {
             var collisionCondition = 
-                _snake.Position.XPosition == GameBoard.MinX
+                _snake.GetPosition().XPosition == GameBoard.MinX
                 ||
-                _snake.Position.XPosition == GameBoard.MaxX
+                _snake.GetPosition().XPosition == GameBoard.MaxX
                 ||
-                _snake.Position.YPosition == GameBoard.MinY
+                _snake.GetPosition().YPosition == GameBoard.MinY
                 ||
-                _snake.Position.YPosition == GameBoard.MaxY;
+                _snake.GetPosition().YPosition == GameBoard.MaxY;
 
             if (collisionCondition) GameLost?.Invoke();
         }
@@ -81,12 +89,26 @@ namespace Nibbles.Engine
 
         internal void DetectFoodCollision()
         {
-            if(_snake.Position == _food?.Position)
+            if(_snake.GetPosition() == _food?.GetPosition())
             {
                 FeedSnake();
                 CreateFood();
                 FoodEaten?.Invoke();
             }
+        }
+        private void OnTouchedSelf()
+        {
+            GameLost?.Invoke();
+        }
+
+        private void OnSpriteAdded(ISprite sprite)
+        {
+            _spritesToRender.Add(sprite);
+        }
+
+        private void OnSpriteDestroyed(ISprite sprite)
+        {
+            _spritesToDestroy.Add(sprite);
         }
     }            
 }
