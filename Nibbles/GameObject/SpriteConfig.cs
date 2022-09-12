@@ -15,7 +15,11 @@ namespace Nibbles.GameObject
         public const ConsoleColor BOARD_BORDER_BACKGROUND_COLOR = ConsoleColor.White;
         public const ConsoleColor BOARD_BORDER_FOREGROUND_COLOR = ConsoleColor.Black;
         public const ConsoleColor BOARD_BACKGROUND_COLOR = ConsoleColor.DarkBlue;
+        public const ConsoleColor BOARD_FOREGROUND_COLOR = ConsoleColor.White;
+        public const ConsoleColor GAME_TEXTBOX_FOREGROUND_COLOR = ConsoleColor.White;
+        public const ConsoleColor GAME_TEXTBOX_BACKGROUND_COLOR = ConsoleColor.Magenta;
         public const string GAME_TITLE = "Nibbles.net";
-        public const string CLEAR_SCORE_TEXT = "";
+        public const string GAME_WIN = "Game Over! :)";
+        public const string GAME_LOSE = "Game Over! :(";
     }
 }

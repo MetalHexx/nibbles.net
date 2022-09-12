@@ -9,8 +9,7 @@
         public GameEngine()
         {
             _gameState = new GameState();
-            _gameState.GameLost += OnGameLost;
-            _gameState.GameWon += OnGameWin;
+            _gameState.GameOver += () => _continueGame = false;
             Render();
         }
         public void Start()
@@ -26,18 +25,6 @@
                 Render();
             }
             while (_continueGame);
-        }
-
-        private void OnGameWin()
-        {
-            Console.WriteLine("You win! :)");
-            _continueGame = false;
-        }
-
-        private void OnGameLost()
-        {   
-            Console.WriteLine("You lose! :(");
-            _continueGame = false;
         }
 
         private void Render()

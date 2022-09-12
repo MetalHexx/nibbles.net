@@ -82,12 +82,12 @@
             _snakeParts.Remove(partToRemove);
             SnakePartDestroyed?.Invoke(partToRemove);
         }
-        public IEnumerable<ISprite> GetParts()
+        public IEnumerable<ISprite> GetSprites()
         {
             return _snakeParts.Select(sp => Copy(sp));
         }
 
-        private bool IsTouchingSelf => GetParts()
+        private bool IsTouchingSelf => GetSprites()
             .Skip(1)
             .Any(snakePart => GetPosition() == snakePart.GetPosition());
 

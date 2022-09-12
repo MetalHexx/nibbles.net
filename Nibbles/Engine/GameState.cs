@@ -4,7 +4,7 @@ namespace Nibbles.Engine
 {
     public class GameState
     {  
-        public event Action? GameLost, GameWon, FoodEaten;                      
+        public event Action? GameOver, FoodEaten;                      
         private PositionGenerator _positionGenerator = new PositionGenerator();
         private SpriteRenderUpdate _spritesToRender = new SpriteRenderUpdate();
         private Board _board = new Board();
@@ -17,15 +17,24 @@ namespace Nibbles.Engine
             SpriteConfig.BOARD_BORDER_FOREGROUND_COLOR, 
             SpriteConfig.BOARD_BORDER_BACKGROUND_COLOR);
 
+        private GameTextBox _gameOverText;
+
         public Score Score { get; private set; } = new Score(
             new Position(SpriteConfig.GAME_TITLE.Length + 1, 0), "");
 
         public GameState()
         {
-            _spritesToRender.Add(_board.GetParts());
-            _spritesToRender.Add(_snake.GetParts());
-            _spritesToRender.Add(GameTitle.GetParts());
-            _spritesToRender.Add(Score.GetParts());
+            _gameOverText = new GameTextBox("Test",
+                new BorderBoxDimensions(
+                    _board.Dimensions.MaxX / 2 - 15,
+                    _board.Dimensions.MaxX / 2 + 15,
+                    _board.Dimensions.MaxY / 2 - 5,
+                    _board.Dimensions.MaxY - 7));
+
+            _spritesToRender.Add(_board.GetSprites());            
+            _spritesToRender.Add(_snake.GetSprites());
+            _spritesToRender.Add(GameTitle.GetSprites());
+            _spritesToRender.Add(Score.GetSprites());
             _snake.TouchedSelf += OnTouchedSelf;
             _snake.SnakePartCreated += OnSpriteAdded;
             _snake.SnakePartDestroyed += OnSpriteDestroyed;
@@ -43,24 +52,24 @@ namespace Nibbles.Engine
         {
             _snake.Feed();
             Score.IncrementAmountEaten();
-            _spritesToRender.Add(Score.GetParts());
+            _spritesToRender.Add(Score.GetSprites());
         }
 
         public void CreateFood()
         {
             var positionsToAvoidFoodPlacement = _snake
-                        .GetParts()
+                        .GetSprites()
                         .Select(sp => sp.GetPosition())
                         .ToArray();
 
-            var totalPossible = (_board.MaxX - 1) * (_board.MaxY - 1);
+            var totalPossible = (_board.Dimensions.MaxX - 1) * (_board.Dimensions.MaxY - 1);
 
             if (totalPossible == positionsToAvoidFoodPlacement.Length)
             {
-                GameWon?.Invoke();
+                HandleGameOver(SpriteConfig.GAME_WIN);                
             }
 
-            var foodPosition = _positionGenerator.GetUniqueRandomPosition(_board.MaxX - 1, _board.MaxY - 1, positionsToAvoidFoodPlacement);
+            var foodPosition = _positionGenerator.GetUniqueRandomPosition(_board.Dimensions.MaxX - 1, _board.Dimensions.MaxY - 1, positionsToAvoidFoodPlacement);
 
             _food = new Food(foodPosition);
             _spritesToRender.Add(_food);
@@ -74,21 +83,32 @@ namespace Nibbles.Engine
         public void CheckGameBoardCollision()
         {
             var collisionCondition = 
-                _snake.GetPosition().XPosition == _board.MinX
+                _snake.GetPosition().XPosition == _board.Dimensions.MinX
                 ||
-                _snake.GetPosition().XPosition == _board.MaxX
+                _snake.GetPosition().XPosition == _board.Dimensions.MaxX
                 ||
-                _snake.GetPosition().YPosition == _board.MinY
+                _snake.GetPosition().YPosition == _board.Dimensions.MinY
                 ||
-                _snake.GetPosition().YPosition == _board.MaxY;
+                _snake.GetPosition().YPosition == _board.Dimensions.MaxY;
 
-            if (collisionCondition) GameLost?.Invoke();
+            if (collisionCondition)
+            {
+                HandleGameOver(SpriteConfig.GAME_LOSE);
+            }
+
+        }
+
+        private void HandleGameOver(string text)
+        {
+            _gameOverText.SetText(text);
+            _spritesToRender.Add(_gameOverText.GetSprites());
+            GameOver?.Invoke();
         }
 
         internal void IncrementMoveScore()
         {
             Score.IncrementMoves();
-            _spritesToRender.Add(Score.GetParts());
+            _spritesToRender.Add(Score.GetSprites());
         }
 
         internal void DetectFoodCollision()
@@ -102,7 +122,7 @@ namespace Nibbles.Engine
         }
         private void OnTouchedSelf()
         {
-            GameLost?.Invoke();
+            HandleGameOver(SpriteConfig.GAME_LOSE);
         }
 
         private void OnSpriteAdded(ISprite sprite)

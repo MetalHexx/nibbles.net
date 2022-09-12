@@ -40,7 +40,7 @@
             return _position;
         }
 
-        public IEnumerable<ISprite> GetParts()
+        public IEnumerable<ISprite> GetSprites()
         {
             return _parts;
         }
