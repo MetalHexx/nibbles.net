@@ -2,8 +2,11 @@
 {
     public class Food : ISprite
     {
-        private Position _position;
+        public ConsoleColor ForegroundColor => SpriteConfig.FOOD_FOREGROUND_COLOR;
+        public ConsoleColor BackgroundColor => SpriteConfig.FOOD_BACKGROUND_COLOR;
+        public char DisplayCharacter { get; } = ' ';
 
+        private Position _position;
         private Random _random = new Random();
 
         public Food(Position position)

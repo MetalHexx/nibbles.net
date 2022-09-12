@@ -11,9 +11,6 @@
             _gameState = new GameState();
             _gameState.GameLost += OnGameLost;
             _gameState.GameWon += OnGameWin;
-            _gameState.FoodEaten += OnFoodEaten;
-            _renderer.RenderBoard(_gameState.GameBoard);
-            _renderer.RenderScore(_gameState);
             Render();
         }
         public void Start()
@@ -43,11 +40,6 @@
             _continueGame = false;
         }
 
-        private void OnFoodEaten()
-        {
-            _renderer.RenderScore(_gameState);
-        }
-
         private void Render()
         {
             var spritesToRender = _gameState.GetSpritesToRender();            
@@ -58,7 +50,7 @@
         {
             if (playerInput.Type == PlayerInputType.Move)
             {
-                _gameState.IncrementMoves();
+                _gameState.IncrementMoveScore();
             }
         }
     }

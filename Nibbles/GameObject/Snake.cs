@@ -1,12 +1,9 @@
-﻿using System;
-
-namespace Nibbles.GameObject
+﻿namespace Nibbles.GameObject
 {
-    public class Snake : IMoveableSprite
+    public class Snake: ISpriteContainer
     {
         public event Action? TouchedSelf;
         public event Action<ISprite>? SnakePartCreated, SnakePartDestroyed;
-
 
         private List<SnakePart> _snakeParts = new List<SnakePart>() { new SnakePart(5, 5) };
         private PositionTransform _currentDirection = new PositionTransform(1, 0, DirectionType.Right);
@@ -16,7 +13,7 @@ namespace Nibbles.GameObject
         /// <summary>
         /// Feeding the snake will change the state to track growth
         /// </summary>
-        public void Feed() => _remainingGrowth = GROWTH_AMOUNT;
+        public void Feed() => _remainingGrowth += GROWTH_AMOUNT;
 
         public Position GetPosition()
         {
@@ -38,10 +35,11 @@ namespace Nibbles.GameObject
 
         private void DoMove(PositionTransform transform)
         {
-            var newHead = Copy(_snakeParts.First(), transform.X, transform.Y);  
+            var oldHead = _snakeParts.First();
+            var newHead = Copy(oldHead, transform.X, transform.Y);
 
             _snakeParts.Insert(0, newHead);            
-            MaybeGrow();
+            Grow();
             SnakePartCreated?.Invoke(newHead);
         }
         /// <summary>
@@ -73,7 +71,7 @@ namespace Nibbles.GameObject
                 : nextTransform;
         }
 
-        private void MaybeGrow()
+        private void Grow()
         {
             if (_remainingGrowth > 0)
             {

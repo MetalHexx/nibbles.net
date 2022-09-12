@@ -15,93 +15,35 @@ namespace Nibbles.Engine
             Render(update.SpritesToAdd);
         }
 
-        public void RenderBoard(Board board)
+        private void Render(IEnumerable<ISprite?> sprites)
         {
-            for (int x = board.MinX; x <= board.MaxX; x++)
+            foreach (var sprite in sprites)
             {
-                for (int y = board.MinY; y <= board.MaxY; y++)
-                {
-                    var isBorder = x == board.MinX
-                        || y == board.MinY
-                        || x == board.MaxX
-                        || y == board.MaxY;
+                if (sprite is null) continue;
 
-                    WriteText(" ", 
-                        SpriteConfig.BOARD_BACKGROUND_COLOR, 
-                        SpriteConfig.BOARD_BACKGROUND_COLOR, 
-                        x, y);
-
-                    if (isBorder) WriteText(" ", 
-                        SpriteConfig.BOARD_BORDER_BACKGROUND_COLOR, 
-                        SpriteConfig.BOARD_BORDER_BACKGROUND_COLOR, 
-                        x, y);
-                }
-            }
-            WriteText(SpriteConfig.GAME_TITLE, SpriteConfig.BOARD_BORDER_FOREGROUND_COLOR, SpriteConfig.BOARD_BORDER_BACKGROUND_COLOR, 1, 0);
-        }
-
-        public void RenderScore(GameState state)
-        {
-            var scorePrefix = "";
-
-            WriteText(SpriteConfig.CLEAR_SCORE_TEXT,
-                SpriteConfig.BOARD_BORDER_FOREGROUND_COLOR,
-                SpriteConfig.BOARD_BORDER_BACKGROUND_COLOR,
-                SpriteConfig.GAME_TITLE.Length + 1, 0);
-
-            WriteText($" | Amount Eaten: {state.Score.AmountEaten} | Moves: {state.Score.Moves} | Score: {state.Score.Total}",
-                SpriteConfig.BOARD_BORDER_FOREGROUND_COLOR,
-                SpriteConfig.BOARD_BORDER_BACKGROUND_COLOR,
-                SpriteConfig.GAME_TITLE.Length + 1, 0);
-        }
-
-        private void Render(IEnumerable<ISprite?> gameObjects)
-        {
-            foreach (var obj in gameObjects)
-            {
-                if (obj is null) continue;
-
-                var objMetaData = SpriteConfig.GetSpriteMetadata(obj);
-
-                if (objMetaData is null) throw new Exception("A game object was found to be null");
-
-                WriteText(objMetaData.Text,
-                    objMetaData.ForegroundColor,
-                    objMetaData.BackgroundColor,
-                    obj.GetPosition().XPosition,
-                    obj.GetPosition().YPosition);
+                WriteText(sprite.DisplayCharacter,
+                    sprite.ForegroundColor,
+                    sprite.BackgroundColor,
+                    sprite.GetPosition().XPosition,
+                    sprite.GetPosition().YPosition);
             }
         }
 
-        private void Destroy(IEnumerable<ISprite?> gameObjects)
+        private void Destroy(IEnumerable<ISprite?> sprites)
         {
-            foreach (var obj in gameObjects)
+            foreach (var sprite in sprites)
             {
-                if (obj is null) continue;
+                if (sprite is null) continue;
 
-                var objMetaData = SpriteConfig.GetSpriteMetadata(obj);
-
-                if (objMetaData is null) throw new Exception("A game object was found to be null");
-
-                WriteText(ReplaceTextWithEmptyString(objMetaData.Text),
+                WriteText(' ',
                     SpriteConfig.BOARD_BACKGROUND_COLOR,
                     SpriteConfig.BOARD_BACKGROUND_COLOR,
-                    obj.GetPosition().XPosition,
-                    obj.GetPosition().YPosition);
+                    sprite.GetPosition().XPosition,
+                    sprite.GetPosition().YPosition);
             }
         }
 
-        private string ReplaceTextWithEmptyString(string text)
-        {
-            var charArray = text.ToCharArray();
-            foreach (var character in charArray)
-            {
-                text.Replace(character, ' ');
-            }
-            return text;
-        }
-
-        private void WriteText(string text, 
+        private void WriteText(char character, 
             ConsoleColor foregroundColor, 
             ConsoleColor backgroundColor, 
             int xPosition, 
@@ -110,7 +52,7 @@ namespace Nibbles.Engine
             Console.ForegroundColor = foregroundColor;
             Console.BackgroundColor = backgroundColor;
             Console.SetCursorPosition(xPosition, yPosition);
-            Console.Write(text);
+            Console.Write(character);
             Console.ResetColor();
         }
     }

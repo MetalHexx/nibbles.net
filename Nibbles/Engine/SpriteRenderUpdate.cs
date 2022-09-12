@@ -16,6 +16,11 @@ namespace Nibbles.Engine
         {
             SpritesToAdd.Add(sprite);
         }
+
+        public void Add(IEnumerable<ISprite> sprites)
+        {
+            SpritesToAdd.AddRange(sprites);
+        }
         public void Remove(ISprite sprite)
         {
             SpritesToRemove.Add(sprite);
