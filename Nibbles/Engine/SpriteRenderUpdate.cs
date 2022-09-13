@@ -4,8 +4,10 @@ namespace Nibbles.Engine
 {
     public class SpriteRenderUpdate
     {
-        public readonly List<ISprite> SpritesToAdd = new List<ISprite>();
-        public readonly List<ISprite> SpritesToRemove = new List<ISprite>();
+        private readonly List<ISprite> spritesToAdd = new();
+        public readonly List<ISprite> SpritesToRemove = new();
+
+        public List<ISprite> SpritesToAdd => spritesToAdd;
 
         public void Add(ISprite sprite)
         {
