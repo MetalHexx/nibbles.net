@@ -9,12 +9,15 @@ namespace Nibbles.Engine
 {
     public class GameState
     {  
-        public event Action? GameOver, FoodEaten;                      
-        private readonly PositionGenerator _positionGenerator = new();
+        public event Action? GameOver, FoodEaten;
         private SpriteRenderUpdate _spritesToRender = new();
+        private FoodSprite? _food;
+        private readonly PositionGenerator _positionGenerator = new();
         private readonly Board _board = new(new Position(0, 0), new Size(100, 20));
         private readonly SnakeContainer _snake = new();
-        private FoodSprite? _food;
+        private readonly GameTextBox _gameOverText;
+        private readonly Score _score = new(
+                    new Position(SpriteConfig.GAME_TITLE.Length + 1, 0), "");
 
         private readonly GameText GameTitle = new(
             new Position(1, 0), 
@@ -22,11 +25,7 @@ namespace Nibbles.Engine
             SpriteConfig.BOARD_BORDER_FOREGROUND_COLOR, 
             SpriteConfig.BOARD_BORDER_BACKGROUND_COLOR);
 
-        private readonly GameTextBox _gameOverText;
-        private static readonly Score score = new(
-                    new Position(SpriteConfig.GAME_TITLE.Length + 1, 0), "");
-
-        public Score Score { get; private set; } = score;
+        
 
         public GameState()
         {
@@ -35,7 +34,7 @@ namespace Nibbles.Engine
             _spritesToRender.Add(_board.GetSprites());            
             _spritesToRender.Add(_snake.GetSprites());
             _spritesToRender.Add(GameTitle.GetSprites());
-            _spritesToRender.Add(Score.GetSprites());
+            _spritesToRender.Add(_score.GetSprites());
             _snake.TouchedSelf += OnTouchedSelf;
             _snake.SnakePartCreated += OnSpriteAdded;
             _snake.SnakePartDestroyed += OnSpriteDestroyed;
@@ -52,8 +51,8 @@ namespace Nibbles.Engine
         public void FeedSnake()
         {
             _snake.Feed();
-            Score.IncrementAmountEaten();
-            _spritesToRender.Add(Score.GetSprites());
+            _score.IncrementAmountEaten();
+            _spritesToRender.Add(_score.GetSprites());
         }
 
         public void CreateFood()
@@ -108,8 +107,8 @@ namespace Nibbles.Engine
 
         internal void IncrementMoveScore()
         {
-            Score.IncrementMoves();
-            _spritesToRender.Add(Score.GetSprites());
+            _score.IncrementMoves();
+            _spritesToRender.Add(_score.GetSprites());
         }
 
         internal void DetectFoodCollision()
