@@ -1,5 +1,4 @@
 ﻿using Nibbles.Engine;
 
-var engine = new GameEngine();
-engine.Start();
+new GameEngine().Start();
 Console.ReadLine();
