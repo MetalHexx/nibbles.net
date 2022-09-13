@@ -7,7 +7,6 @@ namespace Nibbles.GameObject.Abstractions
         public Position _position { get; protected set; }
         public ConsoleColor ForegroundColor { get; protected set; }
         public ConsoleColor BackgroundColor { get; protected set; }
-
         public char DisplayCharacter { get; protected set; } = ' ';
 
         public Sprite(Position position, ConsoleColor foregroundColor, ConsoleColor backgroundColor, char displayCharacter)

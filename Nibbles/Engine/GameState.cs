@@ -10,22 +10,23 @@ namespace Nibbles.Engine
     public class GameState
     {  
         public event Action? GameOver, FoodEaten;                      
-        private PositionGenerator _positionGenerator = new PositionGenerator();
-        private SpriteRenderUpdate _spritesToRender = new SpriteRenderUpdate();
-        private Board _board = new Board(new Position(0, 0), new Size(100, 20));
-        private SnakeContainer _snake = new SnakeContainer();
+        private readonly PositionGenerator _positionGenerator = new();
+        private SpriteRenderUpdate _spritesToRender = new();
+        private readonly Board _board = new(new Position(0, 0), new Size(100, 20));
+        private readonly SnakeContainer _snake = new();
         private FoodSprite? _food;
 
-        private GameText GameTitle = new GameText(
+        private readonly GameText GameTitle = new(
             new Position(1, 0), 
             SpriteConfig.GAME_TITLE, 
             SpriteConfig.BOARD_BORDER_FOREGROUND_COLOR, 
             SpriteConfig.BOARD_BORDER_BACKGROUND_COLOR);
 
-        private GameTextBox _gameOverText;
+        private readonly GameTextBox _gameOverText;
+        private static readonly Score score = new(
+                    new Position(SpriteConfig.GAME_TITLE.Length + 1, 0), "");
 
-        public Score Score { get; private set; } = new Score(
-            new Position(SpriteConfig.GAME_TITLE.Length + 1, 0), "");
+        public Score Score { get; private set; } = score;
 
         public GameState()
         {

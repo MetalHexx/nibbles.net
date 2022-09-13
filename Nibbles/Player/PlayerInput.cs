@@ -16,7 +16,7 @@ namespace Nibbles
             SetType();
         }
 
-        public static PlayerInput Get() => new PlayerInput();
+        public static PlayerInput Get() => new();
 
         private void ReadKeyboardInput()
         {

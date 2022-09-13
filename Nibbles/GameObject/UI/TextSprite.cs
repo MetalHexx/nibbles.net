@@ -26,7 +26,7 @@ namespace Nibbles.GameObject.UI
         {
             if (padAmount > 0)
             {
-                _text.PadRight(padAmount);
+                _text = _text.PadRight(padAmount);
             }
         }
 
@@ -35,7 +35,7 @@ namespace Nibbles.GameObject.UI
             _sprites.Clear();
             var charList = _text.ToList();
 
-            for (int i = 0; i < charList.Count(); i++)
+            for (int i = 0; i < charList.Count; i++)
             {
                 var position = Position with
                 {

@@ -16,7 +16,7 @@ namespace Nibbles.Engine
             Render(update.SpritesToAdd);
         }
 
-        private void Render(IEnumerable<ISprite?> sprites)
+        private static void Render(IEnumerable<ISprite?> sprites)
         {
             foreach (var sprite in sprites)
             {
@@ -30,7 +30,7 @@ namespace Nibbles.Engine
             }
         }
 
-        private void Destroy(IEnumerable<ISprite?> sprites)
+        private static void Destroy(IEnumerable<ISprite?> sprites)
         {
             foreach (var sprite in sprites)
             {
@@ -44,7 +44,7 @@ namespace Nibbles.Engine
             }
         }
 
-        private void WriteText(char character, 
+        private static void WriteText(char character, 
             ConsoleColor foregroundColor, 
             ConsoleColor backgroundColor, 
             int xPosition, 
