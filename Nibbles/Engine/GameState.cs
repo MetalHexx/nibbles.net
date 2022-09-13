@@ -10,14 +10,18 @@ namespace Nibbles.Engine
     public class GameState
     {  
         public event Action? GameOver, FoodEaten;
-        private SpriteRenderUpdate _spritesToRender = new();
+
         private FoodSprite? _food;
-        private readonly PositionGenerator _positionGenerator = new();
-        private readonly Board _board = new(new Position(0, 0), new Size(100, 20));
+        private SpriteRenderUpdate _spritesToRender = new();        
+        private readonly PositionGenerator _positionGenerator = new();        
         private readonly SnakeContainer _snake = new();
         private readonly GameTextBox _gameOverText;
+
+        private readonly Board _board = new(
+            new Position(0, 0), new Size(100, 20));
+        
         private readonly Score _score = new(
-                    new Position(SpriteConfig.GAME_TITLE.Length + 1, 0), "");
+            new Position(SpriteConfig.GAME_TITLE.Length + 1, 0), "");
 
         private readonly GameText GameTitle = new(
             new Position(1, 0), 
@@ -27,15 +31,19 @@ namespace Nibbles.Engine
 
         public GameState()
         {
-            _gameOverText = new GameTextBox("", new Position(_board.Size.Width / 2 - 8, _board.Size.Height / 2 - 2), new Size(16, 4));
+            _gameOverText = new GameTextBox("", 
+                new Position(_board.Size.Width / 2 - 8, _board.Size.Height / 2 - 2), 
+                new Size(16, 4));
 
             _spritesToRender.Add(_board.GetSprites());            
             _spritesToRender.Add(_snake.GetSprites());
             _spritesToRender.Add(GameTitle.GetSprites());
             _spritesToRender.Add(_score.GetSprites());
+
             _snake.TouchedSelf += OnTouchedSelf;
             _snake.SnakePartCreated += OnSpriteAdded;
             _snake.SnakePartDestroyed += OnSpriteDestroyed;
+            
             CreateFood();
         }
 
@@ -56,13 +64,13 @@ namespace Nibbles.Engine
         public void CreateFood()
         {
             var positionsToAvoidFoodPlacement = _snake
-                        .GetSprites()
-                        .Select(sp => sp.GetPosition())
-                        .ToArray();
+                .GetSprites()
+                .Select(sp => sp.GetPosition())
+                .ToArray();
 
-            var totalPossible = (_board.Dimensions.MaxX - 1) * (_board.Dimensions.MaxY - 1);
+            var totalNumPositions = (_board.Dimensions.MaxX - 1) * (_board.Dimensions.MaxY - 1);
 
-            if (totalPossible == positionsToAvoidFoodPlacement.Length)
+            if (totalNumPositions == positionsToAvoidFoodPlacement.Length)
             {
                 HandleGameOver(SpriteConfig.GAME_WIN);                
             }
