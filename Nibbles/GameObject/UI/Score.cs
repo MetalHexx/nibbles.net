@@ -1,6 +1,9 @@
-﻿namespace Nibbles.GameObject
+﻿using Nibbles.GameObject.Configuration;
+using Nibbles.GameObject.Dimensions;
+
+namespace Nibbles.GameObject.UI
 {
-    public class Score: GameText
+    public class Score : GameText
     {
         public int Moves { get; set; }
         public int AmountEaten = 0;
@@ -13,8 +16,8 @@
         private const int _scorePerFeeding = 100;
         private const int _penaltyPerMove = 1;
 
-        public Score(Position position, string text) 
-            : base(position, text, SpriteConfig.BOARD_BORDER_FOREGROUND_COLOR, SpriteConfig.BOARD_BORDER_BACKGROUND_COLOR) 
+        public Score(Position position, string text)
+            : base(position, text, SpriteConfig.BOARD_BORDER_FOREGROUND_COLOR, SpriteConfig.BOARD_BORDER_BACKGROUND_COLOR)
         {
             UpdateText();
         }
@@ -31,7 +34,7 @@
             UpdateText();
         }
 
-        private void UpdateText() 
+        private void UpdateText()
         {
             SetText($"| Amount Eaten: {AmountEaten} | Moves: {Moves} | Score: {Total}");
         }

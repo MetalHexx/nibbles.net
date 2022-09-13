@@ -1,4 +1,4 @@
-﻿namespace Nibbles.GameObject
+﻿namespace Nibbles.GameObject.Dimensions
 {
     public enum DirectionType
     {

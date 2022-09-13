@@ -1,4 +1,9 @@
-﻿using Nibbles.GameObject;
+﻿using Nibbles.GameObject.Abstractions;
+using Nibbles.GameObject.Configuration;
+using Nibbles.GameObject.Dimensions;
+using Nibbles.GameObject.Food;
+using Nibbles.GameObject.Snake;
+using Nibbles.GameObject.UI;
 
 namespace Nibbles.Engine
 {
@@ -7,9 +12,9 @@ namespace Nibbles.Engine
         public event Action? GameOver, FoodEaten;                      
         private PositionGenerator _positionGenerator = new PositionGenerator();
         private SpriteRenderUpdate _spritesToRender = new SpriteRenderUpdate();
-        private Board _board = new Board();
-        private Snake _snake = new Snake();
-        private Food? _food;
+        private Board _board = new Board(new Position(0, 0), new Size(100, 20));
+        private SnakeContainer _snake = new SnakeContainer();
+        private FoodSprite? _food;
 
         private GameText GameTitle = new GameText(
             new Position(1, 0), 
@@ -24,12 +29,7 @@ namespace Nibbles.Engine
 
         public GameState()
         {
-            _gameOverText = new GameTextBox("Test",
-                new BorderBoxDimensions(
-                    _board.Dimensions.MaxX / 2 - 15,
-                    _board.Dimensions.MaxX / 2 + 15,
-                    _board.Dimensions.MaxY / 2 - 5,
-                    _board.Dimensions.MaxY - 7));
+            _gameOverText = new GameTextBox("", new Position(_board.Size.Width / 2 - 8, _board.Size.Height / 2 - 2), new Size(16, 4));
 
             _spritesToRender.Add(_board.GetSprites());            
             _spritesToRender.Add(_snake.GetSprites());
@@ -71,7 +71,7 @@ namespace Nibbles.Engine
 
             var foodPosition = _positionGenerator.GetUniqueRandomPosition(_board.Dimensions.MaxX - 1, _board.Dimensions.MaxY - 1, positionsToAvoidFoodPlacement);
 
-            _food = new Food(foodPosition);
+            _food = new FoodSprite(foodPosition);
             _spritesToRender.Add(_food);
         }
 

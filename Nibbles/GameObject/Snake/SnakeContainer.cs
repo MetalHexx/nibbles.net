@@ -1,55 +1,53 @@
-﻿namespace Nibbles.GameObject
+﻿using Nibbles.GameObject.Abstractions;
+using Nibbles.GameObject.Dimensions;
+
+namespace Nibbles.GameObject.Snake
 {
-    public class Snake: ISpriteContainer
+    public class SnakeContainer : SpriteContainer
     {
         public event Action? TouchedSelf;
         public event Action<ISprite>? SnakePartCreated, SnakePartDestroyed;
 
-        private List<SnakePart> _snakeParts = new List<SnakePart>() { new SnakePart(5, 5) };
-        private PositionTransform _currentDirection = new PositionTransform(1, 0, DirectionType.Right);
+        private PositionTransform _currentDirection = new(1, 0, DirectionType.Right);
         private int _remainingGrowth = 0;
         private const int GROWTH_AMOUNT = 5;
 
-        /// <summary>
-        /// Feeding the snake will change the state to track growth
-        /// </summary>
-        public void Feed() => _remainingGrowth += GROWTH_AMOUNT;
-
-        public Position GetPosition()
+        public SnakeContainer() : base(new Position(5, 5), ConsoleColor.Cyan, ConsoleColor.Cyan)
         {
-            return _snakeParts.First().GetPosition();
+            Build();
         }
 
-        /// <summary>
-        /// Calculate and do the next snake move
-        /// </summary>
-        /// <param name="transform">Next potential snake move based on users input (or lack of input)</param>
-        public void Move(PositionTransform transform)
+        protected void Build()
+        {
+            _sprites.Add(new SnakePart(new Position(5, 5)));
+        }
+
+        public void Feed() => _remainingGrowth += GROWTH_AMOUNT;
+
+        public override void Move(PositionTransform transform)
         {
             var finalDirection = DetermineFinalDirection(transform);
             _currentDirection = finalDirection;
-            DoMove(_currentDirection);            
+            DoMove(_currentDirection);
 
             if (IsTouchingSelf) TouchedSelf?.Invoke();
         }
 
         private void DoMove(PositionTransform transform)
         {
-            var oldHead = _snakeParts.First();
-            var newHead = Copy(oldHead, transform.X, transform.Y);
-
-            _snakeParts.Insert(0, newHead);            
+            var oldHead = _sprites.First();
+            var newHead = new SnakePart(oldHead.GetPosition());
+            newHead.Move(transform);
+            _sprites.Insert(0, newHead);
             Grow();
             SnakePartCreated?.Invoke(newHead);
         }
-        /// <summary>
-        /// Prevents snake from moving in the opposite direction unless it's length is 1
-        /// </summary>
+
         private PositionTransform DetermineFinalDirection(PositionTransform nextTransform)
         {
             if (nextTransform.Direction == DirectionType.NoChange) return _currentDirection;
 
-            var isOnlyHead = _snakeParts.Count() == 1;
+            var isOnlyHead = _sprites.Count == 1;
 
             if (isOnlyHead)
             {
@@ -78,24 +76,13 @@
                 _remainingGrowth--;
                 return;
             }
-            var partToRemove = _snakeParts.Last();
-            _snakeParts.Remove(partToRemove);
+            var partToRemove = _sprites.Last();
+            _sprites.Remove(partToRemove);
             SnakePartDestroyed?.Invoke(partToRemove);
-        }
-        public IEnumerable<ISprite> GetSprites()
-        {
-            return _snakeParts.Select(sp => Copy(sp));
         }
 
         private bool IsTouchingSelf => GetSprites()
             .Skip(1)
             .Any(snakePart => GetPosition() == snakePart.GetPosition());
-
-        private SnakePart Copy(SnakePart snakePart, int xDelta = 0, int yDelta = 0)
-        {
-            var newX = snakePart.GetPosition().XPosition + xDelta;
-            var newY = snakePart.GetPosition().YPosition + yDelta;
-            return new SnakePart(newX, newY);
-        }
     }
 }

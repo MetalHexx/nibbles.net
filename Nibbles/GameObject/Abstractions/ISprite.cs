@@ -1,4 +1,6 @@
-﻿namespace Nibbles.GameObject
+﻿using Nibbles.GameObject.Dimensions;
+
+namespace Nibbles.GameObject.Abstractions
 {
     public interface ISprite
     {
@@ -6,5 +8,6 @@
         public ConsoleColor BackgroundColor { get; }
         public char DisplayCharacter { get; }
         public Position GetPosition();
+        public void Move(PositionTransform transform);
     }
 }

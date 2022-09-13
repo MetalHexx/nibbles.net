@@ -1,4 +1,4 @@
-﻿using Nibbles.GameObject;
+﻿using Nibbles.GameObject.Dimensions;
 
 namespace Nibbles
 {

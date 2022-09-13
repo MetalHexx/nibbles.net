@@ -1,4 +1,5 @@
-﻿using Nibbles.GameObject;
+﻿using Nibbles.GameObject.Abstractions;
+using Nibbles.GameObject.Configuration;
 
 namespace Nibbles.Engine
 {
