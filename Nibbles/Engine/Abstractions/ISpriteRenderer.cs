@@ -1,6 +1,4 @@
-﻿using Nibbles.GameObject;
-
-namespace Nibbles.Engine
+﻿namespace Nibbles.Engine.Abstractions
 {
     internal interface ISpriteRenderer
     {

@@ -1,4 +1,6 @@
-﻿namespace Nibbles.Engine
+﻿using Nibbles.Engine.Abstractions;
+
+namespace Nibbles.Engine
 {
     internal class GameEngine
     {
