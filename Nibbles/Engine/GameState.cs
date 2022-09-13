@@ -25,8 +25,6 @@ namespace Nibbles.Engine
             SpriteConfig.BOARD_BORDER_FOREGROUND_COLOR, 
             SpriteConfig.BOARD_BORDER_BACKGROUND_COLOR);
 
-        
-
         public GameState()
         {
             _gameOverText = new GameTextBox("", new Position(_board.Size.Width / 2 - 8, _board.Size.Height / 2 - 2), new Size(16, 4));
