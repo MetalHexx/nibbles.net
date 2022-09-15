@@ -8,7 +8,6 @@ namespace Nibbles.GameObject.Snake
         public event Action? TouchedSelf;
         public event Action<ISprite>? SnakePartCreated, SnakePartDestroyed;
 
-        private PositionTransform _currentDirection = new(1, 0, DirectionType.Right);
         private int _remainingGrowth = 0;
         private const int GROWTH_AMOUNT = 5;
 
@@ -26,9 +25,7 @@ namespace Nibbles.GameObject.Snake
 
         public override void Move(PositionTransform transform)
         {
-            var finalDirection = DetermineFinalDirection(transform);
-            _currentDirection = finalDirection;
-            DoMove(_currentDirection);
+            DoMove(transform);
 
             if (IsTouchingSelf) TouchedSelf?.Invoke();
         }
@@ -41,32 +38,6 @@ namespace Nibbles.GameObject.Snake
             _sprites.Insert(0, newHead);
             Grow();
             SnakePartCreated?.Invoke(newHead);
-        }
-
-        private PositionTransform DetermineFinalDirection(PositionTransform nextTransform)
-        {
-            if (nextTransform.Direction == DirectionType.NoChange) return _currentDirection;
-
-            var isOnlyHead = _sprites.Count == 1;
-
-            if (isOnlyHead)
-            {
-                return nextTransform;
-            }
-
-            var nextDirection = nextTransform.Direction;
-            var currentDirection = _currentDirection.Direction;
-
-            var isTryingToMoveBackward =
-                currentDirection == DirectionType.Up && nextDirection == DirectionType.Down
-                || currentDirection == DirectionType.Down && nextDirection == DirectionType.Up
-                || currentDirection == DirectionType.Left && nextDirection == DirectionType.Right
-                || currentDirection == DirectionType.Right && nextDirection == DirectionType.Left;
-
-
-            return isTryingToMoveBackward
-                ? _currentDirection
-                : nextTransform;
         }
 
         private void Grow()

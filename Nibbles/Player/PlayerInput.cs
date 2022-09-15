@@ -1,71 +1,58 @@
 ﻿using Nibbles.GameObject.Dimensions;
 
-namespace Nibbles
+namespace Nibbles.Player
 {
     public class PlayerInput
     {
-        public PlayerInputType Type { get; private set; }
-        private ConsoleKey? _inputValue;
-        public PositionTransform Transform { get; private set; }
-        
+        public PlayerState MoveState { get; private set; } = PlayerState.MovingRight;
+        public PlayerState PreviousMoveState { get; private set; } = PlayerState.Idle;
 
-        public PlayerInput()
+        public void UpdateState()
         {
-            ReadKeyboardInput();            
-            Transform = GetPositionTransform();
-            SetType();
-        }
+            PreviousMoveState = MoveState;
 
-        public static PlayerInput Get() => new();
-
-        private void ReadKeyboardInput()
-        {
-            if (!Console.KeyAvailable)
+            MoveState = (MoveState, GetPlayerInput()) switch
             {
-                Type = PlayerInputType.None;
-                return;
-            }
-            _inputValue = Console.ReadKey(true).Key;
+                (PlayerState.MovingLeft, PlayerInputType.PressedUp) => PlayerState.MovingUp,
+                (PlayerState.MovingLeft, PlayerInputType.PressedDown) => PlayerState.MovingDown,
+                (PlayerState.MovingRight, PlayerInputType.PressedUp) => PlayerState.MovingUp,
+                (PlayerState.MovingRight, PlayerInputType.PressedDown) => PlayerState.MovingDown,
+                (PlayerState.MovingUp, PlayerInputType.PressedLeft) => PlayerState.MovingLeft,
+                (PlayerState.MovingUp, PlayerInputType.PressedRight) => PlayerState.MovingRight,
+                (PlayerState.MovingDown, PlayerInputType.PressedLeft) => PlayerState.MovingLeft,
+                (PlayerState.MovingDown, PlayerInputType.PressedRight) => PlayerState.MovingRight,
+                _ => MoveState
+            };
         }
 
-        private void SetType()
+        public PositionTransform GetMove()
         {
-            Type = Transform.Direction == DirectionType.NoChange
-                            ? PlayerInputType.None
-                            : PlayerInputType.Move;
-        }
-
-        private PositionTransform GetPositionTransform()
-        {
-            switch (_inputValue)
+            return MoveState switch
             {
-                case ConsoleKey.W:
-                    return new PositionTransform(0, -1, DirectionType.Up);
+                PlayerState.MovingUp => new PositionTransform(0, -1, DirectionType.Up),
+                PlayerState.MovingDown => new PositionTransform(0, 1, DirectionType.Down),
+                PlayerState.MovingLeft => new PositionTransform(-1, 0, DirectionType.Left),
+                PlayerState.MovingRight => new PositionTransform(1, 0, DirectionType.Right),
+                _ => throw new Exception("Unknown player state")
+            };
+        }
 
-                case ConsoleKey.UpArrow:
-                    return new PositionTransform(0, -1, DirectionType.Up);
-
-                case ConsoleKey.S:
-                    return new PositionTransform(0, 1, DirectionType.Down);
-
-                case ConsoleKey.DownArrow:
-                    return new PositionTransform(0, 1, DirectionType.Down);
-
-                case ConsoleKey.A:
-                    return new PositionTransform(-1, 0, DirectionType.Left);
-
-                case ConsoleKey.LeftArrow:
-                    return new PositionTransform(-1, 0, DirectionType.Left);
-
-                case ConsoleKey.D:
-                    return new PositionTransform(1, 0, DirectionType.Right);
-
-                case ConsoleKey.RightArrow:
-                    return new PositionTransform(1, 0, DirectionType.Right);
-
-                default:
-                    return new PositionTransform(0, 0, DirectionType.NoChange);
-            }
+        private PlayerInputType GetPlayerInput()
+        {
+            return !Console.KeyAvailable 
+                ? PlayerInputType.NoInput
+                : Console.ReadKey(true).Key switch
+                {
+                    ConsoleKey.W => PlayerInputType.PressedUp,
+                    ConsoleKey.UpArrow => PlayerInputType.PressedUp,
+                    ConsoleKey.S => PlayerInputType.PressedDown,
+                    ConsoleKey.DownArrow => PlayerInputType.PressedDown,
+                    ConsoleKey.A => PlayerInputType.PressedLeft,
+                    ConsoleKey.LeftArrow => PlayerInputType.PressedLeft,
+                    ConsoleKey.D => PlayerInputType.PressedRight,
+                    ConsoleKey.RightArrow => PlayerInputType.PressedRight,
+                    _ => PlayerInputType.NoInput
+                };
         }
     }
 }

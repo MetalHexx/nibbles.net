@@ -1,4 +1,5 @@
 ﻿using Nibbles.Engine.Abstractions;
+using Nibbles.Player;
 
 namespace Nibbles.Engine
 {
@@ -7,6 +8,7 @@ namespace Nibbles.Engine
         private readonly ISpriteRenderer _renderer = new SpriteRenderer();
         private readonly GameState _gameState;
         private bool _continueGame = true;
+        private readonly PlayerInput _player = new();
 
         public GameEngine()
         {
@@ -19,10 +21,10 @@ namespace Nibbles.Engine
             do
             {
                 Thread.Sleep(100);
-                var playerInput = PlayerInput.Get();
-                HandlePlayerMoveScore(playerInput);                
+                _player.UpdateState();
+                HandlePlayerMoveScore();                
                 _gameState.DetectFoodCollision();
-                _gameState.MoveSnake(playerInput.Transform);
+                _gameState.MoveSnake(_player.GetMove());
                 _gameState.CheckGameBoardCollision();
                 Render();
             }
@@ -35,9 +37,9 @@ namespace Nibbles.Engine
             _renderer.RenderSprites(spritesToRender);
         }
 
-        private void HandlePlayerMoveScore(PlayerInput playerInput)
+        private void HandlePlayerMoveScore()
         {
-            if (playerInput.Type == PlayerInputType.Move)
+            if (_player.MoveState != _player.PreviousMoveState)
             {
                 _gameState.IncrementMoveScore();
             }

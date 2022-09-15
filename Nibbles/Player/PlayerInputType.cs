@@ -1,9 +1,11 @@
-﻿namespace Nibbles
+﻿namespace Nibbles.Player
 {
     public enum PlayerInputType
     {
-        None,
-        Move,
-        Shoot
+        PressedUp,
+        PressedDown,
+        PressedLeft,
+        PressedRight,
+        NoInput
     }
 }
