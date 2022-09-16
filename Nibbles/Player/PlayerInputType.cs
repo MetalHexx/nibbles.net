@@ -2,10 +2,11 @@
 {
     public enum PlayerInputType
     {
-        PressedUp,
-        PressedDown,
-        PressedLeft,
-        PressedRight,
-        NoInput
+        Up,
+        Down,
+        Left,
+        Right,
+        NoInput,
+        Spacebar
     }
 }

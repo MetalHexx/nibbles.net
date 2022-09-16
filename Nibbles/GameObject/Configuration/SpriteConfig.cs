@@ -4,6 +4,11 @@
     {
         public const ConsoleColor SNAKE_BACKGROUND_COLOR = ConsoleColor.Cyan;
         public const ConsoleColor SNAKE_FOREGROUND_COLOR = ConsoleColor.Red;
+        public const ConsoleColor SNAKE_BACKGROUND_ALT_COLOR = ConsoleColor.Green;
+
+        public const ConsoleColor VENOM_BACKGROUND_COLOR = ConsoleColor.Green;
+        public const ConsoleColor VENOM_FOREGROUND_COLOR = ConsoleColor.Green;
+
         public const ConsoleColor FOOD_BACKGROUND_COLOR = ConsoleColor.Red;
         public const ConsoleColor FOOD_FOREGROUND_COLOR = ConsoleColor.White;
         public const ConsoleColor BOARD_BORDER_BACKGROUND_COLOR = ConsoleColor.White;

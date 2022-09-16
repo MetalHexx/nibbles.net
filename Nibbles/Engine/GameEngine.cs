@@ -14,6 +14,8 @@ namespace Nibbles.Engine
         {
             _gameState = new GameState();
             _gameState.GameOver += () => _continueGame = false;
+            _player.Moved += () => _gameState.IncrementMoveScore();
+            _player.Shot += () => _gameState.SnakeShoot();
             Render();
         }
         public void Start()
@@ -21,8 +23,7 @@ namespace Nibbles.Engine
             do
             {
                 Thread.Sleep(100);
-                _player.UpdateState();
-                HandlePlayerMoveScore();                
+                _player.UpdateState();               
                 _gameState.DetectFoodCollision();
                 _gameState.MoveSnake(_player.GetMove());
                 _gameState.CheckGameBoardCollision();
@@ -35,14 +36,6 @@ namespace Nibbles.Engine
         {
             var spritesToRender = _gameState.GetSpritesToRender();            
             _renderer.RenderSprites(spritesToRender);
-        }
-
-        private void HandlePlayerMoveScore()
-        {
-            if (_player.MoveState != _player.PreviousMoveState)
-            {
-                _gameState.IncrementMoveScore();
-            }
         }
     }
 }

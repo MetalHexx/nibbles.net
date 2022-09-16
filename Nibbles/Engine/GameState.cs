@@ -2,6 +2,7 @@
 using Nibbles.GameObject.Configuration;
 using Nibbles.GameObject.Dimensions;
 using Nibbles.GameObject.Food;
+using Nibbles.GameObject.Projectiles;
 using Nibbles.GameObject.Snake;
 using Nibbles.GameObject.UI;
 
@@ -15,6 +16,7 @@ namespace Nibbles.Engine
         private SpriteRenderUpdate _spritesToRender = new();        
         private readonly PositionGenerator _positionGenerator = new();        
         private readonly SnakeContainer _snake = new();
+        private Venom _venom;
         private readonly GameTextBox _gameOverText;
 
         private readonly Board _board = new(
@@ -40,7 +42,7 @@ namespace Nibbles.Engine
             _spritesToRender.Add(GameTitle.GetSprites());
             _spritesToRender.Add(_score.GetSprites());
 
-            _snake.TouchedSelf += OnTouchedSelf;
+            _snake.TouchedSelf += OnSnakeTouchedSelf;
             _snake.SnakePartCreated += OnSpriteAdded;
             _snake.SnakePartDestroyed += OnSpriteDestroyed;
             
@@ -86,6 +88,17 @@ namespace Nibbles.Engine
             _snake.Move(transform);
         }
 
+        internal void SnakeShoot()
+        {
+            _venom = _snake.Shoot(); ;
+            _spritesToRender.Add(_venom); 
+        }
+
+        private void OnSnakeShotVenom(Venom venom)
+        {
+            
+        }
+
         public void CheckGameBoardCollision()
         {
             var collisionCondition = 
@@ -126,7 +139,7 @@ namespace Nibbles.Engine
                 FoodEaten?.Invoke();
             }
         }
-        private void OnTouchedSelf()
+        private void OnSnakeTouchedSelf()
         {
             HandleGameOver(SpriteConfig.GAME_LOSE);
         }

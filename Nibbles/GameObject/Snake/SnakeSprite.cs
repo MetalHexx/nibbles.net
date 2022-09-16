@@ -8,5 +8,11 @@ namespace Nibbles.GameObject.Snake
     {
         public SnakePart(Position position)
             : base(position, SpriteConfig.SNAKE_FOREGROUND_COLOR, SpriteConfig.SNAKE_BACKGROUND_COLOR, ' ') { }
+
+        public SnakePart(Position position, ConsoleColor backgroundColor)
+            : base(position, SpriteConfig.SNAKE_FOREGROUND_COLOR, backgroundColor, ' ') { }
+
+        public SnakePart(Position position, ConsoleColor backgroundColor, char character)
+            : base(position, SpriteConfig.SNAKE_FOREGROUND_COLOR, backgroundColor, character) { }
     }
 }

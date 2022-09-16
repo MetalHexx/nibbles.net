@@ -4,7 +4,7 @@ namespace Nibbles.GameObject.Abstractions
 {
     public abstract class SpriteContainer : ISpriteContainer
     {
-        public Position Position { get; }
+        public Position Position { get; protected set; }
         public ConsoleColor ForegroundColor { get; }
         public ConsoleColor BackgroundColor { get; }
         protected readonly List<ISprite> _sprites = new();
@@ -21,6 +21,7 @@ namespace Nibbles.GameObject.Abstractions
             {
                 sprite.Move(transform);
             }
+            Position = _sprites.First().GetPosition();
         }
 
         public Position GetPosition()

@@ -4,35 +4,47 @@ namespace Nibbles.Player
 {
     public class PlayerInput
     {
-        public PlayerState MoveState { get; private set; } = PlayerState.MovingRight;
-        public PlayerState PreviousMoveState { get; private set; } = PlayerState.Idle;
+        public event Action? Moved;
+        public event Action? Shot;
+        public PlayerMovingState MoveState { get; private set; } = PlayerMovingState.MovingRight;
+        public PlayerActionState ActionState { get; private set; } = PlayerActionState.Idle;
 
         public void UpdateState()
         {
-            PreviousMoveState = MoveState;
+            var previousMoveState = MoveState;
+            var playerInput = GetPlayerInput();
 
-            MoveState = (MoveState, GetPlayerInput()) switch
+            MoveState = (MoveState, playerInput) switch
             {
-                (PlayerState.MovingLeft, PlayerInputType.PressedUp) => PlayerState.MovingUp,
-                (PlayerState.MovingLeft, PlayerInputType.PressedDown) => PlayerState.MovingDown,
-                (PlayerState.MovingRight, PlayerInputType.PressedUp) => PlayerState.MovingUp,
-                (PlayerState.MovingRight, PlayerInputType.PressedDown) => PlayerState.MovingDown,
-                (PlayerState.MovingUp, PlayerInputType.PressedLeft) => PlayerState.MovingLeft,
-                (PlayerState.MovingUp, PlayerInputType.PressedRight) => PlayerState.MovingRight,
-                (PlayerState.MovingDown, PlayerInputType.PressedLeft) => PlayerState.MovingLeft,
-                (PlayerState.MovingDown, PlayerInputType.PressedRight) => PlayerState.MovingRight,
+                (PlayerMovingState.MovingLeft, PlayerInputType.Up) => PlayerMovingState.MovingUp,
+                (PlayerMovingState.MovingLeft, PlayerInputType.Down) => PlayerMovingState.MovingDown,
+                (PlayerMovingState.MovingRight, PlayerInputType.Up) => PlayerMovingState.MovingUp,
+                (PlayerMovingState.MovingRight, PlayerInputType.Down) => PlayerMovingState.MovingDown,
+                (PlayerMovingState.MovingUp, PlayerInputType.Left) => PlayerMovingState.MovingLeft,
+                (PlayerMovingState.MovingUp, PlayerInputType.Right) => PlayerMovingState.MovingRight,
+                (PlayerMovingState.MovingDown, PlayerInputType.Left) => PlayerMovingState.MovingLeft,
+                (PlayerMovingState.MovingDown, PlayerInputType.Right) => PlayerMovingState.MovingRight,
                 _ => MoveState
             };
+
+            ActionState = (ActionState, playerInput) switch
+            {
+                (PlayerActionState.Idle, PlayerInputType.Spacebar) => PlayerActionState.Shooting,
+                _ => PlayerActionState.Idle
+            };
+
+            if (previousMoveState != MoveState) Moved?.Invoke();
+            if (ActionState == PlayerActionState.Shooting) Shot?.Invoke();
         }
 
         public PositionTransform GetMove()
         {
             return MoveState switch
             {
-                PlayerState.MovingUp => new PositionTransform(0, -1, DirectionType.Up),
-                PlayerState.MovingDown => new PositionTransform(0, 1, DirectionType.Down),
-                PlayerState.MovingLeft => new PositionTransform(-1, 0, DirectionType.Left),
-                PlayerState.MovingRight => new PositionTransform(1, 0, DirectionType.Right),
+                PlayerMovingState.MovingUp => new PositionTransform(0, -1, DirectionType.Up),
+                PlayerMovingState.MovingDown => new PositionTransform(0, 1, DirectionType.Down),
+                PlayerMovingState.MovingLeft => new PositionTransform(-1, 0, DirectionType.Left),
+                PlayerMovingState.MovingRight => new PositionTransform(1, 0, DirectionType.Right),
                 _ => throw new Exception("Unknown player state")
             };
         }
@@ -43,14 +55,15 @@ namespace Nibbles.Player
                 ? PlayerInputType.NoInput
                 : Console.ReadKey(true).Key switch
                 {
-                    ConsoleKey.W => PlayerInputType.PressedUp,
-                    ConsoleKey.UpArrow => PlayerInputType.PressedUp,
-                    ConsoleKey.S => PlayerInputType.PressedDown,
-                    ConsoleKey.DownArrow => PlayerInputType.PressedDown,
-                    ConsoleKey.A => PlayerInputType.PressedLeft,
-                    ConsoleKey.LeftArrow => PlayerInputType.PressedLeft,
-                    ConsoleKey.D => PlayerInputType.PressedRight,
-                    ConsoleKey.RightArrow => PlayerInputType.PressedRight,
+                    ConsoleKey.W => PlayerInputType.Up,
+                    ConsoleKey.UpArrow => PlayerInputType.Up,
+                    ConsoleKey.S => PlayerInputType.Down,
+                    ConsoleKey.DownArrow => PlayerInputType.Down,
+                    ConsoleKey.A => PlayerInputType.Left,
+                    ConsoleKey.LeftArrow => PlayerInputType.Left,
+                    ConsoleKey.D => PlayerInputType.Right,
+                    ConsoleKey.RightArrow => PlayerInputType.Right,
+                    ConsoleKey.Spacebar => PlayerInputType.Spacebar,                    
                     _ => PlayerInputType.NoInput
                 };
         }
