@@ -1,157 +1,38 @@
-﻿using Nibbles.GameObject.Abstractions;
-using Nibbles.GameObject.Configuration;
+﻿using Nibbles.GameObject.Configuration;
 using Nibbles.GameObject.Dimensions;
 using Nibbles.GameObject.Food;
 using Nibbles.GameObject.Projectiles;
 using Nibbles.GameObject.Snake;
 using Nibbles.GameObject.UI;
+using System.Dynamic;
 
 namespace Nibbles.Engine
 {
     public class GameState
-    {  
-        public event Action? GameOver, FoodEaten;
+    {
+        public FoodSprite? Food { get; set; }
+        public SnakeContainer Snake { get; init; } = new();
+        public Venom Venom { get; set; }
+        public GameTextBox GameOverText { get; init; }
 
-        private FoodSprite? _food;
-        private SpriteRenderUpdate _spritesToRender = new();        
-        private readonly PositionGenerator _positionGenerator = new();        
-        private readonly SnakeContainer _snake = new();
-        private Venom _venom;
-        private readonly GameTextBox _gameOverText;
-
-        private readonly Board _board = new(
+        public Board Board { get; init; } = new(
             new Position(0, 0), new Size(100, 20));
-        
-        private readonly Score _score = new(
+
+        public Score Score { get; init; } = new(
             new Position(SpriteConfig.GAME_TITLE.Length + 1, 0), "");
 
-        private readonly GameText GameTitle = new(
-            new Position(1, 0), 
-            SpriteConfig.GAME_TITLE, 
-            SpriteConfig.BOARD_BORDER_FOREGROUND_COLOR, 
+        public GameText GameTitle { get; init; } = new(
+            new Position(1, 0),
+            SpriteConfig.GAME_TITLE,
+            SpriteConfig.BOARD_BORDER_FOREGROUND_COLOR,
             SpriteConfig.BOARD_BORDER_BACKGROUND_COLOR);
 
         public GameState()
         {
-            _gameOverText = new GameTextBox("", 
-                new Position(_board.Size.Width / 2 - 8, _board.Size.Height / 2 - 2), 
+            GameOverText = new GameTextBox("",
+                new Position(Board.Size.Width / 2 - 8, Board.Size.Height / 2 - 2),
                 new Size(16, 4));
-
-            _spritesToRender.Add(_board.GetSprites());            
-            _spritesToRender.Add(_snake.GetSprites());
-            _spritesToRender.Add(GameTitle.GetSprites());
-            _spritesToRender.Add(_score.GetSprites());
-
-            _snake.TouchedSelf += OnSnakeTouchedSelf;
-            _snake.SnakePartCreated += OnSpriteAdded;
-            _snake.SnakePartDestroyed += OnSpriteDestroyed;
-            
-            CreateFood();
         }
 
-        public SpriteRenderUpdate GetSpritesToRender()
-        {
-            var spritesToRender = _spritesToRender;
-            _spritesToRender = new SpriteRenderUpdate();
-            return spritesToRender;
-        }
-
-        public void FeedSnake()
-        {
-            _snake.Feed();
-            _score.IncrementAmountEaten();
-            _spritesToRender.Add(_score.GetSprites());
-        }
-
-        public void CreateFood()
-        {
-            var positionsToAvoidFoodPlacement = _snake
-                .GetSprites()
-                .Select(sp => sp.GetPosition())
-                .ToArray();
-
-            var totalNumPositions = (_board.Dimensions.MaxX - 1) * (_board.Dimensions.MaxY - 1);
-
-            if (totalNumPositions == positionsToAvoidFoodPlacement.Length)
-            {
-                HandleGameOver(SpriteConfig.GAME_WIN);                
-            }
-
-            var foodPosition = _positionGenerator.GetUniqueRandomPosition(_board.Dimensions.MaxX - 1, _board.Dimensions.MaxY - 1, positionsToAvoidFoodPlacement);
-
-            _food = new FoodSprite(foodPosition);
-            _spritesToRender.Add(_food);
-        }
-
-        internal void MoveSnake(PositionTransform transform)
-        {
-            _snake.Move(transform);
-        }
-
-        internal void SnakeShoot()
-        {
-            _venom = _snake.Shoot(); ;
-            _spritesToRender.Add(_venom); 
-        }
-
-        private void OnSnakeShotVenom(Venom venom)
-        {
-            
-        }
-
-        public void CheckGameBoardCollision()
-        {
-            var collisionCondition = 
-                _snake.GetPosition().XPosition == _board.Dimensions.MinX
-                ||
-                _snake.GetPosition().XPosition == _board.Dimensions.MaxX
-                ||
-                _snake.GetPosition().YPosition == _board.Dimensions.MinY
-                ||
-                _snake.GetPosition().YPosition == _board.Dimensions.MaxY;
-
-            if (collisionCondition)
-            {
-                HandleGameOver(SpriteConfig.GAME_LOSE);
-            }
-
-        }
-
-        private void HandleGameOver(string text)
-        {
-            _gameOverText.SetText(text);
-            _spritesToRender.Add(_gameOverText.GetSprites());
-            GameOver?.Invoke();
-        }
-
-        internal void IncrementMoveScore()
-        {
-            _score.IncrementMoves();
-            _spritesToRender.Add(_score.GetSprites());
-        }
-
-        internal void DetectFoodCollision()
-        {
-            if(_snake.GetPosition() == _food?.GetPosition())
-            {                
-                FeedSnake();
-                CreateFood();
-                FoodEaten?.Invoke();
-            }
-        }
-        private void OnSnakeTouchedSelf()
-        {
-            HandleGameOver(SpriteConfig.GAME_LOSE);
-        }
-
-        private void OnSpriteAdded(ISprite sprite)
-        {
-            _spritesToRender.Add(sprite);
-        }
-
-        private void OnSpriteDestroyed(ISprite sprite)
-        {
-            _spritesToRender.Remove(sprite);
-        }
-    }            
+    }
 }

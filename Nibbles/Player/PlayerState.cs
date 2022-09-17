@@ -1,6 +1,6 @@
 ﻿namespace Nibbles.Player
 {
-    public enum PlayerMovingState
+    public enum MovingState
     {
         MovingLeft,
         MovingRight,
@@ -9,7 +9,7 @@
         Idle
     }
 
-    public enum PlayerActionState
+    public enum ActionState
     {
         Idle,
         Shooting

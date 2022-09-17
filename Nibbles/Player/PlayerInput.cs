@@ -1,71 +1,59 @@
-﻿using Nibbles.GameObject.Dimensions;
+﻿using Nibbles.Engine.Abstractions;
+using Nibbles.GameObject.Dimensions;
 
 namespace Nibbles.Player
 {
-    public class PlayerInput
+    public class PlayerInput : IPlayerInput
     {
-        public event Action? Moved;
-        public event Action? Shot;
-        public PlayerMovingState MoveState { get; private set; } = PlayerMovingState.MovingRight;
-        public PlayerActionState ActionState { get; private set; } = PlayerActionState.Idle;
+        private readonly IInputReader _inputReader;
+
+        public event Action? Moved, Shot;
+        public MovingState MoveState { get; private set; } = MovingState.MovingRight;
+        public ActionState ActionState { get; private set; } = ActionState.Idle;
+
+        public PlayerInput(IInputReader inputReader)
+        {
+            _inputReader = inputReader;
+        }
 
         public void UpdateState()
         {
             var previousMoveState = MoveState;
-            var playerInput = GetPlayerInput();
+            var playerInput = _inputReader.Get();
 
             MoveState = (MoveState, playerInput) switch
             {
-                (PlayerMovingState.MovingLeft, PlayerInputType.Up) => PlayerMovingState.MovingUp,
-                (PlayerMovingState.MovingLeft, PlayerInputType.Down) => PlayerMovingState.MovingDown,
-                (PlayerMovingState.MovingRight, PlayerInputType.Up) => PlayerMovingState.MovingUp,
-                (PlayerMovingState.MovingRight, PlayerInputType.Down) => PlayerMovingState.MovingDown,
-                (PlayerMovingState.MovingUp, PlayerInputType.Left) => PlayerMovingState.MovingLeft,
-                (PlayerMovingState.MovingUp, PlayerInputType.Right) => PlayerMovingState.MovingRight,
-                (PlayerMovingState.MovingDown, PlayerInputType.Left) => PlayerMovingState.MovingLeft,
-                (PlayerMovingState.MovingDown, PlayerInputType.Right) => PlayerMovingState.MovingRight,
+                (MovingState.MovingLeft, InputType.Up) => MovingState.MovingUp,
+                (MovingState.MovingLeft, InputType.Down) => MovingState.MovingDown,
+                (MovingState.MovingRight, InputType.Up) => MovingState.MovingUp,
+                (MovingState.MovingRight, InputType.Down) => MovingState.MovingDown,
+                (MovingState.MovingUp, InputType.Left) => MovingState.MovingLeft,
+                (MovingState.MovingUp, InputType.Right) => MovingState.MovingRight,
+                (MovingState.MovingDown, InputType.Left) => MovingState.MovingLeft,
+                (MovingState.MovingDown, InputType.Right) => MovingState.MovingRight,
                 _ => MoveState
             };
 
             ActionState = (ActionState, playerInput) switch
             {
-                (PlayerActionState.Idle, PlayerInputType.Spacebar) => PlayerActionState.Shooting,
-                _ => PlayerActionState.Idle
+                (ActionState.Idle, InputType.Spacebar) => ActionState.Shooting,
+                _ => ActionState.Idle
             };
 
             if (previousMoveState != MoveState) Moved?.Invoke();
-            if (ActionState == PlayerActionState.Shooting) Shot?.Invoke();
+            if (ActionState == ActionState.Shooting) Shot?.Invoke();
         }
 
         public PositionTransform GetMove()
         {
             return MoveState switch
             {
-                PlayerMovingState.MovingUp => new PositionTransform(0, -1, DirectionType.Up),
-                PlayerMovingState.MovingDown => new PositionTransform(0, 1, DirectionType.Down),
-                PlayerMovingState.MovingLeft => new PositionTransform(-1, 0, DirectionType.Left),
-                PlayerMovingState.MovingRight => new PositionTransform(1, 0, DirectionType.Right),
+                MovingState.MovingUp => new PositionTransform(0, -1, DirectionType.Up),
+                MovingState.MovingDown => new PositionTransform(0, 1, DirectionType.Down),
+                MovingState.MovingLeft => new PositionTransform(-1, 0, DirectionType.Left),
+                MovingState.MovingRight => new PositionTransform(1, 0, DirectionType.Right),
                 _ => throw new Exception("Unknown player state")
             };
-        }
-
-        private PlayerInputType GetPlayerInput()
-        {
-            return !Console.KeyAvailable 
-                ? PlayerInputType.NoInput
-                : Console.ReadKey(true).Key switch
-                {
-                    ConsoleKey.W => PlayerInputType.Up,
-                    ConsoleKey.UpArrow => PlayerInputType.Up,
-                    ConsoleKey.S => PlayerInputType.Down,
-                    ConsoleKey.DownArrow => PlayerInputType.Down,
-                    ConsoleKey.A => PlayerInputType.Left,
-                    ConsoleKey.LeftArrow => PlayerInputType.Left,
-                    ConsoleKey.D => PlayerInputType.Right,
-                    ConsoleKey.RightArrow => PlayerInputType.Right,
-                    ConsoleKey.Spacebar => PlayerInputType.Spacebar,                    
-                    _ => PlayerInputType.NoInput
-                };
         }
     }
 }

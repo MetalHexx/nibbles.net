@@ -1,22 +1,25 @@
 ﻿using Nibbles.Engine.Abstractions;
 using Nibbles.Player;
+using System.Drawing;
 
 namespace Nibbles.Engine
 {
-    internal class GameEngine
+    internal class Engine
     {
-        private readonly ISpriteRenderer _renderer = new SpriteRenderer();
-        private readonly GameState _gameState;
+        private readonly ISpriteRenderer _renderer;
+        private readonly IGameStateHandler _actions;
+        private readonly IPlayerInput _player;
         private bool _continueGame = true;
-        private readonly PlayerInput _player = new();
 
-        public GameEngine()
+        public Engine(IPlayerInput player, ISpriteRenderer renderer, IGameStateHandler actions)
         {
-            _gameState = new GameState();
-            _gameState.GameOver += () => _continueGame = false;
-            _player.Moved += () => _gameState.IncrementMoveScore();
-            _player.Shot += () => _gameState.SnakeShoot();
-            Render();
+            _player = player;
+            _renderer = renderer;
+            _actions = actions;
+            _actions.GameOver += () => _continueGame = false;
+            _player.Moved += () => _actions.IncrementMoveScore();
+            _player.Shot += () => _actions.SnakeShoot();
+            Render();            
         }
         public void Start()
         {
@@ -24,9 +27,9 @@ namespace Nibbles.Engine
             {
                 Thread.Sleep(100);
                 _player.UpdateState();               
-                _gameState.DetectFoodCollision();
-                _gameState.MoveSnake(_player.GetMove());
-                _gameState.CheckGameBoardCollision();
+                _actions.DetectFoodCollision();
+                _actions.MoveSnake(_player.GetMove());
+                _actions.CheckGameBoardCollision();
                 Render();
             }
             while (_continueGame);
@@ -34,7 +37,7 @@ namespace Nibbles.Engine
 
         private void Render()
         {
-            var spritesToRender = _gameState.GetSpritesToRender();            
+            var spritesToRender = _actions.GetSpritesToRender();
             _renderer.RenderSprites(spritesToRender);
         }
     }

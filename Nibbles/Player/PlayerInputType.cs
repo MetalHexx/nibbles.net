@@ -1,6 +1,6 @@
 ﻿namespace Nibbles.Player
 {
-    public enum PlayerInputType
+    public enum InputType
     {
         Up,
         Down,
