@@ -64,9 +64,9 @@ namespace Nibbles.Engine
             _spritesToRender.Add(_state.Food);
         }
 
-        public void MoveSnake(PositionTransform transform)
+        public void MoveSnake(PositionTransform transform, long timeDelta)
         {
-            _state.Snake.Move(transform);
+            _state.Snake.Move(transform, timeDelta);
         }
 
         public void SnakeShoot()

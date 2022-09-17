@@ -8,6 +8,7 @@ namespace Nibbles.GameObject.Abstractions
         public ConsoleColor BackgroundColor { get; }
         public char DisplayCharacter { get; }
         public Position GetPosition();
-        public void Move(PositionTransform transform);
+        public void Move(PositionTransform transform, long timeDelta);
+        bool ShouldMove(PositionTransform transform, long timeDelta);
     }
 }

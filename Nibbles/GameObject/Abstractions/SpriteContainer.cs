@@ -15,11 +15,12 @@ namespace Nibbles.GameObject.Abstractions
             BackgroundColor = backgroundColor;
         }
 
-        public virtual void Move(PositionTransform transform)
-        {
+        public virtual void Move(PositionTransform transform, long timeDelta)
+        {   
             foreach (var sprite in _sprites)
             {
-                sprite.Move(transform);
+                if (!sprite.ShouldMove(transform, timeDelta)) return;
+                sprite.Move(transform, timeDelta);
             }
             Position = _sprites.First().GetPosition();
         }

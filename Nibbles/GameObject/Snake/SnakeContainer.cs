@@ -32,19 +32,22 @@ namespace Nibbles.GameObject.Snake
              return new Venom(Position);
         }
 
-        public override void Move(PositionTransform transform)
+        public override void Move(PositionTransform transform, long timeDelta)
         {
-            DoMove(transform);
+
+            DoMove(transform, timeDelta);
 
             if (IsTouchingSelf) TouchedSelf?.Invoke();
         }
 
-        private void DoMove(PositionTransform transform)
+        private void DoMove(PositionTransform transform, long timeDelta)
         {
-            var oldHead = _sprites.First();
+            var head = _sprites.First();
+
+            if (!head.ShouldMove(transform, timeDelta)) return;
 
             var newHead = new SnakePart(
-                oldHead.GetPosition(),
+                head.GetPosition(),
                  GetColor());
             
             newHead.Move(transform);

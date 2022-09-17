@@ -10,6 +10,7 @@ namespace Nibbles.Engine
         private readonly IGameStateHandler _actions;
         private readonly IPlayerInput _player;
         private bool _continueGame = true;
+        private long _lastRenderTicks = DateTime.Now.Ticks; 
 
         public Engine(IPlayerInput player, ISpriteRenderer renderer, IGameStateHandler actions)
         {
@@ -25,14 +26,23 @@ namespace Nibbles.Engine
         {
             do
             {
-                Thread.Sleep(100);
+                var timeDelta = GetTimeSinceRender();
                 _player.UpdateState();               
                 _actions.DetectFoodCollision();
-                _actions.MoveSnake(_player.GetMove());
+                _actions.MoveSnake(_player.GetMove(), timeDelta);
                 _actions.CheckGameBoardCollision();
                 Render();
             }
             while (_continueGame);
+        }
+
+        public long GetTimeSinceRender()
+        {
+            var currentTick = DateTime.Now.Ticks;
+            var delta = currentTick - _lastRenderTicks;
+            var timeSpan = new TimeSpan(delta);
+            _lastRenderTicks = currentTick;
+            return delta;
         }
 
         private void Render()
