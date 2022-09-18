@@ -1,5 +1,6 @@
 ﻿using Nibbles.GameObject.Abstractions;
 using Nibbles.GameObject.Dimensions;
+using System.Drawing;
 
 namespace Nibbles.GameObject.UI
 {
@@ -8,7 +9,7 @@ namespace Nibbles.GameObject.UI
         public AbsolutePosition Dimensions { get; private set; }
         public Size Size { get; set; }
 
-        public BorderedBox(Position position, Size size, ConsoleColor foregroundColor, ConsoleColor backgroundColor)
+        public BorderedBox(Point position, Size size, ConsoleColor foregroundColor, ConsoleColor backgroundColor)
             : base(position, foregroundColor, backgroundColor)
         {
             Size = size;
@@ -29,11 +30,11 @@ namespace Nibbles.GameObject.UI
 
                     if (isBorder)
                     {
-                        _sprites.Add(new BorderPart(new Position(x, y)));
+                        _sprites.Add(new BorderPart(new Point(x, y)));
                     }
                     else
                     {
-                        _sprites.Add(new BoxPart(new Position(x, y), ForegroundColor, BackgroundColor));
+                        _sprites.Add(new BoxPart(new Point(x, y), ForegroundColor, BackgroundColor));
                     }
                 }
             }

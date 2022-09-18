@@ -2,6 +2,7 @@
 using Nibbles.GameObject.Configuration;
 using Nibbles.GameObject.Dimensions;
 using Nibbles.GameObject.Projectiles;
+using System.Drawing;
 
 namespace Nibbles.GameObject.Snake
 {
@@ -15,7 +16,7 @@ namespace Nibbles.GameObject.Snake
         private bool _switchAltColor = false;
 
         public SnakeContainer() : base(
-            new Position(
+            new Point(
                 SpriteConfig.SNAKE_STARTING_POSITION_X, 
                 SpriteConfig.SNAKE_STARTING_POSITION_Y), 
             ConsoleColor.Cyan, 
@@ -28,9 +29,9 @@ namespace Nibbles.GameObject.Snake
         protected void Build()
         {
             _sprites.Add(new SnakeSprite(
-                new Position(
-                    Position.XPosition, 
-                    Position.YPosition), 
+                new Point(
+                    Position.X, 
+                    Position.Y), 
                 Direction));
         }
 

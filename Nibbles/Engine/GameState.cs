@@ -4,6 +4,7 @@ using Nibbles.GameObject.Food;
 using Nibbles.GameObject.Projectiles;
 using Nibbles.GameObject.Snake;
 using Nibbles.GameObject.UI;
+using System.Drawing;
 using System.Dynamic;
 
 namespace Nibbles.Engine
@@ -16,13 +17,13 @@ namespace Nibbles.Engine
         public GameTextBox GameOverText { get; init; }
 
         public Board Board { get; init; } = new(
-            new Position(0, 0), new Size(100, 20));
+            new Point(0, 0), new Size(100, 20));
 
         public Score Score { get; init; } = new(
-            new Position(SpriteConfig.GAME_TITLE.Length + 1, 0), "");
+            new Point(SpriteConfig.GAME_TITLE.Length + 1, 0), "");
 
         public GameText GameTitle { get; init; } = new(
-            new Position(1, 0),
+            new Point(1, 0),
             SpriteConfig.GAME_TITLE,
             SpriteConfig.BOARD_BORDER_FOREGROUND_COLOR,
             SpriteConfig.BOARD_BORDER_BACKGROUND_COLOR);
@@ -30,7 +31,7 @@ namespace Nibbles.Engine
         public GameState()
         {
             GameOverText = new GameTextBox("",
-                new Position(Board.Size.Width / 2 - 8, Board.Size.Height / 2 - 2),
+                new Point(Board.Size.Width / 2 - 8, Board.Size.Height / 2 - 2),
                 new Size(16, 4));
         }
 

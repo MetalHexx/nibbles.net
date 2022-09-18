@@ -1,21 +1,23 @@
-﻿namespace Nibbles.GameObject.Dimensions
+﻿using System.Drawing;
+
+namespace Nibbles.GameObject.Dimensions
 {
     public class PositionGenerator
     {
         private Random _random = new Random();
 
-        public Position GetUniqueRandomPosition(int maxXPosition, int maxYPosition, params Position[] excludedPositions)
+        public Point GetUniqueRandomPosition(int maxX, int maxY, params Point[] excludedPositions)
         {
-            var newFoodPosition = GetRandomPosition(maxXPosition, maxYPosition);
+            var newFoodPosition = GetRandomPosition(maxX, maxY);
 
             while (excludedPositions.Any(position => position == newFoodPosition))
             {
-                newFoodPosition = GetRandomPosition(maxXPosition, maxYPosition);
+                newFoodPosition = GetRandomPosition(maxX, maxY);
             }
             return newFoodPosition;
         }
 
-        private Position GetRandomPosition(int maxXPosition, int maxYPosition) =>
-            new Position(_random.Next(1, maxXPosition), _random.Next(1, maxYPosition));
+        private Point GetRandomPosition(int maxX, int maxY) =>
+            new Point(_random.Next(1, maxX), _random.Next(1, maxY));
     }
 }

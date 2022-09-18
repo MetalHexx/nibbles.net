@@ -1,4 +1,5 @@
 ﻿using Nibbles.GameObject.Dimensions;
+using System.Drawing;
 
 namespace Nibbles.GameObject.Abstractions
 {
@@ -7,7 +8,7 @@ namespace Nibbles.GameObject.Abstractions
         ConsoleColor ForegroundColor { get; }
         ConsoleColor BackgroundColor { get; }
         char DisplayCharacter { get; }
-        Position GetPosition();
+        Point GetPosition();
         double GetVelocity();
         void Move(PositionTransform transform, long timeDelta);
         void Move(long timeDelta);

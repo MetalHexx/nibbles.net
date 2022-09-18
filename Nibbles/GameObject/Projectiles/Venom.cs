@@ -1,6 +1,7 @@
 ﻿using Nibbles.GameObject.Abstractions;
 using Nibbles.GameObject.Configuration;
 using Nibbles.GameObject.Dimensions;
+using System.Drawing;
 using System.Runtime.CompilerServices;
 
 namespace Nibbles.GameObject.Projectiles
@@ -11,7 +12,7 @@ namespace Nibbles.GameObject.Projectiles
 
         public int DistanceTraveled { get; private set; }
         public int MaxDistance { get; private set; }
-        public Venom(Position position, DirectionType direction)
+        public Venom(Point position, DirectionType direction)
         : base(position, direction, SpriteConfig.VENOM_FOREGROUND_COLOR, SpriteConfig.VENOM_BACKGROUND_COLOR, ' ', SpriteConfig.VENOM_VELOCITY_X, SpriteConfig.VENOM_VELOCITY_Y) 
         {
             SetMaxDistance();
@@ -23,10 +24,10 @@ namespace Nibbles.GameObject.Projectiles
         {
              Position = Direction switch
             {
-                DirectionType.Up => Position with { YPosition = Position.YPosition - 2 },
-                DirectionType.Down => Position with { YPosition = Position.YPosition + 2 },
-                DirectionType.Left => Position with { XPosition = Position.XPosition - 2 },
-                DirectionType.Right => Position with { XPosition = Position.XPosition + 2 },
+                DirectionType.Up => Position with { Y = Position.Y - 2 },
+                DirectionType.Down => Position with { Y = Position.Y + 2 },
+                DirectionType.Left => Position with { X = Position.X - 2 },
+                DirectionType.Right => Position with { X = Position.X + 2 },
                 _ => Position
             };
         }

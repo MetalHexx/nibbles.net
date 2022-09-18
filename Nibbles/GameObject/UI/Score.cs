@@ -1,5 +1,6 @@
 ﻿using Nibbles.GameObject.Configuration;
 using Nibbles.GameObject.Dimensions;
+using System.Drawing;
 
 namespace Nibbles.GameObject.UI
 {
@@ -16,7 +17,7 @@ namespace Nibbles.GameObject.UI
         private const int _scorePerFeeding = 100;
         private const int _penaltyPerMove = 1;
 
-        public Score(Position position, string text)
+        public Score(Point position, string text)
             : base(position, text, SpriteConfig.BOARD_BORDER_FOREGROUND_COLOR, SpriteConfig.BOARD_BORDER_BACKGROUND_COLOR)
         {
             UpdateText();

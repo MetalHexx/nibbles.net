@@ -1,12 +1,13 @@
 ﻿using Nibbles.GameObject.Configuration;
 using Nibbles.GameObject.Dimensions;
+using System.Drawing;
 
 namespace Nibbles.GameObject.Abstractions
 {
     public abstract record Sprite : ISprite
     {
         public Action<ISprite>? SpriteDestroyed, SpriteCreated;
-        public Position Position { get; protected set; }
+        public Point Position { get; protected set; }
         protected DirectionType Direction { get; private set; } = DirectionType.None;
         public ConsoleColor ForegroundColor { get; protected set; }
         public ConsoleColor BackgroundColor { get; protected set; }
@@ -16,7 +17,7 @@ namespace Nibbles.GameObject.Abstractions
         private double _velocityY = SpriteConfig.DEFAULT_SPRITE_VELOCITY_Y;
         
 
-        public Sprite(Position position, DirectionType direction, ConsoleColor foregroundColor, ConsoleColor backgroundColor, char displayCharacter)
+        public Sprite(Point position, DirectionType direction, ConsoleColor foregroundColor, ConsoleColor backgroundColor, char displayCharacter)
         {
             Position = position;
             Direction = direction;
@@ -25,7 +26,7 @@ namespace Nibbles.GameObject.Abstractions
             DisplayCharacter = displayCharacter;
         }
 
-        public Sprite(Position position, DirectionType direction, ConsoleColor foregroundColor, ConsoleColor backgroundColor, char displayCharacter, double velocityX, double velocityY)
+        public Sprite(Point position, DirectionType direction, ConsoleColor foregroundColor, ConsoleColor backgroundColor, char displayCharacter, double velocityX, double velocityY)
         {
             Position = position;
             Direction = direction;
@@ -36,7 +37,7 @@ namespace Nibbles.GameObject.Abstractions
             DisplayCharacter = displayCharacter;
         }
 
-        public Position GetPosition()
+        public Point GetPosition()
         {
             return Position with { };
         }
@@ -63,8 +64,8 @@ namespace Nibbles.GameObject.Abstractions
             Direction = transform.Direction;
             Position = Position with
             {
-                XPosition = Position.XPosition + transform.XDelta,
-                YPosition = Position.YPosition + transform.YDelta
+                X = Position.X + transform.XDelta,
+                Y = Position.Y + transform.YDelta
             };
         }
 

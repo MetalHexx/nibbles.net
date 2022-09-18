@@ -81,13 +81,13 @@ namespace Nibbles.Engine
         public void CheckGameBoardCollision()
         {
             var collisionCondition =
-                _state.Snake.GetPosition().XPosition == _state.Board.Dimensions.MinX
+                _state.Snake.GetPosition().X == _state.Board.Dimensions.MinX
                 ||
-                _state.Snake.GetPosition().XPosition == _state.Board.Dimensions.MaxX
+                _state.Snake.GetPosition().X == _state.Board.Dimensions.MaxX
                 ||
-                _state.Snake.GetPosition().YPosition == _state.Board.Dimensions.MinY
+                _state.Snake.GetPosition().Y == _state.Board.Dimensions.MinY
                 ||
-                _state.Snake.GetPosition().YPosition == _state.Board.Dimensions.MaxY;
+                _state.Snake.GetPosition().Y == _state.Board.Dimensions.MaxY;
 
             if (collisionCondition)
             {

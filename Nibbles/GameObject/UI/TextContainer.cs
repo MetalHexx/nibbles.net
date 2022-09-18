@@ -1,5 +1,6 @@
 ﻿using Nibbles.GameObject.Abstractions;
 using Nibbles.GameObject.Dimensions;
+using System.Drawing;
 
 namespace Nibbles.GameObject.UI
 {
@@ -7,7 +8,7 @@ namespace Nibbles.GameObject.UI
     {
         private string _text;
 
-        public GameText(Position position, string text, ConsoleColor foregroundColor, ConsoleColor backgroundColor)
+        public GameText(Point position, string text, ConsoleColor foregroundColor, ConsoleColor backgroundColor)
             : base(position, foregroundColor, backgroundColor)
         {
             _text = text;
@@ -39,7 +40,7 @@ namespace Nibbles.GameObject.UI
             {
                 var position = Position with
                 {
-                    XPosition = Position.XPosition + i
+                    X = Position.X + i
                 };
                 _sprites.Add(new TextSprite(position, ForegroundColor, BackgroundColor, charList[i]));
             }

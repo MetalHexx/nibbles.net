@@ -31,8 +31,8 @@ namespace Nibbles.Engine
                 WriteText(sprite.DisplayCharacter,
                     sprite.ForegroundColor,
                     sprite.BackgroundColor,
-                    sprite.GetPosition().XPosition,
-                    sprite.GetPosition().YPosition);
+                    sprite.GetPosition().X,
+                    sprite.GetPosition().Y);
             }
         }
 
@@ -45,8 +45,8 @@ namespace Nibbles.Engine
                 WriteText(' ',
                     SpriteConfig.BOARD_BACKGROUND_COLOR,
                     SpriteConfig.BOARD_BACKGROUND_COLOR,
-                    sprite.GetPosition().XPosition,
-                    sprite.GetPosition().YPosition);
+                    sprite.GetPosition().X,
+                    sprite.GetPosition().Y);
             }
         }
 
