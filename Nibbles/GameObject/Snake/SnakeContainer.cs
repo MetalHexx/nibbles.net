@@ -13,23 +13,32 @@ namespace Nibbles.GameObject.Snake
         private int _remainingGrowth = 0;
         private const int GROWTH_AMOUNT = 5;
         private bool _switchAltColor = false;
-        private char _currentDisplayCharacter = ' ';
 
-        public SnakeContainer() : base(new Position(5, 5), ConsoleColor.Cyan, ConsoleColor.Cyan)
+        public SnakeContainer() : base(
+            new Position(
+                SpriteConfig.SNAKE_STARTING_POSITION_X, 
+                SpriteConfig.SNAKE_STARTING_POSITION_Y), 
+            ConsoleColor.Cyan, 
+            ConsoleColor.Cyan)
         {
+            Direction = DirectionType.Right;
             Build();
         }
 
         protected void Build()
         {
-            _sprites.Add(new SnakePart(new Position(5, 5)));
+            _sprites.Add(new SnakeSprite(
+                new Position(
+                    Position.XPosition, 
+                    Position.YPosition), 
+                Direction));
         }
 
         public void Feed() => _remainingGrowth += GROWTH_AMOUNT;
            
         public Venom Shoot()
         {
-             return new Venom(Position);
+              return new Venom(Position, Direction);
         }
 
         public override void Move(PositionTransform transform, long timeDelta)
@@ -44,17 +53,21 @@ namespace Nibbles.GameObject.Snake
         {
             var head = _sprites.First();
 
-            if (!head.ShouldMove(transform, timeDelta)) return;
+            if (!head.ShouldMove(timeDelta)) return;
 
-            var newHead = new SnakePart(
+            Direction = transform.Direction;
+
+            var newHead = new SnakeSprite(
                 head.GetPosition(),
-                 GetColor());
+                Direction,
+                GetColor());
             
-            newHead.Move(transform);
-            _sprites.Insert(0, newHead);
-            Grow();
+            newHead.Move(transform, timeDelta);
+            Position = newHead.GetPosition();
+
+            _sprites.Insert(0, newHead);            
             SnakePartCreated?.Invoke(newHead);
-            Position = _sprites.First().GetPosition();
+            Grow();
         }
 
         private ConsoleColor GetColor()
@@ -64,8 +77,6 @@ namespace Nibbles.GameObject.Snake
                 ? SpriteConfig.SNAKE_BACKGROUND_ALT_COLOR
                 : SpriteConfig.SNAKE_BACKGROUND_COLOR;
         }
-
-        private char GetDisplayCharacter() => _switchAltColor ? '=' : ' ';
 
         private void SwitchColor()
         {

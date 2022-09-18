@@ -13,7 +13,7 @@ namespace Nibbles.Engine.Abstractions
         void FeedSnake();
         SpriteRenderUpdate GetSpritesToRender();
         void IncrementMoveScore();
-        void MoveSnake(PositionTransform transform, long renderDelta);
+        void UpdateSprites(PositionTransform transform, long renderDelta);
         void SnakeShoot();
     }
 }

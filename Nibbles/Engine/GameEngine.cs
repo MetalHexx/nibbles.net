@@ -29,7 +29,7 @@ namespace Nibbles.Engine
                 var timeDelta = GetTimeSinceRender();
                 _player.UpdateState();               
                 _actions.DetectFoodCollision();
-                _actions.MoveSnake(_player.GetMove(), timeDelta);
+                _actions.UpdateSprites(_player.GetMove(), timeDelta);
                 _actions.CheckGameBoardCollision();
                 Render();
             }

@@ -12,7 +12,7 @@ namespace Nibbles.Engine
     {
         public FoodSprite? Food { get; set; }
         public SnakeContainer Snake { get; init; } = new();
-        public Venom Venom { get; set; }
+        public Venom? Venom { get; set; }
         public GameTextBox GameOverText { get; init; }
 
         public Board Board { get; init; } = new(

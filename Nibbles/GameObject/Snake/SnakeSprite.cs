@@ -4,16 +4,15 @@ using Nibbles.GameObject.Dimensions;
 
 namespace Nibbles.GameObject.Snake
 {
-    public record SnakePart : Sprite
+    public record SnakeSprite : Sprite
     {
-        private const int VELOCITY = 2;
-        public SnakePart(Position position)
-            : base(position, SpriteConfig.SNAKE_FOREGROUND_COLOR, SpriteConfig.SNAKE_BACKGROUND_COLOR, ' ', VELOCITY) { }
+        public SnakeSprite(Position position, DirectionType direction)
+            : base(position, direction, SpriteConfig.SNAKE_FOREGROUND_COLOR, SpriteConfig.SNAKE_BACKGROUND_COLOR, ' ', SpriteConfig.SNAKE_VELOCITY_X, SpriteConfig.SNAKE_VELOCITY_Y) { }
 
-        public SnakePart(Position position, ConsoleColor backgroundColor)
-            : base(position, SpriteConfig.SNAKE_FOREGROUND_COLOR, backgroundColor, ' ', VELOCITY) { }
-
-        public SnakePart(Position position, ConsoleColor backgroundColor, char character)
-            : base(position, SpriteConfig.SNAKE_FOREGROUND_COLOR, backgroundColor, character, VELOCITY) { }
+        /// <summary>
+        /// Used for alternating color
+        /// </summary>        
+        public SnakeSprite(Position position, DirectionType direction, ConsoleColor backgroundColor)
+            : base(position, direction, SpriteConfig.SNAKE_FOREGROUND_COLOR, backgroundColor, ' ', SpriteConfig.SNAKE_VELOCITY_X, SpriteConfig.SNAKE_VELOCITY_Y) { }
     }
 }

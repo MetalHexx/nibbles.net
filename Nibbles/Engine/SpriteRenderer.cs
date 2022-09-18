@@ -53,7 +53,7 @@ namespace Nibbles.Engine
         {
             Console.ForegroundColor = foregroundColor;
             Console.BackgroundColor = backgroundColor;
-            Console.SetCursorPosition(xPosition, yPosition);
+             Console.SetCursorPosition(xPosition, yPosition);
             Console.Write(character);
             Console.ResetColor();
         }

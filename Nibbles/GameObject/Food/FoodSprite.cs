@@ -7,6 +7,6 @@ namespace Nibbles.GameObject.Food
     public record FoodSprite : Sprite
     {
         public FoodSprite(Position position)
-            : base(position, SpriteConfig.FOOD_FOREGROUND_COLOR, SpriteConfig.FOOD_BACKGROUND_COLOR, ' ') { }
+            : base(position, DirectionType.None, SpriteConfig.FOOD_FOREGROUND_COLOR, SpriteConfig.FOOD_BACKGROUND_COLOR, ' ') { }
     }
 }

@@ -1,30 +1,36 @@
-﻿using Nibbles.GameObject.Dimensions;
+﻿using Nibbles.GameObject.Configuration;
+using Nibbles.GameObject.Dimensions;
 
 namespace Nibbles.GameObject.Abstractions
 {
     public abstract record Sprite : ISprite
     {
-        public Position _position { get; protected set; }
+        public Action<ISprite>? SpriteDestroyed, SpriteCreated;
+        public Position Position { get; protected set; }
+        protected DirectionType Direction { get; private set; } = DirectionType.None;
         public ConsoleColor ForegroundColor { get; protected set; }
         public ConsoleColor BackgroundColor { get; protected set; }
         public char DisplayCharacter { get; protected set; } = ' ';
         private TimeSpan _timeSinceMove = new TimeSpan();
-        private long _velocity = 1;
-        private const int MIN_RENDER_DELAY_MS = 200;
-        private PositionTransform _lastMove = new PositionTransform(0, 0, DirectionType.NoChange);
+        private double _velocityX = SpriteConfig.DEFAULT_SPRITE_VELOCITY_X;
+        private double _velocityY = SpriteConfig.DEFAULT_SPRITE_VELOCITY_Y;
+        
 
-        public Sprite(Position position, ConsoleColor foregroundColor, ConsoleColor backgroundColor, char displayCharacter)
+        public Sprite(Position position, DirectionType direction, ConsoleColor foregroundColor, ConsoleColor backgroundColor, char displayCharacter)
         {
-            _position = position;
+            Position = position;
+            Direction = direction;
             ForegroundColor = foregroundColor;
             BackgroundColor = backgroundColor;
             DisplayCharacter = displayCharacter;
         }
 
-        public Sprite(Position position, ConsoleColor foregroundColor, ConsoleColor backgroundColor, char displayCharacter, long velocity)
+        public Sprite(Position position, DirectionType direction, ConsoleColor foregroundColor, ConsoleColor backgroundColor, char displayCharacter, double velocityX, double velocityY)
         {
-            _position = position;
-            _velocity = velocity;
+            Position = position;
+            Direction = direction;
+            _velocityX = velocityX;
+            _velocityY = velocityY;
             ForegroundColor = foregroundColor;
             BackgroundColor = backgroundColor;
             DisplayCharacter = displayCharacter;
@@ -32,30 +38,67 @@ namespace Nibbles.GameObject.Abstractions
 
         public Position GetPosition()
         {
-            return _position with { };
+            return Position with { };
         }
 
-        public virtual void Move(PositionTransform transform, long timeDelta = 0)
+        public virtual void Move(long timeDelta)
         {
-            _position = _position with
+            SpriteDestroyed?.Invoke(this with { });
+
+            var transform = Direction switch
             {
-                XPosition = _position.XPosition + transform.XDelta,
-                YPosition = _position.YPosition + transform.YDelta
+                DirectionType.Up => new PositionTransform(0, -1, Direction),
+                DirectionType.Down => new PositionTransform(0, 1, Direction),
+                DirectionType.Left => new PositionTransform(-1, 0, Direction),
+                DirectionType.Right => new PositionTransform(1, 0, Direction),
+                _ => new PositionTransform(1, 0, Direction),
+            };
+
+            Move(transform, timeDelta);
+            SpriteCreated?.Invoke(this with { });
+        }
+
+        public virtual void Move(PositionTransform transform, long timeDelta)
+        {
+            Direction = transform.Direction;
+            Position = Position with
+            {
+                XPosition = Position.XPosition + transform.XDelta,
+                YPosition = Position.YPosition + transform.YDelta
             };
         }
 
-        public virtual bool ShouldMove(PositionTransform transform, long timeDelta)
+        /// <summary>
+        /// Determines if the move is renderable based on the units velocity.
+        /// Units with a higher velocity will re-render and move more often.
+        /// </summary>
+        public virtual bool ShouldMove(long timeDelta)
         {
             var timeSpan = new TimeSpan(timeDelta);
             _timeSinceMove += timeSpan;
 
-            var shouldWaitToRender = _timeSinceMove.TotalMilliseconds < MIN_RENDER_DELAY_MS / _velocity;
+            var msToWait = SpriteConfig.MIN_FRAME_RENDER_SPEED_MS / GetVelocity();
 
-            if (shouldWaitToRender) return false;
+            var shouldMove = _timeSinceMove.TotalMilliseconds >= msToWait;
 
-            _timeSinceMove = new TimeSpan();
-            return true;
+            if (shouldMove)
+            {
+                _timeSinceMove = new TimeSpan();
+                return true;
+            }
+            return false;
         }
 
+        public double GetVelocity()
+        {
+            return Direction switch
+            {
+                DirectionType.Up => _velocityY,
+                DirectionType.Down => _velocityY,
+                DirectionType.Left => _velocityX,
+                DirectionType.Right => _velocityX,
+                _ => _velocityX
+            };
+        }
     }
 }

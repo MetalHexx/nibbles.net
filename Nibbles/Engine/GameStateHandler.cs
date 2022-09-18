@@ -3,6 +3,7 @@ using Nibbles.GameObject.Abstractions;
 using Nibbles.GameObject.Configuration;
 using Nibbles.GameObject.Dimensions;
 using Nibbles.GameObject.Food;
+using Nibbles.GameObject.Projectiles;
 
 namespace Nibbles.Engine
 {
@@ -23,7 +24,7 @@ namespace Nibbles.Engine
             _spritesToRender.Add(_state.Score.GetSprites());
 
             _state.Snake.TouchedSelf += OnSnakeTouchedSelf;
-            _state.Snake.SnakePartCreated += OnSpriteAdded;
+            _state.Snake.SnakePartCreated += OnSpriteCreated;
             _state.Snake.SnakePartDestroyed += OnSpriteDestroyed;
 
             CreateFood();
@@ -64,15 +65,20 @@ namespace Nibbles.Engine
             _spritesToRender.Add(_state.Food);
         }
 
-        public void MoveSnake(PositionTransform transform, long timeDelta)
+        public void UpdateSprites(PositionTransform playerInput, long timeDelta)
         {
-            _state.Snake.Move(transform, timeDelta);
+            _state.Snake.Move(playerInput, timeDelta);
+            _state.Venom?.Move(timeDelta);
         }
 
         public void SnakeShoot()
         {
+            if (_state.Venom != null) return;
+
             _state.Venom = _state.Snake.Shoot();
-            _spritesToRender.Add(_state.Venom);
+            _state.Venom.SpriteDestroyed += OnSpriteDestroyed;
+            _state.Venom.SpriteCreated += OnSpriteCreated;
+            _state.Venom.VenomDestroyed += OnVenomDestroyed;
         }
 
         public void CheckGameBoardCollision()
@@ -120,14 +126,25 @@ namespace Nibbles.Engine
             HandleGameOver(SpriteConfig.GAME_LOSE);
         }
 
-        private void OnSpriteAdded(ISprite sprite)
+        private void OnVenomDestroyed(Venom venom)
+        {
+            _spritesToRender.Remove(venom);
+
+            if (_state.Venom == null) return;
+            _state.Venom.SpriteDestroyed -= OnSpriteDestroyed;
+            _state.Venom.SpriteCreated -= OnSpriteCreated;
+            _state.Venom.VenomDestroyed -= OnVenomDestroyed;
+            _state.Venom = null;
+        }
+
+        private void OnSpriteCreated(ISprite sprite)
         {
             _spritesToRender.Add(sprite);
         }
 
         private void OnSpriteDestroyed(ISprite sprite)
         {
-            _spritesToRender.Remove(sprite);
+             _spritesToRender.Remove(sprite);
         }
     }
 }

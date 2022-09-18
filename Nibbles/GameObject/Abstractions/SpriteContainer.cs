@@ -3,11 +3,13 @@
 namespace Nibbles.GameObject.Abstractions
 {
     public abstract class SpriteContainer : ISpriteContainer
-    {
+    {        
         public Position Position { get; protected set; }
+        protected DirectionType Direction { get; set; } = DirectionType.None;
         public ConsoleColor ForegroundColor { get; }
         public ConsoleColor BackgroundColor { get; }
         protected readonly List<ISprite> _sprites = new();
+
         public SpriteContainer(Position position, ConsoleColor foregroundColor, ConsoleColor backgroundColor)
         {
             Position = position;
@@ -19,7 +21,7 @@ namespace Nibbles.GameObject.Abstractions
         {   
             foreach (var sprite in _sprites)
             {
-                if (!sprite.ShouldMove(transform, timeDelta)) return;
+                if (!sprite.ShouldMove(timeDelta)) return;
                 sprite.Move(transform, timeDelta);
             }
             Position = _sprites.First().GetPosition();
