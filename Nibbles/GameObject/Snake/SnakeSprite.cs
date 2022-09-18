@@ -13,7 +13,7 @@ namespace Nibbles.GameObject.Snake
         /// <summary>
         /// Used for alternating color
         /// </summary>        
-        public SnakeSprite(Point position, DirectionType direction, ConsoleColor backgroundColor)
+        public SnakeSprite(Point position, DirectionType direction, GameColor backgroundColor)
             : base(position, direction, SpriteConfig.SNAKE_FOREGROUND_COLOR, backgroundColor, ' ', SpriteConfig.SNAKE_VELOCITY_X, SpriteConfig.SNAKE_VELOCITY_Y) { }
     }
 }

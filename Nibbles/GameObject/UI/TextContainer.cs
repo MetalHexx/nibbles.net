@@ -1,4 +1,5 @@
 ﻿using Nibbles.GameObject.Abstractions;
+using Nibbles.GameObject.Configuration;
 using Nibbles.GameObject.Dimensions;
 using System.Drawing;
 
@@ -8,7 +9,7 @@ namespace Nibbles.GameObject.UI
     {
         private string _text;
 
-        public GameText(Point position, string text, ConsoleColor foregroundColor, ConsoleColor backgroundColor)
+        public GameText(Point position, string text, GameColor foregroundColor, GameColor backgroundColor)
             : base(position, foregroundColor, backgroundColor)
         {
             _text = text;

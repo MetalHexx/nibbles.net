@@ -19,8 +19,8 @@ namespace Nibbles.GameObject.Snake
             new Point(
                 SpriteConfig.SNAKE_STARTING_POSITION_X, 
                 SpriteConfig.SNAKE_STARTING_POSITION_Y), 
-            ConsoleColor.Cyan, 
-            ConsoleColor.Cyan)
+            GameColor.Cyan, 
+            GameColor.Cyan)
         {
             Direction = DirectionType.Right;
             Build();
@@ -71,7 +71,7 @@ namespace Nibbles.GameObject.Snake
             Grow();
         }
 
-        private ConsoleColor GetColor()
+        private GameColor GetColor()
         {
             SwitchColor();
             return _switchAltColor

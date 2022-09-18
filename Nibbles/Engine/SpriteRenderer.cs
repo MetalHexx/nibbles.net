@@ -1,6 +1,7 @@
 ﻿using Nibbles.Engine.Abstractions;
 using Nibbles.GameObject.Abstractions;
 using Nibbles.GameObject.Configuration;
+using System.Runtime.CompilerServices;
 
 namespace Nibbles.Engine
 {
@@ -51,13 +52,13 @@ namespace Nibbles.Engine
         }
 
         private static void WriteText(char character, 
-            ConsoleColor foregroundColor, 
-            ConsoleColor backgroundColor, 
+            GameColor foregroundColor, 
+            GameColor backgroundColor, 
             int xPosition, 
             int yPosition)
         {
-            Console.ForegroundColor = foregroundColor;
-            Console.BackgroundColor = backgroundColor;
+            Console.ForegroundColor = foregroundColor.ToConsoleColor();
+            Console.BackgroundColor = backgroundColor.ToConsoleColor();
              Console.SetCursorPosition(xPosition, yPosition);
             Console.Write(character);
             Console.ResetColor();
