@@ -1,12 +1,13 @@
-﻿using Nibbles.GameObject.Dimensions;
+﻿using Nibbles.GameObject.Configuration;
+using Nibbles.GameObject.Dimensions;
 using System.Drawing;
 
 namespace Nibbles.GameObject.Abstractions
 {
     public interface ISprite
     {
-        ConsoleColor ForegroundColor { get; }
-        ConsoleColor BackgroundColor { get; }
+        GameColor ForegroundColor { get; }
+        GameColor BackgroundColor { get; }
         char DisplayCharacter { get; }
         Point GetPosition();
         double GetVelocity();

@@ -1,4 +1,5 @@
-﻿using Nibbles.GameObject.Dimensions;
+﻿using Nibbles.GameObject.Configuration;
+using Nibbles.GameObject.Dimensions;
 using System.Drawing;
 
 namespace Nibbles.GameObject.Abstractions
@@ -7,11 +8,11 @@ namespace Nibbles.GameObject.Abstractions
     {        
         public Point Position { get; protected set; }
         protected DirectionType Direction { get; set; } = DirectionType.None;
-        public ConsoleColor ForegroundColor { get; }
-        public ConsoleColor BackgroundColor { get; }
+        public GameColor ForegroundColor { get; }
+        public GameColor BackgroundColor { get; }
         protected readonly List<ISprite> _sprites = new();
 
-        public SpriteContainer(Point position, ConsoleColor foregroundColor, ConsoleColor backgroundColor)
+        public SpriteContainer(Point position, GameColor foregroundColor, GameColor backgroundColor)
         {
             Position = position;
             ForegroundColor = foregroundColor;

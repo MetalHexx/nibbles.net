@@ -2,7 +2,7 @@
 {
     //public class Wall : SpriteContainer
     //{
-    //    public Wall(Position position, ConsoleColor foregroundColor, ConsoleColor backgroundColor) : base(position, foregroundColor, backgroundColor)
+    //    public Wall(Position position, GameColor foregroundColor, GameColor backgroundColor) : base(position, foregroundColor, backgroundColor)
     //    {
     //    }
 
