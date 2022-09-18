@@ -10,7 +10,6 @@ namespace Nibbles.Engine
     public class GameStateHandler : IGameStateHandler
     {
         public event Action? GameOver, FoodEaten;
-        //private SpriteRenderUpdate _spritesToRender = new();
         private ISpriteRenderer _renderer;
         private readonly PositionGenerator _positionGenerator = new();
         private readonly GameState _state;
