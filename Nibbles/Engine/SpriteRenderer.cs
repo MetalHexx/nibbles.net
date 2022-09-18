@@ -5,16 +5,21 @@ using Nibbles.GameObject.Configuration;
 namespace Nibbles.Engine
 {
     internal class SpriteRenderer : ISpriteRenderer
-    {  
+    {
+        private List<ISprite> _spritesToAdd = new();
+        private List<ISprite> _spritesToRemove = new();
+
         public SpriteRenderer()
         {
             Console.CursorVisible = false;
         }
 
-        public void RenderSprites(SpriteRenderUpdate update)
+        public void Render()
         {
-            Destroy(update.SpritesToRemove);
-            Render(update.SpritesToAdd);
+            Destroy(_spritesToRemove);
+            _spritesToRemove.Clear();
+            Render(_spritesToAdd);
+            _spritesToAdd.Clear();
         }
 
         private static void Render(IEnumerable<ISprite?> sprites)
@@ -56,6 +61,20 @@ namespace Nibbles.Engine
              Console.SetCursorPosition(xPosition, yPosition);
             Console.Write(character);
             Console.ResetColor();
+        }
+
+        public void Add(ISprite sprite)
+        {
+            _spritesToAdd.Add(sprite);
+        }
+
+        public void AddRange(IEnumerable<ISprite> sprites)
+        {
+            _spritesToAdd.AddRange(sprites);
+        }
+        public void Remove(ISprite sprite)
+        {
+            _spritesToRemove.Add(sprite);
         }
     }
 }

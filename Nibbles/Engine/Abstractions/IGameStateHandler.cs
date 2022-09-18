@@ -11,7 +11,6 @@ namespace Nibbles.Engine.Abstractions
         void CreateFood();
         void DetectFoodCollision();
         void FeedSnake();
-        SpriteRenderUpdate GetSpritesToRender();
         void IncrementMoveScore();
         void UpdateSprites(PositionTransform transform, long renderDelta);
         void SnakeShoot();

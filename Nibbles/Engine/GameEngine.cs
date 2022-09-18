@@ -20,7 +20,7 @@ namespace Nibbles.Engine
             _actions.GameOver += () => _continueGame = false;
             _player.Moved += () => _actions.IncrementMoveScore();
             _player.Shot += () => _actions.SnakeShoot();
-            Render();            
+            _renderer.Render();            
         }
         public void Start()
         {
@@ -31,7 +31,7 @@ namespace Nibbles.Engine
                 _actions.DetectFoodCollision();
                 _actions.UpdateSprites(_player.GetMove(), timeDelta);
                 _actions.CheckGameBoardCollision();
-                Render();
+                _renderer.Render();
             }
             while (_continueGame);
         }
@@ -43,12 +43,6 @@ namespace Nibbles.Engine
             var timeSpan = new TimeSpan(delta);
             _lastRenderTicks = currentTick;
             return delta;
-        }
-
-        private void Render()
-        {
-            var spritesToRender = _actions.GetSpritesToRender();
-            _renderer.RenderSprites(spritesToRender);
         }
     }
 }

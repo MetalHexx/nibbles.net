@@ -1,7 +1,12 @@
-﻿namespace Nibbles.Engine.Abstractions
+﻿using Nibbles.GameObject.Abstractions;
+
+namespace Nibbles.Engine.Abstractions
 {
-    internal interface ISpriteRenderer
+    public interface ISpriteRenderer
     {
-        void RenderSprites(SpriteRenderUpdate update);
+        void Remove(ISprite sprite);
+        void Add(ISprite sprite);
+        void AddRange(IEnumerable<ISprite> sprites);
+        void Render();
     }
 }
