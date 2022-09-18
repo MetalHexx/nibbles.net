@@ -14,7 +14,7 @@ namespace Nibbles.Engine
         public FoodSprite? Food { get; set; }
         public SnakeContainer Snake { get; init; } = new();
         public Venom? Venom { get; set; }
-        public GameTextBox GameOverText { get; init; }
+        public GameTextBox GameOverTextBox { get; init; }
 
         public Board Board { get; init; } = new(
             new Point(0, 0), new Size(100, 20));
@@ -30,7 +30,7 @@ namespace Nibbles.Engine
 
         public GameState()
         {
-            GameOverText = new GameTextBox("",
+            GameOverTextBox = new GameTextBox("",
                 new Point(Board.Size.Width / 2 - 8, Board.Size.Height / 2 - 2),
                 new Size(16, 4));
         }
