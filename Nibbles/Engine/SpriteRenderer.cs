@@ -1,7 +1,6 @@
 ﻿using Nibbles.Engine.Abstractions;
 using Nibbles.GameObject.Abstractions;
 using Nibbles.GameObject.Configuration;
-using System.Runtime.CompilerServices;
 
 namespace Nibbles.Engine
 {
@@ -76,24 +75,6 @@ namespace Nibbles.Engine
         public void Remove(ISprite sprite)
         {
             _spritesToRemove.Add(sprite);
-        }
-    }
-
-    internal static class GameColorExtensions
-    {
-        public static ConsoleColor ToConsoleColor(this GameColor gameColor)
-        {
-            return gameColor switch
-            {
-                GameColor.Black => ConsoleColor.Black,
-                GameColor.Cyan => ConsoleColor.Cyan,
-                GameColor.Magenta => ConsoleColor.Magenta,
-                GameColor.White => ConsoleColor.White,
-                GameColor.Green => ConsoleColor.Green,
-                GameColor.DarkBlue => ConsoleColor.DarkBlue,
-                GameColor.Red => ConsoleColor.Red,
-                _ => ConsoleColor.White
-            };
         }
     }
 }

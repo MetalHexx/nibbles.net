@@ -2,18 +2,6 @@
 
 namespace Nibbles.GameObject.Configuration
 {
-    public enum GameColor
-    {
-        Cyan,
-        Red,
-        Green,
-        White,
-        Black,
-        DarkBlue,
-        Magenta,
-
-    }
-
     public static class SpriteConfig
     {
         public const int MIN_FRAME_RENDER_SPEED_MS = 200; 
