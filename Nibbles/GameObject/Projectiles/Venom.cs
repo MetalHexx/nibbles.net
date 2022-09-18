@@ -34,7 +34,7 @@ namespace Nibbles.GameObject.Projectiles
 
         public override void Move(long timeDelta)
         {
-            if (!ShouldMove(timeDelta)) return;
+            if (!CanRender(timeDelta)) return;
 
             if (DistanceTraveled > MaxDistance)
             {

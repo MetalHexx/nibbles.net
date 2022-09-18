@@ -23,7 +23,7 @@ namespace Nibbles.GameObject.Abstractions
         {   
             foreach (var sprite in _sprites)
             {
-                if (!sprite.ShouldMove(timeDelta)) return;
+                if (!sprite.CanRender(timeDelta)) return;
                 sprite.Move(transform, timeDelta);
             }
             Position = _sprites.First().GetPosition();

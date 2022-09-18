@@ -13,6 +13,6 @@ namespace Nibbles.GameObject.Abstractions
         double GetVelocity();
         void Move(PositionTransform transform, long timeDelta);
         void Move(long timeDelta);
-        bool ShouldMove(long timeDelta);
+        bool CanRender(long timeDelta);
     }
 }

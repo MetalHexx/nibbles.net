@@ -73,7 +73,7 @@ namespace Nibbles.GameObject.Abstractions
         /// Determines if the move is renderable based on the units velocity.
         /// Units with a higher velocity will re-render and move more often.
         /// </summary>
-        public virtual bool ShouldMove(long timeDelta)
+        public virtual bool CanRender(long timeDelta)
         {
             var timeSpan = new TimeSpan(timeDelta);
             _timeSinceMove += timeSpan;

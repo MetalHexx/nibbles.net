@@ -54,7 +54,7 @@ namespace Nibbles.GameObject.Snake
         {
             var head = _sprites.First();
 
-            if (!head.ShouldMove(timeDelta)) return;
+            if (!head.CanRender(timeDelta)) return;
 
             Direction = transform.Direction;
 
