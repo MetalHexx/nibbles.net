@@ -5,7 +5,8 @@ var inputReader = new KeyboardReader();
 var playerInput = new PlayerInput(inputReader);
 var renderer = new SpriteRenderer();
 var gameState = new GameState();
-var gameStateHandler = new GameStateHandler(gameState, renderer);
+var collisionDetector = new CollisionDetector(gameState);
+var gameStateHandler = new GameStateHandler(gameState, renderer, collisionDetector);
 
-new Engine(playerInput, renderer, gameStateHandler).Start();
+new Engine(playerInput, renderer, gameStateHandler, collisionDetector).Start();
 Console.ReadLine();

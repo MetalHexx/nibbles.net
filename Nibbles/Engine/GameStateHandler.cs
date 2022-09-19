@@ -9,15 +9,17 @@ namespace Nibbles.Engine
 {
     public class GameStateHandler : IGameStateHandler
     {
-        public event Action? GameOver, FoodEaten;
+        public event Action? GameOver;
         private ISpriteRenderer _renderer;
+        private readonly ICollisionDetector _collisionDetector;
         private readonly PositionGenerator _positionGenerator = new();
         private readonly GameState _state;
 
-        public GameStateHandler(GameState state, ISpriteRenderer renderer)
+        public GameStateHandler(GameState state, ISpriteRenderer renderer, ICollisionDetector collisionDetector)
         {
             _state = state;
             _renderer = renderer;
+            _collisionDetector = collisionDetector;
             InitializeSprites();
         }
 
@@ -37,12 +39,6 @@ namespace Nibbles.Engine
             CreateFood();
         }
 
-        public void FeedSnake()
-        {
-            _state.Snake.Feed();
-            _state.Score.IncrementAmountEaten();
-        }
-
         public void CreateFood()
         {
             var positionsToAvoidFoodPlacement = _state.Snake
@@ -53,6 +49,12 @@ namespace Nibbles.Engine
             var foodPosition = _positionGenerator.GetUniqueRandomPosition(_state.Board.Dimensions.MaxX - 1, _state.Board.Dimensions.MaxY - 1, positionsToAvoidFoodPlacement);
 
             _state.Food = new FoodSprite(foodPosition);
+
+            _collisionDetector.Register(_state.Snake, _state.Food, 
+                _state.Snake.Feed, 
+                _state.Score.IncrementAmountEaten,
+                CreateFood);
+            
             _renderer.Add(_state.Food);
         }
 
@@ -101,15 +103,6 @@ namespace Nibbles.Engine
             _state.Score.IncrementMoves();
         }
 
-        public void DetectFoodCollision()
-        {
-            if (_state.Snake.Position == _state.Food?.Position)
-            {
-                FeedSnake();
-                CreateFood();
-                FoodEaten?.Invoke();
-            }
-        }
         private void OnSnakeTouchedSelf()
         {
             HandleGameOver(SpriteConfig.GAME_LOSE);
