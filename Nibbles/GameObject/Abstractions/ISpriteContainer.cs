@@ -3,9 +3,8 @@ using System.Drawing;
 
 namespace Nibbles.GameObject.Abstractions
 {
-    public interface ISpriteContainer
+    public interface ISpriteContainer: ISprite
     {
-        Point GetPosition();
         IEnumerable<ISprite> GetSprites();
     }
 }

@@ -18,8 +18,8 @@ namespace Nibbles.Engine
             _renderer = renderer;
             _actions = actions;
             _actions.GameOver += () => _continueGame = false;
-            _player.Moved += () => _actions.IncrementMoveScore();
-            _player.Shot += () => _actions.SnakeShoot();
+            _player.Moved += _actions.IncrementMoveScore;
+            _player.Shot += _actions.SnakeShoot;
             _renderer.Render();            
         }
         public void Start()

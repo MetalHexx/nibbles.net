@@ -6,20 +6,22 @@ namespace Nibbles.GameObject.Abstractions
 {
     public abstract record Sprite : ISprite
     {
-        public Action<ISprite>? SpriteDestroyed, SpriteCreated;
-        public Point Position { get; protected set; }
-        protected DirectionType Direction { get; private set; } = DirectionType.None;
+        public Action<ISprite>? SpriteDestroyed { get; set; }
+        public Action<ISprite>? SpriteCreated { get; set; }
+        protected Point _position;
+        public Point Position { get { return _position with { }; } }
+        public DirectionType Direction { get; private set; } = DirectionType.None;
+        public double VelocityX { get; private set; } = SpriteConfig.DEFAULT_SPRITE_VELOCITY_X;
+        public double VelocityY { get; private set; } = SpriteConfig.DEFAULT_SPRITE_VELOCITY_Y;
         public GameColor ForegroundColor { get; protected set; }
         public GameColor BackgroundColor { get; protected set; }
         public char DisplayCharacter { get; protected set; } = ' ';
         private TimeSpan _timeSinceMove = new TimeSpan();
-        private double _velocityX = SpriteConfig.DEFAULT_SPRITE_VELOCITY_X;
-        private double _velocityY = SpriteConfig.DEFAULT_SPRITE_VELOCITY_Y;
         
 
         public Sprite(Point position, DirectionType direction, GameColor foregroundColor, GameColor backgroundColor, char displayCharacter)
         {
-            Position = position;
+            _position = position;
             Direction = direction;
             ForegroundColor = foregroundColor;
             BackgroundColor = backgroundColor;
@@ -28,18 +30,13 @@ namespace Nibbles.GameObject.Abstractions
 
         public Sprite(Point position, DirectionType direction, GameColor foregroundColor, GameColor backgroundColor, char displayCharacter, double velocityX, double velocityY)
         {
-            Position = position;
-            Direction = direction;
-            _velocityX = velocityX;
-            _velocityY = velocityY;
+            _position = position;
+            Direction = direction;            
             ForegroundColor = foregroundColor;
             BackgroundColor = backgroundColor;
             DisplayCharacter = displayCharacter;
-        }
-
-        public Point GetPosition()
-        {
-            return Position with { };
+            VelocityX = velocityX;
+            VelocityY = velocityY;
         }
 
         public virtual void Move(long timeDelta)
@@ -62,10 +59,10 @@ namespace Nibbles.GameObject.Abstractions
         public virtual void Move(PositionTransform transform, long timeDelta)
         {
             Direction = transform.Direction;
-            Position = Position with
+            _position = Position with
             {
-                X = Position.X + transform.XDelta,
-                Y = Position.Y + transform.YDelta
+                X = _position.X + transform.XDelta,
+                Y = _position.Y + transform.YDelta
             };
         }
 
@@ -94,11 +91,11 @@ namespace Nibbles.GameObject.Abstractions
         {
             return Direction switch
             {
-                DirectionType.Up => _velocityY,
-                DirectionType.Down => _velocityY,
-                DirectionType.Left => _velocityX,
-                DirectionType.Right => _velocityX,
-                _ => _velocityX
+                DirectionType.Up => VelocityY,
+                DirectionType.Down => VelocityY,
+                DirectionType.Left => VelocityX,
+                DirectionType.Right => VelocityX,
+                _ => VelocityX
             };
         }
     }

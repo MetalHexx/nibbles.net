@@ -31,11 +31,11 @@ namespace Nibbles.GameObject.UI
 
                     if (isBorder)
                     {
-                        _sprites.Add(new BorderPart(new Point(x, y)));
+                        Add(new BorderPart(new Point(x, y)));
                     }
                     else
                     {
-                        _sprites.Add(new BoxPart(new Point(x, y), ForegroundColor, BackgroundColor));
+                        Add(new BoxPart(new Point(x, y), ForegroundColor, BackgroundColor));
                     }
                 }
             }

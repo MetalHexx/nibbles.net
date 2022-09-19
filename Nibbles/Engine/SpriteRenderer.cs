@@ -22,17 +22,15 @@ namespace Nibbles.Engine
             _spritesToAdd.Clear();
         }
 
-        private static void Render(IEnumerable<ISprite?> sprites)
+        private static void Render(IEnumerable<ISprite> sprites)
         {
             foreach (var sprite in sprites)
             {
-                if (sprite is null) continue;
-
                 WriteText(sprite.DisplayCharacter,
                     sprite.ForegroundColor,
                     sprite.BackgroundColor,
-                    sprite.GetPosition().X,
-                    sprite.GetPosition().Y);
+                    sprite.Position.X,
+                    sprite.Position.Y);
             }
         }
 
@@ -45,8 +43,8 @@ namespace Nibbles.Engine
                 WriteText(' ',
                     SpriteConfig.BOARD_BACKGROUND_COLOR,
                     SpriteConfig.BOARD_BACKGROUND_COLOR,
-                    sprite.GetPosition().X,
-                    sprite.GetPosition().Y);
+                    sprite.Position.X,
+                    sprite.Position.Y);
             }
         }
 
@@ -58,7 +56,7 @@ namespace Nibbles.Engine
         {
             Console.ForegroundColor = foregroundColor.ToConsoleColor();
             Console.BackgroundColor = backgroundColor.ToConsoleColor();
-             Console.SetCursorPosition(xPosition, yPosition);
+            Console.SetCursorPosition(xPosition, yPosition);
             Console.Write(character);
             Console.ResetColor();
         }

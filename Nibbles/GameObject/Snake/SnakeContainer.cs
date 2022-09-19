@@ -9,7 +9,6 @@ namespace Nibbles.GameObject.Snake
     public class SnakeContainer : SpriteContainer
     {
         public event Action? TouchedSelf;
-        public event Action<ISprite>? SnakePartCreated, SnakePartDestroyed;
 
         private int _remainingGrowth = 0;
         private const int GROWTH_AMOUNT = 5;
@@ -28,7 +27,7 @@ namespace Nibbles.GameObject.Snake
 
         protected void Build()
         {
-            _sprites.Add(new SnakeSprite(
+            Add(new SnakeSprite(
                 new Point(
                     Position.X, 
                     Position.Y), 
@@ -39,11 +38,14 @@ namespace Nibbles.GameObject.Snake
            
         public Venom Shoot()
         {
-              return new Venom(Position, Direction);
+            var venom = new Venom(Position, Direction);
+             SpriteCreated?.Invoke(venom);
+            return venom;
         }
 
         public override void Move(PositionTransform transform, long timeDelta)
         {
+            if (!CanRender(timeDelta)) return;
 
             DoMove(transform, timeDelta);
 
@@ -54,20 +56,18 @@ namespace Nibbles.GameObject.Snake
         {
             var head = _sprites.First();
 
-            if (!head.CanRender(timeDelta)) return;
-
             Direction = transform.Direction;
 
             var newHead = new SnakeSprite(
-                head.GetPosition(),
+                head.Position,
                 Direction,
                 GetColor());
             
             newHead.Move(transform, timeDelta);
-            Position = newHead.GetPosition();
+            Position = newHead.Position;
 
-            _sprites.Insert(0, newHead);            
-            SnakePartCreated?.Invoke(newHead);
+            Insert(newHead);
+            
             Grow();
         }
 
@@ -94,12 +94,11 @@ namespace Nibbles.GameObject.Snake
                 return;
             }
             var partToRemove = _sprites.Last();
-            _sprites.Remove(partToRemove);
-            SnakePartDestroyed?.Invoke(partToRemove);
+            Remove(partToRemove);
         }
 
         private bool IsTouchingSelf => GetSprites()
             .Skip(1)
-            .Any(snakePart => GetPosition() == snakePart.GetPosition());
+            .Any(snakePart => Position == snakePart.Position);
     }
 }

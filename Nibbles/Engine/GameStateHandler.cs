@@ -29,8 +29,11 @@ namespace Nibbles.Engine
             _renderer.AddRange(_state.Score.GetSprites());
 
             _state.Snake.TouchedSelf += OnSnakeTouchedSelf;
-            _state.Snake.SnakePartCreated += OnSpriteCreated;
-            _state.Snake.SnakePartDestroyed += OnSpriteDestroyed;
+
+            RegisterSpriteEvents(_state.Snake);
+            RegisterSpriteEvents(_state.GameOverTextBox);
+            RegisterSpriteEvents(_state.Score);
+
             CreateFood();
         }
 
@@ -38,22 +41,14 @@ namespace Nibbles.Engine
         {
             _state.Snake.Feed();
             _state.Score.IncrementAmountEaten();
-            _renderer.AddRange(_state.Score.GetSprites());
         }
 
         public void CreateFood()
         {
             var positionsToAvoidFoodPlacement = _state.Snake
                 .GetSprites()
-                .Select(sp => sp.GetPosition())
+                .Select(sp => sp.Position)
                 .ToArray();
-
-            var totalNumPositions = (_state.Board.Dimensions.MaxX - 1) * (_state.Board.Dimensions.MaxY - 1);
-
-            if (totalNumPositions == positionsToAvoidFoodPlacement.Length)
-            {
-                HandleGameOver(SpriteConfig.GAME_WIN);
-            }
 
             var foodPosition = _positionGenerator.GetUniqueRandomPosition(_state.Board.Dimensions.MaxX - 1, _state.Board.Dimensions.MaxY - 1, positionsToAvoidFoodPlacement);
 
@@ -64,7 +59,7 @@ namespace Nibbles.Engine
         public void UpdateSprites(PositionTransform playerInput, long timeDelta)
         {
             _state.Snake.Move(playerInput, timeDelta);
-            _state.Venom?.Move(timeDelta);
+            _state.Venom?.Move(timeDelta); 
         }
 
         public void SnakeShoot()
@@ -80,13 +75,13 @@ namespace Nibbles.Engine
         public void CheckGameBoardCollision()
         {
             var collisionCondition =
-                _state.Snake.GetPosition().X == _state.Board.Dimensions.MinX
+                _state.Snake.Position.X == _state.Board.Dimensions.MinX
                 ||
-                _state.Snake.GetPosition().X == _state.Board.Dimensions.MaxX
+                _state.Snake.Position.X == _state.Board.Dimensions.MaxX
                 ||
-                _state.Snake.GetPosition().Y == _state.Board.Dimensions.MinY
+                _state.Snake.Position.Y == _state.Board.Dimensions.MinY
                 ||
-                _state.Snake.GetPosition().Y == _state.Board.Dimensions.MaxY;
+                _state.Snake.Position.Y == _state.Board.Dimensions.MaxY;
 
             if (collisionCondition)
             {
@@ -97,20 +92,18 @@ namespace Nibbles.Engine
 
         private void HandleGameOver(string text)
         {
-            _state.GameOverText.SetText(text);
-            _renderer.AddRange(_state.GameOverText.GetSprites());
+            _state.GameOverTextBox.SetText(text);
             GameOver?.Invoke();
         }
 
         public void IncrementMoveScore()
         {
             _state.Score.IncrementMoves();
-            _renderer.AddRange(_state.Score.GetSprites());
         }
 
         public void DetectFoodCollision()
         {
-            if (_state.Snake.GetPosition() == _state.Food?.GetPosition())
+            if (_state.Snake.Position == _state.Food?.Position)
             {
                 FeedSnake();
                 CreateFood();
@@ -141,6 +134,17 @@ namespace Nibbles.Engine
         private void OnSpriteDestroyed(ISprite sprite)
         {
             _renderer.Remove(sprite);
+        }
+
+        private void RegisterSpriteEvents(ISprite sprite)
+        {
+            sprite.SpriteCreated += OnSpriteCreated;
+            sprite.SpriteDestroyed += OnSpriteDestroyed;
+        }
+        private void UnregisterSpriteEvents(ISprite sprite)
+        {
+            sprite.SpriteCreated -= OnSpriteCreated;
+            sprite.SpriteDestroyed -= OnSpriteDestroyed;
         }
     }
 }

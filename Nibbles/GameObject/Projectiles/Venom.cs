@@ -22,13 +22,13 @@ namespace Nibbles.GameObject.Projectiles
         //other wise it makes the parent object flicker
         public void AdjustPosition()
         {
-             Position = Direction switch
+             _position = Direction switch
             {
                 DirectionType.Up => Position with { Y = Position.Y - 2 },
                 DirectionType.Down => Position with { Y = Position.Y + 2 },
                 DirectionType.Left => Position with { X = Position.X - 2 },
                 DirectionType.Right => Position with { X = Position.X + 2 },
-                _ => Position
+                _ => _position
             };
         }
 
@@ -54,6 +54,7 @@ namespace Nibbles.GameObject.Projectiles
                 DirectionType.Down => SpriteConfig.VENOM_DISTANCE_Y,
                 DirectionType.Left => SpriteConfig.VENOM_DISTANCE_X,
                 DirectionType.Right => SpriteConfig.VENOM_DISTANCE_X,
+                _ => SpriteConfig.VENOM_DISTANCE_X
             };
         }
     }

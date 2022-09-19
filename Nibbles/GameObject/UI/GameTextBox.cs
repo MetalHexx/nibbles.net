@@ -1,4 +1,5 @@
-﻿using Nibbles.GameObject.Configuration;
+﻿using Nibbles.GameObject.Abstractions;
+using Nibbles.GameObject.Configuration;
 using Nibbles.GameObject.Dimensions;
 using System.Drawing;
 
@@ -14,19 +15,13 @@ namespace Nibbles.GameObject.UI
                 SpriteConfig.GAME_TEXTBOX_FOREGROUND_COLOR,
                 SpriteConfig.GAME_TEXTBOX_BACKGROUND_COLOR);
 
-            BuildTextBox();
-        }
-
-        public void BuildTextBox()
-        {
-            base.Build();
-            _sprites.AddRange(_text.GetSprites());
+            _text.SpriteCreated += Add;
         }
 
         public void SetText(string text)
-        {
+        {            
+            Build();
             _text.SetText(text);
-            BuildTextBox();
         }
     }
 }

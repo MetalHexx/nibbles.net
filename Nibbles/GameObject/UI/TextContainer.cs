@@ -43,7 +43,7 @@ namespace Nibbles.GameObject.UI
                 {
                     X = Position.X + i
                 };
-                _sprites.Add(new TextSprite(position, ForegroundColor, BackgroundColor, charList[i]));
+                Add(new TextSprite(position, ForegroundColor, BackgroundColor, charList[i]));
             }
         }
     }

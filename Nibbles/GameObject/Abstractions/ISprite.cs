@@ -6,13 +6,16 @@ namespace Nibbles.GameObject.Abstractions
 {
     public interface ISprite
     {
+        Action<ISprite>? SpriteDestroyed { get; set; }
+        Action<ISprite>? SpriteCreated { get; set; }
+        Point Position { get; }
+        DirectionType Direction { get; }
         GameColor ForegroundColor { get; }
         GameColor BackgroundColor { get; }
         char DisplayCharacter { get; }
-        Point GetPosition();
-        double GetVelocity();
         void Move(PositionTransform transform, long timeDelta);
         void Move(long timeDelta);
         bool CanRender(long timeDelta);
+        double GetVelocity();
     }
 }
