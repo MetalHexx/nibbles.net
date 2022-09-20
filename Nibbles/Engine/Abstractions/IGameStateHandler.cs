@@ -4,7 +4,7 @@ namespace Nibbles.Engine.Abstractions
 {
     public interface IGameStateHandler
     {
-        event Action? GameOver;        
+        Action? GameOver { get; set; }
         void PlayerMove();
         void PlayerShoot();
         void UpdateState(PositionTransform transform, long renderDelta);

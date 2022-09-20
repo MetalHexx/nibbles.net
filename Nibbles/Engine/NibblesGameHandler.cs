@@ -1,5 +1,4 @@
 ﻿using Nibbles.Engine.Abstractions;
-using Nibbles.GameObject.Abstractions;
 using Nibbles.GameObject.Configuration;
 using Nibbles.GameObject.Dimensions;
 using Nibbles.GameObject.Food;
@@ -8,22 +7,19 @@ using System.Drawing;
 
 namespace Nibbles.Engine
 {
-    public class NibblesStateHandler : IGameStateHandler
+    public class NibblesStateHandler : DefaultStateHandler
     {
-        public event Action? GameOver;
-        private readonly ISpriteRenderer _renderer;
         private readonly ICollisionDetector _collisionDetector;
         private readonly GameState _state;
 
-        public NibblesStateHandler(GameState state, ISpriteRenderer renderer, ICollisionDetector collisionDetector)
+        public NibblesStateHandler(GameState state, ISpriteRenderer renderer, ICollisionDetector collisionDetector) : base(renderer)
         {
             _state = state;
-            _renderer = renderer;
             _collisionDetector = collisionDetector;
             InitializeSprites();
         }
 
-        private void InitializeSprites()
+        protected override void InitializeSprites()
         {
             _renderer.AddRange(_state.Board.GetSprites());
             _renderer.AddRange(_state.Snake.GetSprites());
@@ -44,12 +40,12 @@ namespace Nibbles.Engine
             CreateFood();
         }
 
-        public void PlayerMove()
+        public override void PlayerMove()
         {
             _state.Score.IncrementMoves();
         }
 
-        public void PlayerShoot()
+        public override void PlayerShoot()
         {
             if (_state.Venom != null) return;
 
@@ -59,11 +55,22 @@ namespace Nibbles.Engine
             _state.Venom.VenomDestroyed += OnVenomDestroyed;
         }
 
-        public void UpdateState(PositionTransform playerInput, long timeDelta)
+        public override void UpdateState(PositionTransform playerInput, long timeDelta)
         {
             _collisionDetector.Detect();
             _state.Snake.Move(playerInput, timeDelta);
             _state.Venom?.Move(timeDelta);
+        }
+
+        protected override void HandleGameWin(string text)
+        {
+            throw new NotImplementedException(); //lol, no way to win yet
+        }
+
+        protected override void HandleGameOver(string text)
+        {
+            _state.GameOverTextBox.SetText(text);
+            GameOver?.Invoke();
         }
 
         private void OnSnakeCollisionFood()
@@ -71,12 +78,6 @@ namespace Nibbles.Engine
             _state.Snake.Feed();
             _state.Score.IncrementAmountEaten();
             CreateFood();
-        }
-
-        private void HandleGameOver(string text)
-        {
-            _state.GameOverTextBox.SetText(text);
-            GameOver?.Invoke();
         }
 
         private void CreateFood()
@@ -100,22 +101,6 @@ namespace Nibbles.Engine
             _state.Venom.SpriteCreated -= OnSpriteCreated;
             _state.Venom.VenomDestroyed -= OnVenomDestroyed;
             _state.Venom = null;
-        }
-
-        private void OnSpriteCreated(ISprite sprite)
-        {
-            _renderer.Add(sprite);
-        }
-
-        private void OnSpriteDestroyed(ISprite sprite)
-        {
-            _renderer.Remove(sprite);
-        }
-
-        private void RegisterSpriteEvents(ISprite sprite)
-        {
-            sprite.SpriteCreated += OnSpriteCreated;
-            sprite.SpriteDestroyed += OnSpriteDestroyed;
         }
     }
 }
