@@ -4,14 +4,13 @@ using Nibbles.GameObject.Configuration;
 using Nibbles.GameObject.Dimensions;
 using Nibbles.GameObject.Food;
 using Nibbles.GameObject.Projectiles;
-using Nibbles.GameObject.UI;
 
 namespace Nibbles.Engine
 {
     public class GameStateHandler : IGameStateHandler
     {
         public event Action? GameOver;
-        private ISpriteRenderer _renderer;
+        private readonly ISpriteRenderer _renderer;
         private readonly ICollisionDetector _collisionDetector;
         private readonly GameState _state;
 
@@ -62,8 +61,9 @@ namespace Nibbles.Engine
             _state.Score.IncrementMoves();
         }
 
-        public void UpdateSprites(PositionTransform playerInput, long timeDelta)
+        public void UpdateState(PositionTransform playerInput, long timeDelta)
         {
+            _collisionDetector.Detect();
             _state.Snake.Move(playerInput, timeDelta);
             _state.Venom?.Move(timeDelta);
         }
@@ -115,11 +115,6 @@ namespace Nibbles.Engine
         {
             sprite.SpriteCreated += OnSpriteCreated;
             sprite.SpriteDestroyed += OnSpriteDestroyed;
-        }
-        private void UnregisterSpriteEvents(ISprite sprite)
-        {
-            sprite.SpriteCreated -= OnSpriteCreated;
-            sprite.SpriteDestroyed -= OnSpriteDestroyed;
         }
     }
 }

@@ -1,12 +1,10 @@
 ﻿using Nibbles.GameObject.Abstractions;
 using Nibbles.GameObject.Configuration;
-using Nibbles.GameObject.Dimensions;
 using Nibbles.GameObject.Food;
 using Nibbles.GameObject.Projectiles;
 using Nibbles.GameObject.Snake;
 using Nibbles.GameObject.UI;
 using System.Drawing;
-using System.Dynamic;
 
 namespace Nibbles.Engine
 {

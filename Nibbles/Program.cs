@@ -8,5 +8,5 @@ var gameState = new GameState();
 var collisionDetector = new CollisionDetector(gameState);
 var gameStateHandler = new GameStateHandler(gameState, renderer, collisionDetector);
 
-new Engine(playerInput, renderer, gameStateHandler, collisionDetector).Start();
+new Engine(playerInput, renderer, gameStateHandler).Start();
 Console.ReadLine();

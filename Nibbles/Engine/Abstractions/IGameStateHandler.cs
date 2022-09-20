@@ -7,7 +7,7 @@ namespace Nibbles.Engine.Abstractions
         event Action? GameOver;
         void CreateFood();
         void IncrementMoveScore();
-        void UpdateSprites(PositionTransform transform, long renderDelta);
+        void UpdateState(PositionTransform transform, long renderDelta);
         void SnakeShoot();
     }
 }
