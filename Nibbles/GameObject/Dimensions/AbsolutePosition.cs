@@ -2,6 +2,9 @@
 
 namespace Nibbles.GameObject.Dimensions
 {
+    /// <summary>
+    /// Used to define the position of a sprite with absolute coordinates
+    /// </summary>
     public record AbsolutePosition
     {
         public int MinX { get; }
