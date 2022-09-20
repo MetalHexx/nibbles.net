@@ -5,5 +5,5 @@ A little .net console game engine I put together to explore game programming.  C
 I was inspired to a video I saw on YouTube with this dude creating "snakes" on an Apple ][.
 https://www.youtube.com/watch?v=7r83N3c2kPw&t=1088s  So I decided to give it a go for fun and made my own with a .net console app.
 
-The engine was inspired from a QBasic variation I used to tinker around with and modify -- one of my first programming acitivites when I was a kid. :)
+The engine name was inspired from a QBasic variation of snakes called "Nibbles" that I used to tinker around with and modify -- one of my first programming activities when I was a kid. :)
 https://www.youtube.com/watch?v=rTzev59RUGw
