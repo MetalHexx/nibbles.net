@@ -6,7 +6,7 @@ var playerInput = new PlayerInput(inputReader);
 var renderer = new SpriteRenderer();
 var gameState = new GameState();
 var collisionDetector = new CollisionDetector(gameState);
-var gameStateHandler = new GameStateHandler(gameState, renderer, collisionDetector);
+var gameStateHandler = new NibblesStateHandler(gameState, renderer, collisionDetector);
 
 new Engine(playerInput, renderer, gameStateHandler).Start();
 Console.ReadLine();

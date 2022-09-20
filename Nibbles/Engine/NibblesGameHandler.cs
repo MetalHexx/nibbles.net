@@ -8,14 +8,14 @@ using System.Drawing;
 
 namespace Nibbles.Engine
 {
-    public class GameStateHandler : IGameStateHandler
+    public class NibblesStateHandler : IGameStateHandler
     {
         public event Action? GameOver;
         private readonly ISpriteRenderer _renderer;
         private readonly ICollisionDetector _collisionDetector;
         private readonly GameState _state;
 
-        public GameStateHandler(GameState state, ISpriteRenderer renderer, ICollisionDetector collisionDetector)
+        public NibblesStateHandler(GameState state, ISpriteRenderer renderer, ICollisionDetector collisionDetector)
         {
             _state = state;
             _renderer = renderer;
