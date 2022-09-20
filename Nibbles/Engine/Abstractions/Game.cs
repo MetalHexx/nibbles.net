@@ -1,11 +1,10 @@
-﻿using Nibbles.Engine.Abstractions;
-using Nibbles.GameObject.Abstractions;
+﻿using Nibbles.GameObject.Abstractions;
 using Nibbles.GameObject.Dimensions;
 
-namespace Nibbles.Engine
+namespace Nibbles.Engine.Abstractions
 {
     public abstract class Game : IGame
-    {   
+    {
         public Action? GameOver { get; set; }
 
         protected readonly ISpriteRenderer _renderer;
@@ -19,7 +18,7 @@ namespace Nibbles.Engine
         public abstract void PlayerShoot();
         public abstract void UpdateState(PositionTransform transform, long renderDelta);
         protected abstract void HandleGameWin(string text);
-        protected abstract void HandleGameOver(string text);        
+        protected abstract void HandleGameOver(string text);
 
         protected virtual void OnSpriteCreated(ISprite sprite)
         {

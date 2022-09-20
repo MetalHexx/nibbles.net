@@ -1,5 +1,4 @@
-﻿using Nibbles.Engine;
-using Nibbles.Engine.Abstractions;
+﻿using Nibbles.Engine.Abstractions;
 using Nibbles.GameObject.Dimensions;
 using SnakesGame.GameObject;
 using System.Drawing;
