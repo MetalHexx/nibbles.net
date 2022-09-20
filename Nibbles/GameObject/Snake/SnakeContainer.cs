@@ -32,7 +32,7 @@ namespace Nibbles.GameObject.Snake
                 Direction));
         }
 
-        public void Feed() => _remainingGrowth += GROWTH_AMOUNT;
+        public void Feed() => _remainingGrowth += SpriteConfig.SNAKE_GROWTH_PER_FEED;
            
         public Venom Shoot()
         {

@@ -18,6 +18,7 @@ namespace Nibbles.GameObject.Configuration
         public const DirectionType SNAKE_STARTING_DIRECTION = DirectionType.Right;
         public const double SNAKE_VELOCITY_X = 2;
         public const double SNAKE_VELOCITY_Y = 1.8;
+        public static int SNAKE_GROWTH_PER_FEED = 5;
 
         public const GameColor VENOM_BACKGROUND_COLOR = GameColor.Green;
         public const GameColor VENOM_FOREGROUND_COLOR = GameColor.Green;
@@ -42,6 +43,6 @@ namespace Nibbles.GameObject.Configuration
 
         public const string GAME_TITLE = "Nibbles.net";
         public const string GAME_WIN = "Game Over! :)";
-        public const string GAME_LOSE = "Game Over! :(";
+        public const string GAME_LOSE = "Game Over! :(";        
     }
 }
