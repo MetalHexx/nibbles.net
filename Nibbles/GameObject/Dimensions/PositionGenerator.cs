@@ -1,23 +1,35 @@
-﻿using System.Drawing;
+﻿using Nibbles.GameObject.Abstractions;
+using System.Drawing;
 
 namespace Nibbles.GameObject.Dimensions
 {
-    public class PositionGenerator
+    public static class PositionGenerator
     {
-        private Random _random = new Random();
+        private static Random _random = new Random();
 
-        public Point GetUniqueRandomPosition(int maxX, int maxY, params Point[] excludedPositions)
+        public static Point GetRandomPosition(int maxX, int maxY, IEnumerable<ISprite> spritesToAvoid)
         {
-            var newFoodPosition = GetRandomPosition(maxX, maxY);
-
-            while (excludedPositions.Any(position => position == newFoodPosition))
-            {
-                newFoodPosition = GetRandomPosition(maxX, maxY);
-            }
-            return newFoodPosition;
+            var positionsToAvoid = spritesToAvoid.Select(sprite => sprite.Position);
+            return GetRandomPosition(maxX, maxY, positionsToAvoid);
         }
 
-        private Point GetRandomPosition(int maxX, int maxY) =>
-            new Point(_random.Next(1, maxX), _random.Next(1, maxY));
+        public static Point GetRandomPosition(int maxX, int maxY, IEnumerable<Point> positionsToAvoid)
+        {
+            var availablePositions = new List<Point>();
+
+            for (int x = 0; x < maxX; x++)
+            {
+                for (int y = 0; y < maxY; y++)
+                {
+                    var point = new Point(x, y);
+
+                    if(!positionsToAvoid.Any(pos => pos == point))
+                    {
+                        availablePositions.Add(point);
+                    }
+                }
+            }
+            return availablePositions[_random.Next(0, availablePositions.Count)];
+        }
     }
 }

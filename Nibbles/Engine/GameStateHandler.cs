@@ -4,6 +4,7 @@ using Nibbles.GameObject.Configuration;
 using Nibbles.GameObject.Dimensions;
 using Nibbles.GameObject.Food;
 using Nibbles.GameObject.Projectiles;
+using Nibbles.GameObject.UI;
 
 namespace Nibbles.Engine
 {
@@ -12,7 +13,6 @@ namespace Nibbles.Engine
         public event Action? GameOver;
         private ISpriteRenderer _renderer;
         private readonly ICollisionDetector _collisionDetector;
-        private readonly PositionGenerator _positionGenerator = new();
         private readonly GameState _state;
 
         public GameStateHandler(GameState state, ISpriteRenderer renderer, ICollisionDetector collisionDetector)
@@ -70,14 +70,12 @@ namespace Nibbles.Engine
 
         public void CreateFood()
         {
-            var positionsToAvoidFoodPlacement = _state.Snake
-                .GetSprites()
-                .Select(sp => sp.Position)
-                .ToArray();
+            var position = PositionGenerator.GetRandomPosition(
+                SpriteConfig.BoardSizeX, 
+                SpriteConfig.BoardSizeY,
+                _state.GetUnavailableFoodPositions());
 
-            var foodPosition = _positionGenerator.GetUniqueRandomPosition(_state.Board.Dimensions.MaxX - 1, _state.Board.Dimensions.MaxY - 1, positionsToAvoidFoodPlacement);
-
-            _state.Food = new FoodSprite(foodPosition);
+            _state.Food = new FoodSprite(position);
 
             _renderer.Add(_state.Food);
         }
