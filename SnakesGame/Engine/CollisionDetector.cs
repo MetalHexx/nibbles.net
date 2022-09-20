@@ -2,7 +2,7 @@
 using Nibbles.GameObject.Abstractions;
 using Nibbles.GameObject.UI;
 
-namespace Nibbles.Engine
+namespace SnakesGame.Engine
 {
     public class CollisionDetector : ICollisionDetector
     {

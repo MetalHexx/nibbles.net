@@ -1,4 +1,4 @@
-﻿namespace Nibbles.Engine.Abstractions
+﻿namespace SnakesGame.Engine
 {
     public interface ICollisionDetector
     {

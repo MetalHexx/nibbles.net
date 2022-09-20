@@ -4,7 +4,7 @@ using Nibbles.GameObject.Configuration;
 
 namespace Nibbles.Engine
 {
-    internal class SpriteRenderer : ISpriteRenderer
+    public class SpriteRenderer : ISpriteRenderer
     {
         private readonly List<ISprite> _spritesToAdd = new();
         private readonly List<ISprite> _spritesToRemove = new();
@@ -56,8 +56,8 @@ namespace Nibbles.Engine
                 if (sprite is null) continue;
 
                 WriteText(' ',
-                    SpriteConfig.BOARD_BACKGROUND_COLOR,
-                    SpriteConfig.BOARD_BACKGROUND_COLOR,
+                    GameConfig.BOARD_BACKGROUND_COLOR,
+                    GameConfig.BOARD_BACKGROUND_COLOR,
                     sprite.Position.X,
                     sprite.Position.Y);
             }

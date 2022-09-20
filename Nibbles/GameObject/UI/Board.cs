@@ -6,6 +6,6 @@ namespace Nibbles.GameObject.UI
 {
     public class Board : BorderedBox
     {
-        public Board(Point position, Size size) : base(position, size, SpriteConfig.BOARD_BORDER_FOREGROUND_COLOR, SpriteConfig.BOARD_BACKGROUND_COLOR) { }
+        public Board(Point position, Size size) : base(position, size, GameConfig.BOARD_BORDER_FOREGROUND_COLOR, GameConfig.BOARD_BACKGROUND_COLOR) { }
     }
 }

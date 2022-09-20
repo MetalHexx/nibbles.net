@@ -1,10 +1,9 @@
 ﻿using Nibbles.GameObject.Abstractions;
 using Nibbles.GameObject.Configuration;
 using Nibbles.GameObject.Dimensions;
-using Nibbles.GameObject.Projectiles;
 using System.Drawing;
 
-namespace Nibbles.GameObject.Snake
+namespace SnakesGame.GameObject
 {
     public class SnakeContainer : SpriteContainer
     {
@@ -14,9 +13,9 @@ namespace Nibbles.GameObject.Snake
 
         public SnakeContainer() : base(
             new Point(
-                SpriteConfig.SNAKE_STARTING_POSITION_X, 
-                SpriteConfig.SNAKE_STARTING_POSITION_Y), 
-            GameColor.Cyan, 
+                SnakesConfig.SNAKE_STARTING_POSITION_X,
+                SnakesConfig.SNAKE_STARTING_POSITION_Y),
+            GameColor.Cyan,
             GameColor.Cyan)
         {
             Direction = DirectionType.Right;
@@ -27,17 +26,17 @@ namespace Nibbles.GameObject.Snake
         {
             Add(new SnakeSprite(
                 new Point(
-                    Position.X, 
-                    Position.Y), 
+                    Position.X,
+                    Position.Y),
                 Direction));
         }
 
-        public void Feed() => _remainingGrowth += SpriteConfig.SNAKE_GROWTH_PER_FEED;
-           
+        public void Feed() => _remainingGrowth += SnakesConfig.SNAKE_GROWTH_PER_FEED;
+
         public Venom Shoot()
         {
             var venom = new Venom(Position, Direction);
-             SpriteCreated?.Invoke(venom);
+            SpriteCreated?.Invoke(venom);
             return venom;
         }
 
@@ -58,12 +57,12 @@ namespace Nibbles.GameObject.Snake
                 head.Position,
                 Direction,
                 GetColor());
-            
+
             newHead.Move(transform, timeDelta);
             Position = newHead.Position;
 
             Insert(newHead);
-            
+
             Grow();
         }
 
@@ -71,8 +70,8 @@ namespace Nibbles.GameObject.Snake
         {
             SwitchColor();
             return _switchAltColor
-                ? SpriteConfig.SNAKE_BACKGROUND_ALT_COLOR
-                : SpriteConfig.SNAKE_BACKGROUND_COLOR;
+                ? SnakesConfig.SNAKE_BACKGROUND_ALT_COLOR
+                : SnakesConfig.SNAKE_BACKGROUND_COLOR;
         }
 
         private void SwitchColor()

@@ -1,11 +1,10 @@
-﻿using Nibbles.Engine.Abstractions;
-using Nibbles.GameObject.Configuration;
+﻿using Nibbles.Engine;
+using Nibbles.Engine.Abstractions;
 using Nibbles.GameObject.Dimensions;
-using Nibbles.GameObject.Food;
-using Nibbles.GameObject.Projectiles;
+using SnakesGame.GameObject;
 using System.Drawing;
 
-namespace Nibbles.Engine
+namespace SnakesGame.Engine
 {
     public class NibblesGame : Game
     {
@@ -26,11 +25,11 @@ namespace Nibbles.Engine
             _renderer.AddRange(_state.GameTitle.GetSprites());
             _renderer.AddRange(_state.Score.GetSprites());
 
-            _collisionDetector.SnakeSelfCollision += () => HandleGameOver(SpriteConfig.GAME_LOSE);
-            _collisionDetector.SnakeVenomCollison += () => HandleGameOver(SpriteConfig.GAME_LOSE);
-            _collisionDetector.SnakeBoardCollison += () => HandleGameOver(SpriteConfig.GAME_LOSE);
-            _collisionDetector.VenomBoardCollision += () => HandleGameOver(SpriteConfig.GAME_LOSE);
-            _collisionDetector.VenomFoodCollision += () => HandleGameOver(SpriteConfig.GAME_LOSE);
+            _collisionDetector.SnakeSelfCollision += () => HandleGameOver(SnakesConfig.GAME_LOSE);
+            _collisionDetector.SnakeVenomCollison += () => HandleGameOver(SnakesConfig.GAME_LOSE);
+            _collisionDetector.SnakeBoardCollison += () => HandleGameOver(SnakesConfig.GAME_LOSE);
+            _collisionDetector.VenomBoardCollision += () => HandleGameOver(SnakesConfig.GAME_LOSE);
+            _collisionDetector.VenomFoodCollision += () => HandleGameOver(SnakesConfig.GAME_LOSE);
             _collisionDetector.SnakeFoodCollision += OnSnakeCollisionFood;
 
             RegisterSpriteEvents(_state.Snake);
@@ -84,8 +83,8 @@ namespace Nibbles.Engine
         {
             var position = PositionGenerator.GetRandomPosition(
                 new AbsolutePosition(new Point(0, 0), new Size(
-                    SpriteConfig.BoardSizeX,
-                    SpriteConfig.BoardSizeY)),
+                    SnakesConfig.BoardSizeX,
+                    SnakesConfig.BoardSizeY)),
                 _state.GetUnavailableFoodPositions());
 
             _state.Food = new FoodSprite(position);

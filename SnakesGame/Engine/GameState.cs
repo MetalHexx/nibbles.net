@@ -1,12 +1,10 @@
 ﻿using Nibbles.GameObject.Abstractions;
 using Nibbles.GameObject.Configuration;
-using Nibbles.GameObject.Food;
-using Nibbles.GameObject.Projectiles;
-using Nibbles.GameObject.Snake;
 using Nibbles.GameObject.UI;
+using SnakesGame.GameObject;
 using System.Drawing;
 
-namespace Nibbles.Engine
+namespace SnakesGame.Engine
 {
     public class GameState
     {
@@ -15,17 +13,17 @@ namespace Nibbles.Engine
         public Venom? Venom { get; set; }
         public GameTextBox GameOverTextBox { get; init; }
 
-        public Board Board { get; init; } = new (
-            new Point(0, 0), new Size(SpriteConfig.BoardSizeX, SpriteConfig.BoardSizeY));
+        public Board Board { get; init; } = new(
+            new Point(0, 0), new Size(SnakesConfig.BoardSizeX, SnakesConfig.BoardSizeY));
 
         public Score Score { get; init; } = new(
-            new Point(SpriteConfig.GAME_TITLE.Length + 1, 0), "");
+            new Point(SnakesConfig.GAME_TITLE.Length + 1, 0), "");
 
         public GameText GameTitle { get; init; } = new(
             new Point(1, 0),
-            SpriteConfig.GAME_TITLE,
-            SpriteConfig.BOARD_BORDER_FOREGROUND_COLOR,
-            SpriteConfig.BOARD_BORDER_BACKGROUND_COLOR);
+            SnakesConfig.GAME_TITLE,
+            SnakesConfig.BOARD_BORDER_FOREGROUND_COLOR,
+            SnakesConfig.BOARD_BORDER_BACKGROUND_COLOR);
 
         public GameState()
         {
@@ -37,11 +35,11 @@ namespace Nibbles.Engine
         public IList<ISprite> GetUnavailableFoodPositions()
         {
             var sprites = new List<ISprite>();
-            
+
             if (Food != null) sprites.Add(Food);
             if (Venom != null) sprites.Add(Venom);
 
-            sprites.AddRange(Snake.GetSprites());            
+            sprites.AddRange(Snake.GetSprites());
             sprites.AddRange(Board.GetSprites()
                 .Where(s => s is BorderPart));
 

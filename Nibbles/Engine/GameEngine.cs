@@ -4,7 +4,7 @@ using System.Drawing;
 
 namespace Nibbles.Engine
 {
-    internal class Engine
+    public class Engine
     {
         private readonly ISpriteRenderer _renderer;
         private readonly IGameStateHandler _actions;

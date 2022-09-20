@@ -16,8 +16,8 @@ namespace Nibbles.GameObject.Abstractions
         public GameColor BackgroundColor { get; protected set; }
         public char DisplayCharacter { get; protected set; }
 
-        public double VelocityX { get; private set; } = SpriteConfig.DEFAULT_SPRITE_VELOCITY_X;
-        public double VelocityY { get; private set; } = SpriteConfig.DEFAULT_SPRITE_VELOCITY_Y;
+        public double VelocityX { get; private set; } = GameConfig.DEFAULT_SPRITE_VELOCITY_X;
+        public double VelocityY { get; private set; } = GameConfig.DEFAULT_SPRITE_VELOCITY_Y;
 
         protected readonly List<ISprite> _sprites = new();
         private TimeSpan _timeSinceMove = new TimeSpan();
@@ -66,7 +66,7 @@ namespace Nibbles.GameObject.Abstractions
             var timeSpan = new TimeSpan(timeDelta);
             _timeSinceMove += timeSpan;
 
-            var msToWait = SpriteConfig.MIN_FRAME_RENDER_SPEED_MS / GetVelocity();
+            var msToWait = GameConfig.MIN_FRAME_RENDER_SPEED_MS / GetVelocity();
 
             var shouldMove = _timeSinceMove.TotalMilliseconds >= msToWait;
 

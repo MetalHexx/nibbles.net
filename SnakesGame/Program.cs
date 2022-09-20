@@ -1,5 +1,6 @@
 ﻿using Nibbles.Engine;
 using Nibbles.Player;
+using SnakesGame.Engine;
 
 var inputReader = new KeyboardReader();
 var playerInput = new PlayerInput(inputReader);

@@ -3,17 +3,17 @@ using Nibbles.GameObject.Configuration;
 using Nibbles.GameObject.Dimensions;
 using System.Drawing;
 
-namespace Nibbles.GameObject.Snake
+namespace SnakesGame.GameObject
 {
     public record SnakeSprite : Sprite
     {
         public SnakeSprite(Point position, DirectionType direction)
-            : base(position, direction, SpriteConfig.SNAKE_FOREGROUND_COLOR, SpriteConfig.SNAKE_BACKGROUND_COLOR, ' ', SpriteConfig.SNAKE_VELOCITY_X, SpriteConfig.SNAKE_VELOCITY_Y) { }
+            : base(position, direction, SnakesConfig.SNAKE_FOREGROUND_COLOR, SnakesConfig.SNAKE_BACKGROUND_COLOR, ' ', SnakesConfig.SNAKE_VELOCITY_X, SnakesConfig.SNAKE_VELOCITY_Y) { }
 
         /// <summary>
         /// Used for alternating color
         /// </summary>        
         public SnakeSprite(Point position, DirectionType direction, GameColor backgroundColor)
-            : base(position, direction, SpriteConfig.SNAKE_FOREGROUND_COLOR, backgroundColor, ' ', SpriteConfig.SNAKE_VELOCITY_X, SpriteConfig.SNAKE_VELOCITY_Y) { }
+            : base(position, direction, SnakesConfig.SNAKE_FOREGROUND_COLOR, backgroundColor, ' ', SnakesConfig.SNAKE_VELOCITY_X, SnakesConfig.SNAKE_VELOCITY_Y) { }
     }
 }
