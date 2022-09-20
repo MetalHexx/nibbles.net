@@ -8,6 +8,8 @@ namespace Nibbles.GameObject.Dimensions
         public int MaxX { get; }
         public int MinY { get; }
         public int MaxY { get; }
+        public Point Position { get; }
+        public Size Size { get; }
 
         public AbsolutePosition(Point position, Size size)
         {
@@ -15,6 +17,8 @@ namespace Nibbles.GameObject.Dimensions
             MaxX = position.X + size.Width;
             MinY = position.Y;
             MaxY = position.Y + size.Height;
+            Position = position;
+            Size = size;
         }
     }
 }
