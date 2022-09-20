@@ -1,5 +1,5 @@
 # nibbles.net
-A little engine and game I put together to explore game programming.  Contains two projects, the engine and demo snakes game.
+A little .net console game engine I put together to explore game programming.  Contains two projects, the engine and demo snakes game.  Part of the challenge to build this without 3rd party libraries.
 
 ## Background
 I was inspired to a video I saw on YouTube with this dude creating "snakes" on an Apple ][.
