@@ -4,13 +4,13 @@ using Nibbles.GameObject.Dimensions;
 
 namespace Nibbles.Engine
 {
-    public abstract class DefaultStateHandler : IGameStateHandler
+    public abstract class Game : IGameStateHandler
     {   
         public Action? GameOver { get; set; }
 
         protected readonly ISpriteRenderer _renderer;
 
-        public DefaultStateHandler(ISpriteRenderer renderer)
+        public Game(ISpriteRenderer renderer)
         {
             _renderer = renderer;
         }

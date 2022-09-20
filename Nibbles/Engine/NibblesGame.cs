@@ -7,12 +7,12 @@ using System.Drawing;
 
 namespace Nibbles.Engine
 {
-    public class NibblesStateHandler : DefaultStateHandler
+    public class NibblesGame : Game
     {
         private readonly ICollisionDetector _collisionDetector;
         private readonly GameState _state;
 
-        public NibblesStateHandler(GameState state, ISpriteRenderer renderer, ICollisionDetector collisionDetector) : base(renderer)
+        public NibblesGame(GameState state, ISpriteRenderer renderer, ICollisionDetector collisionDetector) : base(renderer)
         {
             _state = state;
             _collisionDetector = collisionDetector;
