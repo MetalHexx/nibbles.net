@@ -4,7 +4,7 @@ using Nibbles.GameObject.Dimensions;
 
 namespace Nibbles.Engine
 {
-    public abstract class Game : IGameStateHandler
+    public abstract class Game : IGame
     {   
         public Action? GameOver { get; set; }
 

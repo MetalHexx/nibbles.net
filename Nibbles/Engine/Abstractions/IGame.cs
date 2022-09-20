@@ -2,7 +2,7 @@
 
 namespace Nibbles.Engine.Abstractions
 {
-    public interface IGameStateHandler
+    public interface IGame
     {
         Action? GameOver { get; set; }
         void PlayerMove();
