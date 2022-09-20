@@ -6,19 +6,19 @@ namespace Nibbles.Engine
     public class GameLoop
     {
         private readonly ISpriteRenderer _renderer;
-        private readonly IGame _actions;
+        private readonly IGame _game;
         private readonly IPlayerInput _player;
         private bool _continueGame = true;
         private long _lastRenderTicks = DateTime.Now.Ticks; 
 
-        public GameLoop(IPlayerInput player, ISpriteRenderer renderer, IGame actions)
+        public GameLoop(IPlayerInput player, ISpriteRenderer renderer, IGame game)
         {
             _player = player;
             _renderer = renderer;
-            _actions = actions;
-            _actions.GameOver += () => _continueGame = false;
-            _player.Moved += _actions.PlayerMove;
-            _player.Shot += _actions.PlayerShoot;
+            _game = game;
+            _game.GameOver += () => _continueGame = false;
+            _player.Moved += _game.PlayerMove;
+            _player.Shot += _game.PlayerShoot;
             _renderer.Render();            
         }
         public void Start()
@@ -26,7 +26,7 @@ namespace Nibbles.Engine
             do
             {   
                 _player.UpdateState();
-                _actions.UpdateState(_player.GetMove(), GetTimeSinceRender());
+                _game.UpdateState(_player.GetMove(), GetTimeSinceRender());
                 _renderer.Render();
             }
             while (_continueGame);
