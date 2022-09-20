@@ -9,5 +9,5 @@ var gameState = new GameState();
 var collisionDetector = new CollisionDetector(gameState);
 var gameStateHandler = new NibblesGame(gameState, renderer, collisionDetector);
 
-new Engine(playerInput, renderer, gameStateHandler).Start();
+new GameLoop(playerInput, renderer, gameStateHandler).Start();
 Console.ReadLine();

@@ -1,10 +1,9 @@
 ﻿using Nibbles.Engine.Abstractions;
 using Nibbles.Player;
-using System.Drawing;
 
 namespace Nibbles.Engine
 {
-    public class Engine
+    public class GameLoop
     {
         private readonly ISpriteRenderer _renderer;
         private readonly IGameStateHandler _actions;
@@ -12,7 +11,7 @@ namespace Nibbles.Engine
         private bool _continueGame = true;
         private long _lastRenderTicks = DateTime.Now.Ticks; 
 
-        public Engine(IPlayerInput player, ISpriteRenderer renderer, IGameStateHandler actions)
+        public GameLoop(IPlayerInput player, ISpriteRenderer renderer, IGameStateHandler actions)
         {
             _player = player;
             _renderer = renderer;
