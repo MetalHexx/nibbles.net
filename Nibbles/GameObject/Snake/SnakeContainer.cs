@@ -8,8 +8,6 @@ namespace Nibbles.GameObject.Snake
 {
     public class SnakeContainer : SpriteContainer
     {
-        public event Action? TouchedSelf;
-
         private int _remainingGrowth = 0;
         private const int GROWTH_AMOUNT = 5;
         private bool _switchAltColor = false;
@@ -48,8 +46,6 @@ namespace Nibbles.GameObject.Snake
             if (!CanRender(timeDelta)) return;
 
             DoMove(transform, timeDelta);
-
-            if (IsTouchingSelf) TouchedSelf?.Invoke();
         }
 
         private void DoMove(PositionTransform transform, long timeDelta)
@@ -96,9 +92,5 @@ namespace Nibbles.GameObject.Snake
             var partToRemove = _sprites.Last();
             Remove(partToRemove);
         }
-
-        private bool IsTouchingSelf => GetSprites()
-            .Skip(1)
-            .Any(snakePart => Position == snakePart.Position);
     }
 }

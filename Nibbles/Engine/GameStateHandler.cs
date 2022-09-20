@@ -30,7 +30,12 @@ namespace Nibbles.Engine
             _renderer.AddRange(_state.GameTitle.GetSprites());
             _renderer.AddRange(_state.Score.GetSprites());
 
-            _state.Snake.TouchedSelf += OnSnakeTouchedSelf;
+            _collisionDetector.SnakeSelfCollision += () => HandleGameOver(SpriteConfig.GAME_LOSE);
+            _collisionDetector.SnakeVenomCollison += () => HandleGameOver(SpriteConfig.GAME_LOSE);
+            _collisionDetector.SnakeBoardCollison += () => HandleGameOver(SpriteConfig.GAME_LOSE);
+            _collisionDetector.VenomBoardCollision += () => HandleGameOver(SpriteConfig.GAME_LOSE);
+            _collisionDetector.VenomFoodCollision += () => HandleGameOver(SpriteConfig.GAME_LOSE);
+            _collisionDetector.SnakeFoodCollision += OnSnakeCollisionFood;
 
             RegisterSpriteEvents(_state.Snake);
             RegisterSpriteEvents(_state.GameOverTextBox);
@@ -39,57 +44,11 @@ namespace Nibbles.Engine
             CreateFood();
         }
 
-        public void CreateFood()
+        private void OnSnakeCollisionFood()
         {
-            var positionsToAvoidFoodPlacement = _state.Snake
-                .GetSprites()
-                .Select(sp => sp.Position)
-                .ToArray();
-
-            var foodPosition = _positionGenerator.GetUniqueRandomPosition(_state.Board.Dimensions.MaxX - 1, _state.Board.Dimensions.MaxY - 1, positionsToAvoidFoodPlacement);
-
-            _state.Food = new FoodSprite(foodPosition);
-
-            _collisionDetector.Register(_state.Snake, _state.Food, 
-                _state.Snake.Feed, 
-                _state.Score.IncrementAmountEaten,
-                CreateFood);
-            
-            _renderer.Add(_state.Food);
-        }
-
-        public void UpdateSprites(PositionTransform playerInput, long timeDelta)
-        {
-            _state.Snake.Move(playerInput, timeDelta);
-            _state.Venom?.Move(timeDelta); 
-        }
-
-        public void SnakeShoot()
-        {
-            if (_state.Venom != null) return;
-
-            _state.Venom = _state.Snake.Shoot();
-            _state.Venom.SpriteDestroyed += OnSpriteDestroyed;
-            _state.Venom.SpriteCreated += OnSpriteCreated;
-            _state.Venom.VenomDestroyed += OnVenomDestroyed;
-        }
-
-        public void CheckGameBoardCollision()
-        {
-            var collisionCondition =
-                _state.Snake.Position.X == _state.Board.Dimensions.MinX
-                ||
-                _state.Snake.Position.X == _state.Board.Dimensions.MaxX
-                ||
-                _state.Snake.Position.Y == _state.Board.Dimensions.MinY
-                ||
-                _state.Snake.Position.Y == _state.Board.Dimensions.MaxY;
-
-            if (collisionCondition)
-            {
-                HandleGameOver(SpriteConfig.GAME_LOSE);
-            }
-
+            _state.Snake.Feed();
+            _state.Score.IncrementAmountEaten();
+            CreateFood();
         }
 
         private void HandleGameOver(string text)
@@ -103,9 +62,34 @@ namespace Nibbles.Engine
             _state.Score.IncrementMoves();
         }
 
-        private void OnSnakeTouchedSelf()
+        public void UpdateSprites(PositionTransform playerInput, long timeDelta)
         {
-            HandleGameOver(SpriteConfig.GAME_LOSE);
+            _state.Snake.Move(playerInput, timeDelta);
+            _state.Venom?.Move(timeDelta);
+        }
+
+        public void CreateFood()
+        {
+            var positionsToAvoidFoodPlacement = _state.Snake
+                .GetSprites()
+                .Select(sp => sp.Position)
+                .ToArray();
+
+            var foodPosition = _positionGenerator.GetUniqueRandomPosition(_state.Board.Dimensions.MaxX - 1, _state.Board.Dimensions.MaxY - 1, positionsToAvoidFoodPlacement);
+
+            _state.Food = new FoodSprite(foodPosition);
+
+            _renderer.Add(_state.Food);
+        }
+
+        public void SnakeShoot()
+        {
+            if (_state.Venom != null) return;
+
+            _state.Venom = _state.Snake.Shoot();
+            _state.Venom.SpriteDestroyed += OnSpriteDestroyed;
+            _state.Venom.SpriteCreated += OnSpriteCreated;
+            _state.Venom.VenomDestroyed += OnVenomDestroyed;
         }
 
         private void OnVenomDestroyed(Venom venom)

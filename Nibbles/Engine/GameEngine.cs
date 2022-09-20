@@ -32,7 +32,6 @@ namespace Nibbles.Engine
                 _player.UpdateState();
                 _collisionDetector.Detect();
                 _actions.UpdateSprites(_player.GetMove(), timeDelta);
-                _actions.CheckGameBoardCollision();
                 _renderer.Render();
             }
             while (_continueGame);

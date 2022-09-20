@@ -1,11 +1,9 @@
 ﻿using Nibbles.GameObject.Configuration;
-using Nibbles.GameObject.Dimensions;
 using Nibbles.GameObject.Food;
 using Nibbles.GameObject.Projectiles;
 using Nibbles.GameObject.Snake;
 using Nibbles.GameObject.UI;
 using System.Drawing;
-using System.Dynamic;
 
 namespace Nibbles.Engine
 {
@@ -34,6 +32,5 @@ namespace Nibbles.Engine
                 new Point(Board.Size.Width / 2 - 8, Board.Size.Height / 2 - 2),
                 new Size(16, 4));
         }
-
     }
 }
