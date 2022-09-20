@@ -2,7 +2,6 @@
 using Nibbles.GameObject.Configuration;
 using Nibbles.GameObject.Dimensions;
 using System.Drawing;
-using System.Runtime.CompilerServices;
 
 namespace Nibbles.GameObject.Projectiles
 {
@@ -11,11 +10,11 @@ namespace Nibbles.GameObject.Projectiles
         public Action<Venom>? VenomDestroyed;
 
         public int DistanceTraveled { get; private set; }
-        public int MaxDistance { get; private set; }
+        public int MaxTravelDistance { get; private set; }
         public Venom(Point position, DirectionType direction)
         : base(position, direction, SpriteConfig.VENOM_FOREGROUND_COLOR, SpriteConfig.VENOM_BACKGROUND_COLOR, ' ', SpriteConfig.VENOM_VELOCITY_X, SpriteConfig.VENOM_VELOCITY_Y) 
         {
-            SetMaxDistance();
+            SetMaxTravelDistance();
             AdjustPosition();
         }
         //Adjusts the position of the venom one step ahead of the object that generated it
@@ -36,7 +35,7 @@ namespace Nibbles.GameObject.Projectiles
         {
             if (!CanRender(timeDelta)) return;
 
-            if (DistanceTraveled > MaxDistance)
+            if (DistanceTraveled > MaxTravelDistance)
             {
                 VenomDestroyed?.Invoke(this with { });
                 return;
@@ -46,9 +45,9 @@ namespace Nibbles.GameObject.Projectiles
             base.Move(timeDelta);
         }
 
-        private void SetMaxDistance()
+        private void SetMaxTravelDistance()
         {
-            MaxDistance = Direction switch
+            MaxTravelDistance = Direction switch
             {
                 DirectionType.Up => SpriteConfig.VENOM_DISTANCE_Y,
                 DirectionType.Down => SpriteConfig.VENOM_DISTANCE_Y,
