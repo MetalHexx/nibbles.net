@@ -4,6 +4,7 @@ using Nibbles.GameObject.Configuration;
 using Nibbles.GameObject.Dimensions;
 using Nibbles.GameObject.Food;
 using Nibbles.GameObject.Projectiles;
+using System.Drawing;
 
 namespace Nibbles.Engine
 {
@@ -71,12 +72,12 @@ namespace Nibbles.Engine
         public void CreateFood()
         {
             var position = PositionGenerator.GetRandomPosition(
-                SpriteConfig.BoardSizeX, 
-                SpriteConfig.BoardSizeY,
+                new AbsolutePosition(new Point(0, 0), new Size(
+                    SpriteConfig.BoardSizeX,
+                    SpriteConfig.BoardSizeY)),
                 _state.GetUnavailableFoodPositions());
 
             _state.Food = new FoodSprite(position);
-
             _renderer.Add(_state.Food);
         }
 
