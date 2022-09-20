@@ -18,7 +18,7 @@ namespace Nibbles.Engine
             _renderer = renderer;
             _actions = actions;
             _actions.GameOver += () => _continueGame = false;
-            _player.Moved += _actions.IncrementMoveScore;
+            _player.Moved += _actions.PlayerMove;
             _player.Shot += _actions.PlayerShoot;
             _renderer.Render();            
         }

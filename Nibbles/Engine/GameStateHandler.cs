@@ -44,6 +44,28 @@ namespace Nibbles.Engine
             CreateFood();
         }
 
+        public void PlayerMove()
+        {
+            _state.Score.IncrementMoves();
+        }
+
+        public void PlayerShoot()
+        {
+            if (_state.Venom != null) return;
+
+            _state.Venom = _state.Snake.Shoot();
+            _state.Venom.SpriteDestroyed += OnSpriteDestroyed;
+            _state.Venom.SpriteCreated += OnSpriteCreated;
+            _state.Venom.VenomDestroyed += OnVenomDestroyed;
+        }
+
+        public void UpdateState(PositionTransform playerInput, long timeDelta)
+        {
+            _collisionDetector.Detect();
+            _state.Snake.Move(playerInput, timeDelta);
+            _state.Venom?.Move(timeDelta);
+        }
+
         private void OnSnakeCollisionFood()
         {
             _state.Snake.Feed();
@@ -57,19 +79,7 @@ namespace Nibbles.Engine
             GameOver?.Invoke();
         }
 
-        public void IncrementMoveScore()
-        {
-            _state.Score.IncrementMoves();
-        }
-
-        public void UpdateState(PositionTransform playerInput, long timeDelta)
-        {
-            _collisionDetector.Detect();
-            _state.Snake.Move(playerInput, timeDelta);
-            _state.Venom?.Move(timeDelta);
-        }
-
-        public void CreateFood()
+        private void CreateFood()
         {
             var position = PositionGenerator.GetRandomPosition(
                 new AbsolutePosition(new Point(0, 0), new Size(
@@ -79,16 +89,6 @@ namespace Nibbles.Engine
 
             _state.Food = new FoodSprite(position);
             _renderer.Add(_state.Food);
-        }
-
-        public void PlayerShoot()
-        {
-            if (_state.Venom != null) return;
-
-            _state.Venom = _state.Snake.Shoot();
-            _state.Venom.SpriteDestroyed += OnSpriteDestroyed;
-            _state.Venom.SpriteCreated += OnSpriteCreated;
-            _state.Venom.VenomDestroyed += OnVenomDestroyed;
         }
 
         private void OnVenomDestroyed(Venom venom)

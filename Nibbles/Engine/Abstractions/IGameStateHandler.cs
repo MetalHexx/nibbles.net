@@ -4,10 +4,9 @@ namespace Nibbles.Engine.Abstractions
 {
     public interface IGameStateHandler
     {
-        event Action? GameOver;
-        void CreateFood();
-        void IncrementMoveScore();
-        void UpdateState(PositionTransform transform, long renderDelta);
+        event Action? GameOver;        
+        void PlayerMove();
         void PlayerShoot();
+        void UpdateState(PositionTransform transform, long renderDelta);
     }
 }
