@@ -81,7 +81,7 @@ namespace Nibbles.Engine
             _renderer.Add(_state.Food);
         }
 
-        public void SnakeShoot()
+        public void PlayerShoot()
         {
             if (_state.Venom != null) return;
 

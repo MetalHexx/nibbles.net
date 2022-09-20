@@ -19,16 +19,15 @@ namespace Nibbles.Engine
             _actions = actions;
             _actions.GameOver += () => _continueGame = false;
             _player.Moved += _actions.IncrementMoveScore;
-            _player.Shot += _actions.SnakeShoot;
+            _player.Shot += _actions.PlayerShoot;
             _renderer.Render();            
         }
         public void Start()
         {
             do
-            {
-                var timeDelta = GetTimeSinceRender();
+            {   
                 _player.UpdateState();
-                _actions.UpdateState(_player.GetMove(), timeDelta);
+                _actions.UpdateState(_player.GetMove(), GetTimeSinceRender());
                 _renderer.Render();
             }
             while (_continueGame);

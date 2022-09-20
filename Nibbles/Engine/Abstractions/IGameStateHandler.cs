@@ -8,6 +8,6 @@ namespace Nibbles.Engine.Abstractions
         void CreateFood();
         void IncrementMoveScore();
         void UpdateState(PositionTransform transform, long renderDelta);
-        void SnakeShoot();
+        void PlayerShoot();
     }
 }
