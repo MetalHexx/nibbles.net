@@ -8,7 +8,6 @@ namespace SnakesGame.GameObject
     public class SnakeContainer : SpriteContainer
     {
         private int _remainingGrowth = 0;
-        private const int GROWTH_AMOUNT = 5;
         private bool _switchAltColor = false;
 
         public SnakeContainer() : base(
