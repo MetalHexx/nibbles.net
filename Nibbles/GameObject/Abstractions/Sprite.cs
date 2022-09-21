@@ -11,8 +11,8 @@ namespace Nibbles.GameObject.Abstractions
         protected Point _position;
         public Point Position { get { return _position with { }; } }
         public DirectionType Direction { get; private set; } = DirectionType.None;
-        public double VelocityX { get; private set; } = GameConfig.DEFAULT_SPRITE_VELOCITY_X;
-        public double VelocityY { get; private set; } = GameConfig.DEFAULT_SPRITE_VELOCITY_Y;
+        public double VelocityX { get; private set; } = GameConfig.SPRITE_DEFAULT_VELOCITY_X;
+        public double VelocityY { get; private set; } = GameConfig.SPRITE_DEFAULT_VELOCITY_Y;
         public GameColor ForegroundColor { get; protected set; }
         public GameColor BackgroundColor { get; protected set; }
         public char DisplayCharacter { get; protected set; } = ' ';

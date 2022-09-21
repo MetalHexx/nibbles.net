@@ -14,10 +14,10 @@ namespace SnakesGame.GameObject
             new Point(
                 SnakesConfig.SNAKE_STARTING_POSITION_X,
                 SnakesConfig.SNAKE_STARTING_POSITION_Y),
+            DirectionType.Right,
             GameColor.Cyan,
             GameColor.Cyan)
         {
-            Direction = DirectionType.Right;
             Build();
         }
 

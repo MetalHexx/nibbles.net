@@ -4,8 +4,9 @@
     {
         public const int MIN_FRAME_RENDER_SPEED_MS = 200;
 
-        public const double DEFAULT_SPRITE_VELOCITY_X = 2;
-        public const double DEFAULT_SPRITE_VELOCITY_Y = 1.8;
+        public const double SPRITE_DEFAULT_VELOCITY_X = 2;
+        public const double SPRITE_DEFAULT_VELOCITY_Y = 1.8;
+        public const int DEFAULT_SPRITE_HEALTH = 5;
 
         public const GameColor BOARD_BORDER_BACKGROUND_COLOR = GameColor.White;
         public const GameColor BOARD_BORDER_FOREGROUND_COLOR = GameColor.Black;

@@ -16,22 +16,26 @@ namespace Nibbles.GameObject.Abstractions
         public GameColor BackgroundColor { get; protected set; }
         public char DisplayCharacter { get; protected set; }
 
-        public double VelocityX { get; private set; } = GameConfig.DEFAULT_SPRITE_VELOCITY_X;
-        public double VelocityY { get; private set; } = GameConfig.DEFAULT_SPRITE_VELOCITY_Y;
+        public double VelocityX { get; private set; } = GameConfig.SPRITE_DEFAULT_VELOCITY_X;
+        public double VelocityY { get; private set; } = GameConfig.SPRITE_DEFAULT_VELOCITY_Y;
+
+        public int Health { get; private set; } = GameConfig.DEFAULT_SPRITE_HEALTH;
 
         protected readonly List<ISprite> _sprites = new();
         private TimeSpan _timeSinceMove = new TimeSpan();
 
-        public SpriteContainer(Point position, GameColor foregroundColor, GameColor backgroundColor)
+        public SpriteContainer(Point position, DirectionType direction, GameColor foregroundColor, GameColor backgroundColor)
         {
             Position = position;
+            Direction = direction;
             ForegroundColor = foregroundColor;
             BackgroundColor = backgroundColor;
         }
 
-        public SpriteContainer(Point position, GameColor foregroundColor, GameColor backgroundColor, double velocityX, double velocityY)
+        public SpriteContainer(Point position, DirectionType direction, GameColor foregroundColor, GameColor backgroundColor, double velocityX, double velocityY)
         {   
             Position = position;
+            Direction = direction;
             ForegroundColor = foregroundColor;
             BackgroundColor = backgroundColor;
             VelocityX = velocityX;
@@ -40,16 +44,6 @@ namespace Nibbles.GameObject.Abstractions
 
         public IEnumerable<ISprite> GetSprites() => _sprites;
 
-        public virtual void Move(PositionTransform transform, long timeDelta)
-        {   
-            foreach (var sprite in _sprites)
-            {
-                if (!sprite.CanRender(timeDelta)) return;
-                sprite.Move(transform, timeDelta);
-            }
-            Position = _sprites.First().Position;
-        }
-
         public void Move(long timeDelta)
         {
             foreach (var sprite in _sprites)
@@ -57,6 +51,16 @@ namespace Nibbles.GameObject.Abstractions
                 if (!sprite.CanRender(timeDelta)) return;
 
                 sprite.Move(timeDelta);
+            }
+            Position = _sprites.First().Position;
+        }
+
+        public virtual void Move(PositionTransform transform, long timeDelta)
+        {   
+            foreach (var sprite in _sprites)
+            {
+                if (!sprite.CanRender(timeDelta)) return;
+                sprite.Move(transform, timeDelta);
             }
             Position = _sprites.First().Position;
         }

@@ -11,7 +11,7 @@ namespace Nibbles.GameObject.UI
         public Size Size { get; set; }
 
         public BorderedBox(Point position, Size size, GameColor foregroundColor, GameColor backgroundColor)
-            : base(position, foregroundColor, backgroundColor)
+            : base(position, DirectionType.None, foregroundColor, backgroundColor)
         {
             Size = size;
             Dimensions = new AbsolutePosition(position, size);

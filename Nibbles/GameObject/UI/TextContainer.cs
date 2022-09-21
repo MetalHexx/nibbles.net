@@ -10,7 +10,7 @@ namespace Nibbles.GameObject.UI
         private string _text;
 
         public GameText(Point position, string text, GameColor foregroundColor, GameColor backgroundColor)
-            : base(position, foregroundColor, backgroundColor)
+            : base(position, DirectionType.None, foregroundColor, backgroundColor)
         {
             _text = text;
             Build();
