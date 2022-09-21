@@ -8,16 +8,21 @@ namespace Nibbles.GameObject.Abstractions
     {
         public Action<ISprite>? SpriteDestroyed { get; set; }
         public Action<ISprite>? SpriteCreated { get; set; }
-        protected Point _position;
-        public Point Position { get { return _position with { }; } }
-        public DirectionType Direction { get; private set; } = DirectionType.None;
+        public DirectionType Direction { get; protected set; } = DirectionType.None;
         public double VelocityX { get; private set; } = GameConfig.SPRITE_DEFAULT_VELOCITY_X;
         public double VelocityY { get; private set; } = GameConfig.SPRITE_DEFAULT_VELOCITY_Y;
         public GameColor ForegroundColor { get; protected set; }
         public GameColor BackgroundColor { get; protected set; }
         public char DisplayCharacter { get; protected set; } = ' ';
+
+        protected Point _position;
+        public Point Position
+        {
+            get => _position with { }; protected set => _position = value;
+        }
         private TimeSpan _timeSinceMove = new TimeSpan();
-        
+
+
 
         public Sprite(Point position, DirectionType direction, GameColor foregroundColor, GameColor backgroundColor, char displayCharacter)
         {

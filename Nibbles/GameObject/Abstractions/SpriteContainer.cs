@@ -7,22 +7,23 @@ namespace Nibbles.GameObject.Abstractions
     public abstract class SpriteContainer : ISpriteContainer
     {
         public Action<ISprite>? SpriteDestroyed { get; set; }
-
-        public Action<ISprite>? SpriteCreated { get; set; }
-
-        public Point Position { get; protected set; }
+        public Action<ISprite>? SpriteCreated { get; set; }        
         public DirectionType Direction { get; protected set; } = DirectionType.None;
-        public GameColor ForegroundColor { get; protected set; }
-        public GameColor BackgroundColor { get; protected set; }
-        public char DisplayCharacter { get; protected set; }
-
         public double VelocityX { get; private set; } = GameConfig.SPRITE_DEFAULT_VELOCITY_X;
         public double VelocityY { get; private set; } = GameConfig.SPRITE_DEFAULT_VELOCITY_Y;
+        public GameColor ForegroundColor { get; protected set; }
+        public GameColor BackgroundColor { get; protected set; }
+        public char DisplayCharacter { get; protected set; } = ' ';        
 
-        public int Health { get; private set; } = GameConfig.DEFAULT_SPRITE_HEALTH;
+        protected Point _position;
+        public Point Position
+        {
+            get => _position with { }; protected set => _position = value;
+        }
+        private TimeSpan _timeSinceMove = new TimeSpan();
 
         protected readonly List<ISprite> _sprites = new();
-        private TimeSpan _timeSinceMove = new TimeSpan();
+        
 
         public SpriteContainer(Point position, DirectionType direction, GameColor foregroundColor, GameColor backgroundColor)
         {
@@ -65,22 +66,10 @@ namespace Nibbles.GameObject.Abstractions
             Position = _sprites.First().Position;
         }
 
-        public bool CanRender(long timeDelta)
-        {
-            var timeSpan = new TimeSpan(timeDelta);
-            _timeSinceMove += timeSpan;
-
-            var msToWait = GameConfig.MIN_FRAME_RENDER_SPEED_MS / GetVelocity();
-
-            var shouldMove = _timeSinceMove.TotalMilliseconds >= msToWait;
-
-            if (shouldMove)
-            {
-                _timeSinceMove = new TimeSpan();
-                return true;
-            }
-            return false;
-        }
+        public virtual bool CanRender(long timeDelta) => _sprites
+            .First()
+            .CanRender(timeDelta);
+        
 
         public double GetVelocity()
         {
