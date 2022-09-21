@@ -7,7 +7,7 @@ var playerInput = new PlayerInput(inputReader);
 var renderer = new SpriteRenderer();
 var gameState = new GameState();
 var collisionDetector = new CollisionDetector(gameState);
-var gameStateHandler = new NibblesGame(gameState, renderer, collisionDetector);
+var engine = new SnakesManager(gameState, renderer, collisionDetector);
 
-new GameLoop(playerInput, renderer, gameStateHandler).Start();
+new GameLoop(playerInput, renderer, engine).Start();
 Console.ReadLine();

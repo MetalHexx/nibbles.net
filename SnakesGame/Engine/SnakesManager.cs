@@ -5,12 +5,12 @@ using System.Drawing;
 
 namespace SnakesGame.Engine
 {
-    public class NibblesGame : Game
+    public class SnakesManager : GameManager
     {
         private readonly ICollisionDetector _collisionDetector;
         private readonly GameState _state;
 
-        public NibblesGame(GameState state, ISpriteRenderer renderer, ICollisionDetector collisionDetector) : base(renderer)
+        public SnakesManager(GameState state, ISpriteRenderer renderer, ICollisionDetector collisionDetector) : base(renderer)
         {
             _state = state;
             _collisionDetector = collisionDetector;

@@ -6,12 +6,12 @@ namespace Nibbles.Engine
     public class GameLoop
     {
         private readonly ISpriteRenderer _renderer;
-        private readonly IGame _game;
+        private readonly IGameManager _game;
         private readonly IPlayerInput _player;
         private bool _continueGame = true;
         private long _lastRenderTicks = DateTime.Now.Ticks; 
 
-        public GameLoop(IPlayerInput player, ISpriteRenderer renderer, IGame game)
+        public GameLoop(IPlayerInput player, ISpriteRenderer renderer, IGameManager game)
         {
             _player = player;
             _renderer = renderer;

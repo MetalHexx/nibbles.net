@@ -3,13 +3,13 @@ using Nibbles.GameObject.Dimensions;
 
 namespace Nibbles.Engine.Abstractions
 {
-    public abstract class Game : IGame
+    public abstract class GameManager : IGameManager
     {
         public Action? GameOver { get; set; }
 
         protected readonly ISpriteRenderer _renderer;
 
-        public Game(ISpriteRenderer renderer)
+        public GameManager(ISpriteRenderer renderer)
         {
             _renderer = renderer;
         }
