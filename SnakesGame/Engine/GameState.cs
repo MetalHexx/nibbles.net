@@ -1,5 +1,5 @@
 ﻿using Nibbles.GameObject.Abstractions;
-using Nibbles.GameObject.Configuration;
+using Nibbles.GameObject.Dimensions;
 using Nibbles.GameObject.UI;
 using SnakesGame.GameObject;
 using System.Drawing;
@@ -8,7 +8,7 @@ namespace SnakesGame.Engine
 {
     public class GameState
     {
-        public FoodSprite? Food { get; set; }
+        public FoodSprite Food { get; set; }
         public SnakeContainer Snake { get; init; } = new();
         public Venom? Venom { get; set; }
         public GameTextBox GameOverTextBox { get; init; }
@@ -22,14 +22,18 @@ namespace SnakesGame.Engine
         public GameText GameTitle { get; init; } = new(
             new Point(1, 0),
             SnakesConfig.GAME_TITLE,
+            DirectionType.None,
             SnakesConfig.BOARD_BORDER_FOREGROUND_COLOR,
-            SnakesConfig.BOARD_BORDER_BACKGROUND_COLOR);
+            SnakesConfig.BOARD_BORDER_BACKGROUND_COLOR,
+            0, 0);
 
         public GameState()
         {
             GameOverTextBox = new GameTextBox("",
                 new Point(Board.Size.Width / 2 - 8, Board.Size.Height / 2 - 2),
                 new Size(16, 4));
+
+            CreateFood();
         }
 
         public IList<ISprite> GetUnavailableFoodPositions()
@@ -44,6 +48,18 @@ namespace SnakesGame.Engine
                 .Where(s => s is BorderPart));
 
             return sprites;
+        }
+
+        public FoodSprite CreateFood()
+        {
+            var position = PositionGenerator.GetRandomPosition(
+                new AbsolutePosition(new Point(0, 0), new Size(
+                    SnakesConfig.BoardSizeX,
+                    SnakesConfig.BoardSizeY)),
+                GetUnavailableFoodPositions());
+
+            Food = new FoodSprite(position);
+            return Food;
         }
     }
 }

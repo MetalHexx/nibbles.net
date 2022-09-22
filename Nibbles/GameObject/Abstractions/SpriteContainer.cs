@@ -20,19 +20,10 @@ namespace Nibbles.GameObject.Abstractions
         {
             get => _position with { }; protected set => _position = value;
         }
-        private TimeSpan _timeSinceMove = new TimeSpan();
 
         protected readonly List<ISprite> _sprites = new();
+
         
-
-        public SpriteContainer(Point position, DirectionType direction, GameColor foregroundColor, GameColor backgroundColor)
-        {
-            Position = position;
-            Direction = direction;
-            ForegroundColor = foregroundColor;
-            BackgroundColor = backgroundColor;
-        }
-
         public SpriteContainer(Point position, DirectionType direction, GameColor foregroundColor, GameColor backgroundColor, double velocityX, double velocityY)
         {   
             Position = position;
@@ -43,6 +34,19 @@ namespace Nibbles.GameObject.Abstractions
             VelocityY = velocityY;
         }
 
+        public SpriteContainer(Point position, DirectionType direction, GameColor foregroundColor, GameColor backgroundColor, double velocityX, double velocityY, char displayCharacter)
+        {
+            Position = position;
+            Direction = direction;
+            ForegroundColor = foregroundColor;
+            BackgroundColor = backgroundColor;
+            VelocityX = velocityX;
+            VelocityY = velocityY;
+            DisplayCharacter = displayCharacter;
+        }
+
+        protected virtual void Build() => Add(new Sprite(Position, Direction, ForegroundColor, BackgroundColor, DisplayCharacter, VelocityX, VelocityY));
+        
         public IEnumerable<ISprite> GetSprites() => _sprites;
 
         public void Move(long timeDelta)

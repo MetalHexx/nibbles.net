@@ -10,24 +10,16 @@ namespace SnakesGame.GameObject
         private int _remainingGrowth = 0;
         private bool _switchAltColor = false;
 
-        public SnakeContainer() : base(
-            new Point(
-                SnakesConfig.SNAKE_STARTING_POSITION_X,
-                SnakesConfig.SNAKE_STARTING_POSITION_Y),
-            DirectionType.Right,
-            GameColor.Cyan,
-            GameColor.Cyan)
+        public SnakeContainer(): base(
+                new Point(
+                    SnakesConfig.SNAKE_STARTING_POSITION_X, 
+                    SnakesConfig.SNAKE_STARTING_POSITION_Y),
+                DirectionType.Right,
+                GameColor.Cyan,
+                GameColor.Cyan,
+                SnakesConfig.DEFAULT_SPRITE_VELOCITY_X, SnakesConfig.DEFAULT_SPRITE_VELOCITY_Y)
         {
             Build();
-        }
-
-        protected void Build()
-        {
-            Add(new SnakeSprite(
-                new Point(
-                    Position.X,
-                    Position.Y),
-                Direction));
         }
 
         public void Feed() => _remainingGrowth += SnakesConfig.SNAKE_GROWTH_PER_FEED;

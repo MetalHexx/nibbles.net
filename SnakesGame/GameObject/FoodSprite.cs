@@ -7,6 +7,6 @@ namespace SnakesGame.GameObject
     public record FoodSprite : Sprite
     {
         public FoodSprite(Point position)
-            : base(position, DirectionType.None, SnakesConfig.FOOD_FOREGROUND_COLOR, SnakesConfig.FOOD_BACKGROUND_COLOR, ' ') { }
+           : base(position, DirectionType.None, SnakesConfig.FOOD_FOREGROUND_COLOR, SnakesConfig.FOOD_BACKGROUND_COLOR, ' ') { }
     }
 }

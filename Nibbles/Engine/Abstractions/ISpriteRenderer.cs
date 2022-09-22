@@ -6,7 +6,8 @@ namespace Nibbles.Engine.Abstractions
     {
         void Remove(ISprite sprite);
         void Add(ISprite sprite);
-        void AddRange(IEnumerable<ISprite> sprites);
+        void Add(ISpriteContainer sprite);
         void Render();
+        void Remove(ISpriteContainer sprite);
     }
 }

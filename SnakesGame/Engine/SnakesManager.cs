@@ -1,7 +1,6 @@
 ﻿using Nibbles.Engine.Abstractions;
 using Nibbles.GameObject.Dimensions;
 using SnakesGame.GameObject;
-using System.Drawing;
 
 namespace SnakesGame.Engine
 {
@@ -18,11 +17,12 @@ namespace SnakesGame.Engine
         }
 
         protected override void InitializeSprites()
-        {
-            _renderer.AddRange(_state.Board.GetSprites());
-            _renderer.AddRange(_state.Snake.GetSprites());
-            _renderer.AddRange(_state.GameTitle.GetSprites());
-            _renderer.AddRange(_state.Score.GetSprites());
+        {            
+            _renderer.Add(_state.Board);            
+            _renderer.Add(_state.GameTitle);
+            _renderer.Add(_state.Score);
+            _renderer.Add(_state.Snake);
+            _renderer.Add(_state.Food);
 
             _collisionDetector.SnakeSelfCollision += () => HandleGameOver(SnakesConfig.GAME_LOSE);
             _collisionDetector.SnakeVenomCollison += () => HandleGameOver(SnakesConfig.GAME_LOSE);
@@ -31,11 +31,10 @@ namespace SnakesGame.Engine
             _collisionDetector.VenomFoodCollision += () => HandleGameOver(SnakesConfig.GAME_LOSE);
             _collisionDetector.SnakeFoodCollision += OnSnakeCollisionFood;
 
-            RegisterSpriteEvents(_state.Snake);
-            RegisterSpriteEvents(_state.GameOverTextBox);
-            RegisterSpriteEvents(_state.Score);
-
-            CreateFood();
+            RegisterEvents(_state.Snake);
+            RegisterEvents(_state.GameOverTextBox);
+            RegisterEvents(_state.Score);
+            RegisterEvents(_state.Board);
         }
 
         public override void PlayerMove()
@@ -75,20 +74,11 @@ namespace SnakesGame.Engine
         {
             _state.Snake.Feed();
             _state.Score.IncrementAmountEaten();
-            CreateFood();
+            _state.CreateFood();
+            _renderer.Add(_state.Food);            
         }
 
-        private void CreateFood()
-        {
-            var position = PositionGenerator.GetRandomPosition(
-                new AbsolutePosition(new Point(0, 0), new Size(
-                    SnakesConfig.BoardSizeX,
-                    SnakesConfig.BoardSizeY)),
-                _state.GetUnavailableFoodPositions());
-
-            _state.Food = new FoodSprite(position);
-            _renderer.Add(_state.Food);
-        }
+        
 
         private void OnVenomDestroyed(Venom venom)
         {

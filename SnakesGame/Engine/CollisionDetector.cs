@@ -1,5 +1,4 @@
-﻿using Nibbles.Engine.Abstractions;
-using Nibbles.GameObject.Abstractions;
+﻿using Nibbles.GameObject.Abstractions;
 using Nibbles.GameObject.UI;
 
 namespace SnakesGame.Engine

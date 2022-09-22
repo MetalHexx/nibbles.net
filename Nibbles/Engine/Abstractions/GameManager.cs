@@ -30,7 +30,7 @@ namespace Nibbles.Engine.Abstractions
             _renderer.Remove(sprite);
         }
 
-        protected virtual void RegisterSpriteEvents(ISprite sprite)
+        protected virtual void RegisterEvents(ISprite sprite)
         {
             sprite.SpriteCreated += OnSpriteCreated;
             sprite.SpriteDestroyed += OnSpriteDestroyed;

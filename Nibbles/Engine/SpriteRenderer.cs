@@ -19,14 +19,19 @@ namespace Nibbles.Engine
             _spritesToAdd.Add(sprite);
         }
 
-        public void AddRange(IEnumerable<ISprite> sprites)
+        public void Add(ISpriteContainer sprite)
         {
-            _spritesToAdd.AddRange(sprites);
+            _spritesToAdd.AddRange(sprite.GetSprites());
         }
 
         public void Remove(ISprite sprite)
         {
             _spritesToRemove.Add(sprite);
+        }
+
+        public void Remove(ISpriteContainer sprite)
+        {
+            _spritesToAdd.AddRange(sprite.GetSprites());
         }
 
         public void Render()

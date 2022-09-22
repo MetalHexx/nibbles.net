@@ -4,7 +4,7 @@ using System.Drawing;
 
 namespace Nibbles.GameObject.Abstractions
 {
-    public abstract record Sprite : ISprite
+    public record Sprite : ISprite
     {
         public Action<ISprite>? SpriteDestroyed { get; set; }
         public Action<ISprite>? SpriteCreated { get; set; }
@@ -77,6 +77,10 @@ namespace Nibbles.GameObject.Abstractions
         /// </summary>
         public virtual bool CanRender(long timeDelta)
         {
+            var velocity = GetVelocity();
+
+            if (velocity == 0) return true;
+
             var timeSpan = new TimeSpan(timeDelta);
             _timeSinceMove += timeSpan;
 

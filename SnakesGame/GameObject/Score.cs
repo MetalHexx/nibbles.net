@@ -1,4 +1,5 @@
-﻿using Nibbles.GameObject.UI;
+﻿using Nibbles.GameObject.Dimensions;
+using Nibbles.GameObject.UI;
 using System.Drawing;
 
 namespace SnakesGame.GameObject
@@ -17,7 +18,7 @@ namespace SnakesGame.GameObject
         private const int _penaltyPerMove = 1;
 
         public Score(Point position, string text)
-            : base(position, text, SnakesConfig.BOARD_BORDER_FOREGROUND_COLOR, SnakesConfig.BOARD_BORDER_BACKGROUND_COLOR)
+            : base(position, text, DirectionType.None, SnakesConfig.BOARD_BORDER_FOREGROUND_COLOR, SnakesConfig.BOARD_BORDER_BACKGROUND_COLOR, 0, 0)
         {
             UpdateText();
         }
