@@ -12,10 +12,13 @@
         public const GameColor BOARD_BORDER_FOREGROUND_COLOR = GameColor.Black;
         public const GameColor BOARD_BACKGROUND_COLOR = GameColor.DarkBlue;
         public const GameColor BOARD_FOREGROUND_COLOR = GameColor.White;
-        public const int BoardSizeX = 100;
-        public const int BoardSizeY = 20;
+        public const int BOARD_SIZE_X = 100;
+        public const int BOARD_SIZE_Y = 20;
+        public const int BOARD_ZINDEX = 0;
+        public const int BOARD_TEXT_ZINDEX = 1;
 
         public const GameColor GAME_TEXTBOX_FOREGROUND_COLOR = GameColor.White;
         public const GameColor GAME_TEXTBOX_BACKGROUND_COLOR = GameColor.Magenta;
+        public const int GAME_TEXTBOX_ZINDEX = 2;
     }
 }

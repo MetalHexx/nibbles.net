@@ -8,10 +8,10 @@ namespace Nibbles.GameObject.UI
     {
         private GameText _text;
         public GameTextBox(string text, Point position, Size size)
-            : base(position, size, DirectionType.None, GameConfig.GAME_TEXTBOX_FOREGROUND_COLOR, GameConfig.GAME_TEXTBOX_BACKGROUND_COLOR, 0, 0)
+            : base(position, GameConfig.GAME_TEXTBOX_ZINDEX, size, DirectionType.None, GameConfig.GAME_TEXTBOX_FOREGROUND_COLOR, GameConfig.GAME_TEXTBOX_BACKGROUND_COLOR, 0, 0)
         {
             _text = new GameText(
-                new Point(Dimensions.MinX + 2, Dimensions.MinY + 2), text, DirectionType.None,
+                new Point(Dimensions.MinX + 2, Dimensions.MinY + 2), GameConfig.GAME_TEXTBOX_ZINDEX, text, DirectionType.None,
                 GameConfig.GAME_TEXTBOX_FOREGROUND_COLOR,
                 GameConfig.GAME_TEXTBOX_BACKGROUND_COLOR, 0, 0);
 

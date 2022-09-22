@@ -12,7 +12,7 @@ namespace SnakesGame.GameObject
         public int DistanceTraveled { get; private set; }
         public int MaxTravelDistance { get; private set; }
         public Venom(Point position, DirectionType direction)
-        : base(position, direction, SnakesConfig.VENOM_FOREGROUND_COLOR, SnakesConfig.VENOM_BACKGROUND_COLOR, ' ', SnakesConfig.VENOM_VELOCITY_X, SnakesConfig.VENOM_VELOCITY_Y)
+        : base(position, SnakesConfig.SNAKE_ZINDEX, direction, SnakesConfig.VENOM_FOREGROUND_COLOR, SnakesConfig.VENOM_BACKGROUND_COLOR, ' ', SnakesConfig.VENOM_VELOCITY_X, SnakesConfig.VENOM_VELOCITY_Y)
         {
             SetMaxTravelDistance();
             AdjustPosition();

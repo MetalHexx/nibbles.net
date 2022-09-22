@@ -10,8 +10,8 @@ namespace Nibbles.GameObject.UI
         public AbsolutePosition Dimensions { get; private set; }
         public Size Size { get; set; }
 
-        public BorderedBox(Point position, Size size, DirectionType direction, GameColor foregroundColor, GameColor backgroundColor, double velocityX, double velocityY)
-            : base(position, direction, foregroundColor, backgroundColor, velocityX, velocityY)
+        public BorderedBox(Point position, int zIndex, Size size, DirectionType direction, GameColor foregroundColor, GameColor backgroundColor, double velocityX, double velocityY)
+            : base(position, zIndex, direction, foregroundColor, backgroundColor, velocityX, velocityY)
         {
             Size = size;
             Dimensions = new AbsolutePosition(position, size);
@@ -31,11 +31,11 @@ namespace Nibbles.GameObject.UI
 
                     if (isBorder)
                     {
-                        Add(new BorderPart(new Point(x, y)));
+                        Add(new BorderPart(new Point(x, y), ZIndex));
                     }
                     else
                     {
-                        Add(new BoxPart(new Point(x, y), ForegroundColor, BackgroundColor));
+                        Add(new BoxPart(new Point(x, y), ZIndex, ForegroundColor, BackgroundColor));
                     }
                 }
             }

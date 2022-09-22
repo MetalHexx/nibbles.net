@@ -20,13 +20,15 @@ namespace Nibbles.GameObject.Abstractions
         {
             get => _position with { }; protected set => _position = value;
         }
+        public int ZIndex { get; }
 
         protected readonly List<ISprite> _sprites = new();
 
         
-        public SpriteContainer(Point position, DirectionType direction, GameColor foregroundColor, GameColor backgroundColor, double velocityX, double velocityY)
+        public SpriteContainer(Point position, int zIndex, DirectionType direction, GameColor foregroundColor, GameColor backgroundColor, double velocityX, double velocityY)
         {   
             Position = position;
+            ZIndex = zIndex;
             Direction = direction;
             ForegroundColor = foregroundColor;
             BackgroundColor = backgroundColor;
@@ -34,9 +36,10 @@ namespace Nibbles.GameObject.Abstractions
             VelocityY = velocityY;
         }
 
-        public SpriteContainer(Point position, DirectionType direction, GameColor foregroundColor, GameColor backgroundColor, double velocityX, double velocityY, char displayCharacter)
+        public SpriteContainer(Point position, int zIndex, DirectionType direction, GameColor foregroundColor, GameColor backgroundColor, double velocityX, double velocityY, char displayCharacter)
         {
             Position = position;
+            ZIndex = zIndex;
             Direction = direction;
             ForegroundColor = foregroundColor;
             BackgroundColor = backgroundColor;
@@ -45,7 +48,7 @@ namespace Nibbles.GameObject.Abstractions
             DisplayCharacter = displayCharacter;
         }
 
-        protected virtual void Build() => Add(new Sprite(Position, Direction, ForegroundColor, BackgroundColor, DisplayCharacter, VelocityX, VelocityY));
+        protected virtual void Build() => Add(new Sprite(Position,ZIndex, Direction, ForegroundColor, BackgroundColor, DisplayCharacter, VelocityX, VelocityY));
         
         public IEnumerable<ISprite> GetSprites() => _sprites;
 

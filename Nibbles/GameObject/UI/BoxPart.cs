@@ -7,7 +7,7 @@ namespace Nibbles.GameObject.UI
 {
     public record BoxPart : Sprite
     {
-        public BoxPart(Point position, GameColor foregroundColor, GameColor backgrounColor)
-            : base(position, DirectionType.None, foregroundColor, backgrounColor, ' ') { }
+        public BoxPart(Point position, int zIndex, GameColor foregroundColor, GameColor backgrounColor)
+            : base(position, zIndex, DirectionType.None, foregroundColor, backgrounColor, ' ') { }
     }
 }

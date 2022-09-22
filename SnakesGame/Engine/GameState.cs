@@ -1,4 +1,5 @@
 ﻿using Nibbles.GameObject.Abstractions;
+using Nibbles.GameObject.Configuration;
 using Nibbles.GameObject.Dimensions;
 using Nibbles.GameObject.UI;
 using SnakesGame.GameObject;
@@ -14,13 +15,14 @@ namespace SnakesGame.Engine
         public GameTextBox GameOverTextBox { get; init; }
 
         public Board Board { get; init; } = new(
-            new Point(0, 0), new Size(SnakesConfig.BoardSizeX, SnakesConfig.BoardSizeY));
+            new Point(0, 0), new Size(SnakesConfig.BoardSizeX, SnakesConfig.BoardSizeY), GameConfig.BOARD_ZINDEX);
 
         public Score Score { get; init; } = new(
-            new Point(SnakesConfig.GAME_TITLE.Length + 1, 0), "");
+            new Point(SnakesConfig.GAME_TITLE.Length + 1, 0), GameConfig.BOARD_TEXT_ZINDEX, "");
 
         public GameText GameTitle { get; init; } = new(
             new Point(1, 0),
+            GameConfig.BOARD_TEXT_ZINDEX,
             SnakesConfig.GAME_TITLE,
             DirectionType.None,
             SnakesConfig.BOARD_BORDER_FOREGROUND_COLOR,

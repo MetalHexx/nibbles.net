@@ -15,6 +15,7 @@ namespace SnakesGame.GameObject
         public const GameColor SNAKE_BACKGROUND_ALT_COLOR = GameColor.Green;
         public const int SNAKE_STARTING_POSITION_X = 5;
         public const int SNAKE_STARTING_POSITION_Y = 5;
+        public const int SNAKE_ZINDEX = 1;
         public const DirectionType SNAKE_STARTING_DIRECTION = DirectionType.Right;
         public const double SNAKE_VELOCITY_X = 2;
         public const double SNAKE_VELOCITY_Y = 1.8;
@@ -26,10 +27,12 @@ namespace SnakesGame.GameObject
         public const int VENOM_DISTANCE_Y = 10;
         public const int VENOM_VELOCITY_X = 16;
         public const int VENOM_VELOCITY_Y = 8;
+        public const int VENOM_ZINDEX = 1;
 
 
         public const GameColor FOOD_BACKGROUND_COLOR = GameColor.Red;
         public const GameColor FOOD_FOREGROUND_COLOR = GameColor.White;
+        public const int FOOD_ZINDEX = 2;
 
         public const GameColor BOARD_BORDER_BACKGROUND_COLOR = GameColor.White;
         public const GameColor BOARD_BORDER_FOREGROUND_COLOR = GameColor.Black;

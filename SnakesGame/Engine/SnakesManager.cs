@@ -18,11 +18,12 @@ namespace SnakesGame.Engine
 
         protected override void InitializeSprites()
         {            
-            _renderer.Add(_state.Board);            
+                        
             _renderer.Add(_state.GameTitle);
             _renderer.Add(_state.Score);
             _renderer.Add(_state.Snake);
             _renderer.Add(_state.Food);
+            _renderer.Add(_state.Board);
 
             _collisionDetector.SnakeSelfCollision += () => HandleGameOver(SnakesConfig.GAME_LOSE);
             _collisionDetector.SnakeVenomCollison += () => HandleGameOver(SnakesConfig.GAME_LOSE);

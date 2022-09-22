@@ -17,8 +17,8 @@ namespace SnakesGame.GameObject
         private const int _scorePerFeeding = 100;
         private const int _penaltyPerMove = 1;
 
-        public Score(Point position, string text)
-            : base(position, text, DirectionType.None, SnakesConfig.BOARD_BORDER_FOREGROUND_COLOR, SnakesConfig.BOARD_BORDER_BACKGROUND_COLOR, 0, 0)
+        public Score(Point position, int zIndex, string text)
+            : base(position, zIndex, text, DirectionType.None, SnakesConfig.BOARD_BORDER_FOREGROUND_COLOR, SnakesConfig.BOARD_BORDER_BACKGROUND_COLOR, 0, 0)
         {
             UpdateText();
         }

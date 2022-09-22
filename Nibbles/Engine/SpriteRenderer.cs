@@ -44,7 +44,7 @@ namespace Nibbles.Engine
 
         private static void Render(IEnumerable<ISprite> sprites)
         {
-            foreach (var sprite in sprites)
+            foreach (var sprite in sprites.OrderBy(s => s.ZIndex))
             {
                 WriteText(sprite.DisplayCharacter,
                     sprite.ForegroundColor,

@@ -14,6 +14,7 @@ namespace SnakesGame.GameObject
                 new Point(
                     SnakesConfig.SNAKE_STARTING_POSITION_X, 
                     SnakesConfig.SNAKE_STARTING_POSITION_Y),
+                SnakesConfig.SNAKE_ZINDEX,
                 DirectionType.Right,
                 GameColor.Cyan,
                 GameColor.Cyan,

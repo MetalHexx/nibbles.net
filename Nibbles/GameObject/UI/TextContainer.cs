@@ -9,8 +9,8 @@ namespace Nibbles.GameObject.UI
     {
         private string _text = "";
 
-         public GameText(Point position, string text, DirectionType direction, GameColor foregroundColor, GameColor backgroundColor, double velocityX, double velocityY)
-            : base(position, direction, foregroundColor, backgroundColor, velocityX, velocityY)
+         public GameText(Point position, int zIndex, string text, DirectionType direction, GameColor foregroundColor, GameColor backgroundColor, double velocityX, double velocityY)
+            : base(position, zIndex, direction, foregroundColor, backgroundColor, velocityX, velocityY)
         {
             SetText(text);
         }
@@ -42,7 +42,7 @@ namespace Nibbles.GameObject.UI
                 {
                     X = Position.X + i
                 };
-                Add(new TextSprite(position, ForegroundColor, BackgroundColor, charList[i]));
+                Add(new TextSprite(position, ZIndex, ForegroundColor, BackgroundColor, charList[i]));
             }
         }
     }

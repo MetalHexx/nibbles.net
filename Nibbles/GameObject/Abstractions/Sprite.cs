@@ -20,22 +20,26 @@ namespace Nibbles.GameObject.Abstractions
         {
             get => _position with { }; protected set => _position = value;
         }
+        public int ZIndex { get; }
+
         private TimeSpan _timeSinceMove = new TimeSpan();
 
 
 
-        public Sprite(Point position, DirectionType direction, GameColor foregroundColor, GameColor backgroundColor, char displayCharacter)
+        public Sprite(Point position, int zIndex, DirectionType direction, GameColor foregroundColor, GameColor backgroundColor, char displayCharacter)
         {
             _position = position;
+            ZIndex = zIndex;
             Direction = direction;
             ForegroundColor = foregroundColor;
             BackgroundColor = backgroundColor;
             DisplayCharacter = displayCharacter;
         }
 
-        public Sprite(Point position, DirectionType direction, GameColor foregroundColor, GameColor backgroundColor, char displayCharacter, double velocityX, double velocityY)
+        public Sprite(Point position, int zIndex, DirectionType direction, GameColor foregroundColor, GameColor backgroundColor, char displayCharacter, double velocityX, double velocityY)
         {
             _position = position;
+            ZIndex = zIndex;
             Direction = direction;            
             ForegroundColor = foregroundColor;
             BackgroundColor = backgroundColor;

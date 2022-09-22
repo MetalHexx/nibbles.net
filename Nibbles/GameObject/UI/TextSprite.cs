@@ -7,7 +7,7 @@ namespace Nibbles.GameObject.UI
 {
     public record TextSprite : Sprite
     {
-        public TextSprite(Point position, GameColor foregroundColor, GameColor backgroundColor, char displayCharacter)
-            : base(position, DirectionType.None, foregroundColor, backgroundColor, displayCharacter) { }
+        public TextSprite(Point position, int zIndex, GameColor foregroundColor, GameColor backgroundColor, char displayCharacter)
+            : base(position, zIndex, DirectionType.None, foregroundColor, backgroundColor, displayCharacter) { }
     }
 }

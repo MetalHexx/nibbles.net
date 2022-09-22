@@ -8,7 +8,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="GameObject\Projectiles\" />
+    <Compile Remove="GameObject\Projectiles\**" />
+    <EmbeddedResource Remove="GameObject\Projectiles\**" />
+    <None Remove="GameObject\Projectiles\**" />
   </ItemGroup>
 
 </Project>
