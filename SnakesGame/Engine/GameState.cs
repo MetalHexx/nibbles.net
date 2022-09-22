@@ -8,7 +8,7 @@ namespace SnakesGame.Engine
 {
     public class GameState
     {
-        public FoodSprite Food { get; set; }
+        public Food Food { get; set; }
         public SnakeContainer Snake { get; init; } = new();
         public Venom? Venom { get; set; }
         public GameTextBox GameOverTextBox { get; init; }
@@ -50,7 +50,7 @@ namespace SnakesGame.Engine
             return sprites;
         }
 
-        public FoodSprite CreateFood()
+        public Food CreateFood()
         {
             var position = PositionGenerator.GetRandomPosition(
                 new AbsolutePosition(new Point(0, 0), new Size(
@@ -58,7 +58,7 @@ namespace SnakesGame.Engine
                     SnakesConfig.BoardSizeY)),
                 GetUnavailableFoodPositions());
 
-            Food = new FoodSprite(position);
+            Food = new Food(position);
             return Food;
         }
     }

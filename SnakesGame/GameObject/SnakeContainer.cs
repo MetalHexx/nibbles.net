@@ -44,7 +44,7 @@ namespace SnakesGame.GameObject
 
             Direction = transform.Direction;
 
-            var newHead = new SnakeSprite(
+            var newHead = new SnakePart(
                 head.Position,
                 Direction,
                 GetColor());

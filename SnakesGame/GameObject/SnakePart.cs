@@ -5,15 +5,15 @@ using System.Drawing;
 
 namespace SnakesGame.GameObject
 {
-    public record SnakeSprite : Sprite
+    public record SnakePart : Sprite
     {
-        public SnakeSprite(Point position, DirectionType direction)
+        public SnakePart(Point position, DirectionType direction)
             : base(position, direction, SnakesConfig.SNAKE_FOREGROUND_COLOR, SnakesConfig.SNAKE_BACKGROUND_COLOR, ' ', SnakesConfig.SNAKE_VELOCITY_X, SnakesConfig.SNAKE_VELOCITY_Y) { }
 
         /// <summary>
         /// Used for alternating color
         /// </summary>        
-        public SnakeSprite(Point position, DirectionType direction, GameColor backgroundColor)
+        public SnakePart(Point position, DirectionType direction, GameColor backgroundColor)
             : base(position, direction, SnakesConfig.SNAKE_FOREGROUND_COLOR, backgroundColor, ' ', SnakesConfig.SNAKE_VELOCITY_X, SnakesConfig.SNAKE_VELOCITY_Y) { }
     }
 }
