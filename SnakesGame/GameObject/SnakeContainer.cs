@@ -32,30 +32,43 @@ namespace SnakesGame.GameObject
             return venom;
         }
 
-        public override void Move(PositionTransform transform, long timeDelta)
+        public override void Move(PositionTransform move, long timeDelta)
         {
+            EnqueueIfChanged(move);
+
             if (!CanRender(timeDelta)) return;
 
-            DoMove(transform, timeDelta);
-        }
-
-        private void DoMove(PositionTransform transform, long timeDelta)
-        {
+            Direction = move.Direction;
             var head = _sprites.First();
-
-            Direction = transform.Direction;
 
             var newHead = new SnakePart(
                 head.Position,
                 Direction,
                 GetColor());
 
-            newHead.Move(transform, timeDelta);
+            ExecuteMove(move, timeDelta, newHead);
             Position = newHead.Position;
-
             Insert(newHead);
+            MaybeGrow();
+        }
 
-            Grow();
+        private void ExecuteMove(PositionTransform move, long timeDelta, SnakePart newHead)
+        {
+            if (_moveQueue.Count > 0)
+            {
+                ExecuteQueuedMoves(timeDelta, newHead);
+                return;
+            }
+            newHead.Move(move, timeDelta);            
+        }
+
+        private void EnqueueIfChanged(PositionTransform move)
+        {
+            if (move != _lastMove)
+            {
+                _moveQueue.Enqueue(move);
+            }
+            _lastMove = move;
         }
 
         private GameColor GetColor()
@@ -73,7 +86,7 @@ namespace SnakesGame.GameObject
                 : _switchAltColor;
         }
 
-        private void Grow()
+        private void MaybeGrow()
         {
             if (_remainingGrowth > 0)
             {

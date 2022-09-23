@@ -23,6 +23,8 @@ namespace Nibbles.GameObject.Abstractions
         public int ZIndex { get; }
 
         protected readonly List<ISprite> _sprites = new();
+        protected readonly Queue<PositionTransform> _moveQueue = new Queue<PositionTransform>(2);
+        protected PositionTransform _lastMove;
 
         
         public SpriteContainer(Point position, int zIndex, DirectionType direction, GameColor foregroundColor, GameColor backgroundColor, double velocityX, double velocityY)
@@ -30,6 +32,7 @@ namespace Nibbles.GameObject.Abstractions
             Position = position;
             ZIndex = zIndex;
             Direction = direction;
+            _lastMove = new PositionTransform(0, 0, direction);
             ForegroundColor = foregroundColor;
             BackgroundColor = backgroundColor;
             VelocityX = velocityX;
@@ -41,6 +44,7 @@ namespace Nibbles.GameObject.Abstractions
             Position = position;
             ZIndex = zIndex;
             Direction = direction;
+            _lastMove = new PositionTransform(0, 0, direction);
             ForegroundColor = foregroundColor;
             BackgroundColor = backgroundColor;
             VelocityX = velocityX;
@@ -54,23 +58,48 @@ namespace Nibbles.GameObject.Abstractions
 
         public void Move(long timeDelta)
         {
+            if (!CanRender(timeDelta)) return;
+
             foreach (var sprite in _sprites)
             {
-                if (!sprite.CanRender(timeDelta)) return;
-
                 sprite.Move(timeDelta);
             }
             Position = _sprites.First().Position;
         }
 
-        public virtual void Move(PositionTransform transform, long timeDelta)
-        {   
-            foreach (var sprite in _sprites)
-            {
-                if (!sprite.CanRender(timeDelta)) return;
-                sprite.Move(transform, timeDelta);
-            }
+        public virtual void Move(PositionTransform currentMove, long timeDelta)
+        {
+            _moveQueue.Enqueue(currentMove);
+
+            if (!CanRender(timeDelta)) return;
+
+            ExecuteMoves(timeDelta, _sprites);
             Position = _sprites.First().Position;
+        }
+
+        protected virtual void ExecuteMoves(long timeDelta, IEnumerable<ISprite> sprites)
+        {
+            while(_moveQueue.Count > 0)
+            {
+                var move = _moveQueue.Dequeue();
+                
+                foreach (var sprite in sprites)
+                {
+                    SpriteDestroyed?.Invoke(sprite);
+                    sprite.Move(move, timeDelta);
+                    SpriteCreated?.Invoke(sprite);
+                }
+            }
+        }
+
+        protected virtual void ExecuteQueuedMoves(long timeDelta, Sprite sprite)
+        {
+            while (_moveQueue.Count > 0)
+            {
+                var move = _moveQueue.Dequeue();
+
+                sprite.Move(move, timeDelta);
+            }
         }
 
         public virtual bool CanRender(long timeDelta) => _sprites
