@@ -1,11 +1,10 @@
 ﻿using Nibbles.Engine.Abstractions;
-using Nibbles.Player;
 
 namespace Nibbles.Engine
 {
     public class KeyboardReader : IInputReader
     {
-        public InputType Get()
+        public InputType Read()
         {
             return !Console.KeyAvailable
                 ? InputType.NoInput

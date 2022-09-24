@@ -1,5 +1,5 @@
-﻿using Nibbles.Engine.Abstractions;
-using Nibbles.GameObject.Dimensions;
+﻿using Nibbles.Engine;
+using Nibbles.Engine.Abstractions;
 using SnakesGame.GameObject;
 
 namespace SnakesGame.Engine
@@ -17,8 +17,7 @@ namespace SnakesGame.Engine
         }
 
         protected override void InitializeSprites()
-        {            
-                        
+        {               
             _renderer.Add(_state.GameTitle);
             _renderer.Add(_state.Score);
             _renderer.Add(_state.Snake);
@@ -38,26 +37,41 @@ namespace SnakesGame.Engine
             RegisterEvents(_state.Board);
         }
 
-        public override void PlayerMove()
+        public override void GenerateFrame()
         {
-            _state.Score.IncrementMoves();
-        }
-
-        public override void PlayerShoot()
-        {
-            if (_state.Venom != null) return;
-
-            _state.Venom = _state.Snake.Shoot();
-            _state.Venom.SpriteDestroyed += OnSpriteDestroyed;
-            _state.Venom.SpriteCreated += OnSpriteCreated;
-            _state.Venom.VenomDestroyed += OnVenomDestroyed;
-        }
-
-        public override void UpdateState(PositionTransform playerInput, long timeDelta)
-        {
+            var timeSinceLastFrame = GetTimeSinceLastFrame();
+            var playerState = _state.Player.NextState();
+            HandlePlayerMove(timeSinceLastFrame, playerState);
+            HandlePlayerShoot(timeSinceLastFrame, playerState);
             _collisionDetector.Detect();
-            _state.Snake.Move(playerInput, timeDelta);
-            _state.Venom?.Move(timeDelta);
+        }
+
+        private void HandlePlayerMove(long timeSinceLastFrame, PlayerState playerState)
+        {
+            if (playerState.MovingState == MovingState.Idle)
+            {
+                _state.Snake.Move(playerState.GetLastNonIdleMove(), timeSinceLastFrame);
+            }
+            else
+            {
+                _state.Score.IncrementMoves();
+                _state.Snake.Move(playerState.GetMove(), timeSinceLastFrame);
+            }
+        }
+
+        private void HandlePlayerShoot(long timeSinceLastFrame, PlayerState playerState)
+        {
+            var snakeShouldShoot = playerState.ActionState == ActionState.Shooting 
+                && _state.Venom is null;
+
+            if (snakeShouldShoot)
+            {
+                    _state.Venom = _state.Snake.Shoot();
+                    _state.Venom.SpriteDestroyed += OnSpriteDestroyed;
+                    _state.Venom.SpriteCreated += OnSpriteCreated;
+                    _state.Venom.VenomDestroyed += OnVenomDestroyed;
+            }
+            _state.Venom?.Move(timeSinceLastFrame);
         }
 
         protected override void HandleGameWin(string text)
@@ -78,8 +92,6 @@ namespace SnakesGame.Engine
             _state.CreateFood();
             _renderer.Add(_state.Food);            
         }
-
-        
 
         private void OnVenomDestroyed(Venom venom)
         {

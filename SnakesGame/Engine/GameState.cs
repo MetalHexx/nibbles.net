@@ -1,4 +1,5 @@
-﻿using Nibbles.GameObject.Abstractions;
+﻿using Nibbles.Engine;
+using Nibbles.GameObject.Abstractions;
 using Nibbles.GameObject.Configuration;
 using Nibbles.GameObject.Dimensions;
 using Nibbles.GameObject.UI;
@@ -9,6 +10,7 @@ namespace SnakesGame.Engine
 {
     public class GameState
     {
+        public IPlayer Player { get; set; }
         public Food Food { get; set; }
         public SnakeContainer Snake { get; init; } = new();
         public Venom? Venom { get; set; }
@@ -29,13 +31,14 @@ namespace SnakesGame.Engine
             SnakesConfig.BOARD_BORDER_BACKGROUND_COLOR,
             0, 0);
 
-        public GameState()
+        public GameState(IPlayer player)
         {
+            Player = player;
+            Food = CreateFood();
+
             GameOverTextBox = new GameTextBox("",
                 new Point(Board.Size.Width / 2 - 8, Board.Size.Height / 2 - 2),
                 new Size(16, 4));
-
-            CreateFood();
         }
 
         public IList<ISprite> GetUnavailableFoodPositions()

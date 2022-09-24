@@ -1,4 +1,4 @@
-﻿namespace Nibbles.Player
+﻿namespace Nibbles.Engine
 {
     public enum InputType
     {

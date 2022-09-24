@@ -1,5 +1,4 @@
 ﻿using Nibbles.GameObject.Abstractions;
-using Nibbles.GameObject.Dimensions;
 
 namespace Nibbles.Engine.Abstractions
 {
@@ -8,15 +7,14 @@ namespace Nibbles.Engine.Abstractions
         public Action? GameOver { get; set; }
 
         protected readonly ISpriteRenderer _renderer;
+        protected long _lastRenderTicks = DateTime.Now.Ticks;
 
         public GameManager(ISpriteRenderer renderer)
         {
             _renderer = renderer;
         }
         protected abstract void InitializeSprites();
-        public abstract void PlayerMove();
-        public abstract void PlayerShoot();
-        public abstract void UpdateState(PositionTransform transform, long renderDelta);
+        public abstract void GenerateFrame();
         protected abstract void HandleGameWin(string text);
         protected abstract void HandleGameOver(string text);
 
@@ -34,6 +32,17 @@ namespace Nibbles.Engine.Abstractions
         {
             sprite.SpriteCreated += OnSpriteCreated;
             sprite.SpriteDestroyed += OnSpriteDestroyed;
+        }
+
+        public long GetTimeSinceLastFrame()
+        {
+            var currentTick = DateTime.Now.Ticks;
+            var delta = currentTick - _lastRenderTicks;
+
+            if (delta == 0) return _lastRenderTicks;
+
+            _lastRenderTicks = currentTick;
+            return delta;
         }
     }
 }

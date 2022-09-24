@@ -1,27 +1,28 @@
 ﻿using Nibbles.Engine.Abstractions;
 using Nibbles.GameObject.Dimensions;
 
-namespace Nibbles.Player
+namespace Nibbles.Engine
 {
-    public class PlayerInput : IPlayerInput
+    public class Player : IPlayer
     {
         private readonly IInputReader _inputReader;
-
-        public event Action? Moved, Shot;
-        public MovingState MoveState { get; private set; } = MovingState.MovingRight;
+        public MovingState MovingState { get; private set; } = MovingState.MovingRight;
+        public MovingState LastMovingState { get; private set; } = MovingState.MovingRight;
+        public MovingState LastNonIdleMovingState { get; private set; } = MovingState.MovingRight;
         public ActionState ActionState { get; private set; } = ActionState.Idle;
 
-        public PlayerInput(IInputReader inputReader)
+        public Player(IInputReader inputReader)
         {
             _inputReader = inputReader;
         }
 
-        public void UpdateState()
+        public PlayerState NextState()
         {
-            var previousMoveState = MoveState;
-            var playerInput = _inputReader.Get();
+            var LastMovingState = MovingState;
+            
+            var playerInput = _inputReader.Read();
 
-            MoveState = (MoveState, playerInput) switch
+            MovingState = (LastMovingState, playerInput) switch
             {
                 (MovingState.MovingLeft, InputType.Up) => MovingState.MovingUp,
                 (MovingState.MovingLeft, InputType.Down) => MovingState.MovingDown,
@@ -31,7 +32,11 @@ namespace Nibbles.Player
                 (MovingState.MovingUp, InputType.Right) => MovingState.MovingRight,
                 (MovingState.MovingDown, InputType.Left) => MovingState.MovingLeft,
                 (MovingState.MovingDown, InputType.Right) => MovingState.MovingRight,
-                _ => MoveState
+                (MovingState.Idle, InputType.Up) => MovingState.MovingUp,
+                (MovingState.Idle, InputType.Down) => MovingState.MovingDown,
+                (MovingState.Idle, InputType.Left) => MovingState.MovingLeft,
+                (MovingState.Idle, InputType.Right) => MovingState.MovingRight,
+                _ => MovingState.Idle
             };
 
             ActionState = (ActionState, playerInput) switch
@@ -40,20 +45,11 @@ namespace Nibbles.Player
                 _ => ActionState.Idle
             };
 
-            if (previousMoveState != MoveState) Moved?.Invoke();
-            if (ActionState == ActionState.Shooting) Shot?.Invoke();
-        }
+            LastNonIdleMovingState = MovingState is MovingState.Idle
+                ? LastNonIdleMovingState
+                : MovingState;
 
-        public PositionTransform GetMove()
-        {
-            return MoveState switch
-            {
-                MovingState.MovingUp => new PositionTransform(0, -1, DirectionType.Up),
-                MovingState.MovingDown => new PositionTransform(0, 1, DirectionType.Down),
-                MovingState.MovingLeft => new PositionTransform(-1, 0, DirectionType.Left),
-                MovingState.MovingRight => new PositionTransform(1, 0, DirectionType.Right),
-                _ => throw new Exception("Unknown player state")
-            };
+            return new PlayerState(ActionState, LastMovingState, LastNonIdleMovingState, MovingState);
         }
     }
 }
