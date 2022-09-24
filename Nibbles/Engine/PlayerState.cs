@@ -1,4 +1,5 @@
-﻿using Nibbles.GameObject.Dimensions;
+﻿using Nibbles.Engine;
+using Nibbles.GameObject.Dimensions;
 
 namespace Nibbles.Engine
 {

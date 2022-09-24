@@ -1,4 +1,4 @@
-﻿using Nibbles.Engine;
+﻿using Nibbles.Engine.Abstractions;
 using Nibbles.GameObject.Abstractions;
 using Nibbles.GameObject.Configuration;
 using Nibbles.GameObject.Dimensions;

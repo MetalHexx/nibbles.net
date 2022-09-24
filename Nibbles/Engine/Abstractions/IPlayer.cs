@@ -1,4 +1,4 @@
-﻿namespace Nibbles.Engine
+﻿namespace Nibbles.Engine.Abstractions
 {
     public interface IPlayer
     {
