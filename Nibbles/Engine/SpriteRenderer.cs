@@ -11,7 +11,9 @@ namespace Nibbles.Engine
 
         public SpriteRenderer()
         {
+            Console.SetBufferSize(Console.WindowWidth, Console.WindowHeight);
             Console.CursorVisible = false;
+            Console.ForegroundColor = ConsoleColor.White;
         }
 
         public void Add(ISprite sprite)
