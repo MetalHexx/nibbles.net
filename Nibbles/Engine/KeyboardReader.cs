@@ -19,6 +19,7 @@ namespace Nibbles.Engine
                     ConsoleKey.D => InputType.Right,
                     ConsoleKey.RightArrow => InputType.Right,
                     ConsoleKey.Spacebar => InputType.Spacebar,
+                    ConsoleKey.Enter => InputType.Enter,
                     _ => InputType.NoInput
                 };
         }

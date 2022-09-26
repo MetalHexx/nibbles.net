@@ -7,6 +7,7 @@
         Left,
         Right,
         NoInput,
-        Spacebar
+        Spacebar,
+        Enter
     }
 }
