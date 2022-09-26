@@ -7,8 +7,13 @@ namespace Nibbles.GameObject.UI
 {
     public class GameText : SpriteContainer
     {
-        private string _text = "";
+        public string Text { get; set; } = "";
 
+        public GameText(Point position, int zIndex, string text,GameColor foregroundColor, GameColor backgroundColor)
+            : base(position, zIndex, DirectionType.None, foregroundColor, backgroundColor, 0, 0) 
+        {
+            SetText(text);
+        }
          public GameText(Point position, int zIndex, string text, DirectionType direction, GameColor foregroundColor, GameColor backgroundColor, double velocityX, double velocityY)
             : base(position, zIndex, direction, foregroundColor, backgroundColor, velocityX, velocityY)
         {
@@ -18,23 +23,30 @@ namespace Nibbles.GameObject.UI
         public void SetText(string text)
         {
             _sprites.Clear();
-            var lengthDelta = _text.Length - text.Length;
-            _text = text;
+            var lengthDelta = Text.Length - text.Length;
+            Text = text;
             PadWhiteSpace(lengthDelta);
             Build();
+        }
+
+        public void SetText(string text, GameColor foregroundColor, GameColor backgroundColor)
+        {
+            ForegroundColor = foregroundColor;
+            BackgroundColor = backgroundColor;
+            SetText(text);
         }
 
         private void PadWhiteSpace(int padAmount)
         {
             if (padAmount > 0)
             {
-                _text = _text.PadRight(padAmount);
+                Text = Text.PadRight(padAmount);
             }
         }
 
         protected override void Build()
         {
-            var charList = _text.ToList();
+            var charList = Text.ToList();
 
             for (int i = 0; i < charList.Count; i++)
             {
