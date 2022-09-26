@@ -42,6 +42,7 @@ namespace Nibbles.Engine
             ActionState = (ActionState, playerInput) switch
             {
                 (ActionState.Idle, InputType.Spacebar) => ActionState.Shooting,
+                (ActionState.Idle, InputType.Enter) => ActionState.Shooting,
                 _ => ActionState.Idle
             };
 
