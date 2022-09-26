@@ -9,6 +9,14 @@
         Black,
         DarkBlue,
         Magenta,
-
+        DarkMagenta,
+        DarkCyan,
+        Gray,
+        DarkGray,
+        Yellow,
+        Blue,
+        DarkRed,
+        DarkYellow,
+        DarkGreen,
     }
 }
