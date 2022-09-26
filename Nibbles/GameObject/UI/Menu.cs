@@ -17,7 +17,7 @@ namespace Nibbles.GameObject.UI
         {
             UnselectedMenuItem_BackgroundColor = backgroundColor;
 
-            var menuTitle = new GameText(new Point(2, 2), 1, menuText, foregroundColor, backgroundColor);
+            var menuTitle = new GameText(new Point(position.X + 1, position.Y + 2), 1, menuText, foregroundColor, backgroundColor);
 
             for (int i = 0; i < menuItems.Count; i++)
             {
@@ -35,7 +35,7 @@ namespace Nibbles.GameObject.UI
                     bgColor = UnselectedMenuItem_BackgroundColor;
                 }
 
-                var menuItem = new GameText(new Point(2, 3 + i), 1, menuItems[i], fgColor, bgColor);
+                var menuItem = new GameText(new Point(position.X + 2, position.Y + 3 + i), 1, menuItems[i], fgColor, bgColor);
 
                 if(i == 0)
                 {

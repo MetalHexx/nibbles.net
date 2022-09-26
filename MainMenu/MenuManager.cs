@@ -13,23 +13,52 @@ namespace MainMenu
         private readonly ISpriteRenderer _renderer;
         private readonly IPlayer _player;
         private Menu _menu;
+        private Board _board;
+        private GameText _gameTitle = new(
+            new Point(3, 1),
+            GameConfig.BOARD_TEXT_ZINDEX,
+            GameMenuConfig.BOARD_TITLE,
+            DirectionType.None,
+            GameMenuConfig.BOARD_BORDER_FOREGROUND_COLOR,
+            GameMenuConfig.BOARD_BORDER_BACKGROUND_COLOR,
+            0, 0);
 
-        public MenuManager(ISpriteRenderer renderer, IPlayer player) : base(renderer)
+        public MenuManager(ISpriteRenderer renderer, IPlayer player, Size boardSize) : base(renderer)
         {
             _renderer = renderer;
             _player = player;
 
             Console.Clear();
 
-            var menuItems = new List<string> 
-            { 
-                GameMenuConfig.SNAKES, 
-                GameMenuConfig.TETRIS, 
-                GameMenuConfig.MINECRAFT_2D 
+            _board = new(
+                new Point(1, 1),
+                new Size(boardSize.Width - 2, boardSize.Height - 1),
+                GameConfig.BOARD_ZINDEX);
+
+            var menuItems = new List<string>
+            {
+                GameMenuConfig.SNAKES_TITLE,
+                GameMenuConfig.TETRIS_TITLE,
+                GameMenuConfig.MINECRAFT_2D_TITLE
             };
-            _menu = new(new Point(0, 0), new Size(30, 10), 0, "nibbles.net arcade", menuItems, GameColor.DarkYellow, GameColor.DarkMagenta);
+
+            var menuXPosition = _board.Size.Width / 2 - 15;
+            var menuYPosition = _board.Size.Height / 2 - 5;
+
+            _menu = new(
+                new Point(menuXPosition, menuYPosition), 
+                new Size(30, 10), GameMenuConfig.MENU_ZINDEX, 
+                GameMenuConfig.MENU_TITLE, 
+                menuItems, 
+                GameColor.DarkYellow, 
+                GameColor.DarkMagenta);
+            
             _menu.SpriteCreated += OnSpriteCreated;
+
             _renderer.Add(_menu);
+            _renderer.Add(_board);
+            _renderer.Add(_gameTitle);
+            _renderer.Add(_board);
 
         }
 

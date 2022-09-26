@@ -11,7 +11,7 @@ static void ExecuteGame(string game)
     Console.Clear();
     switch (game)
     {
-        case GameMenuConfig.SNAKES:
+        case GameMenuConfig.SNAKES_TITLE:
             PlaySnakes();
             break;
         default: return;
@@ -24,7 +24,7 @@ static void ExecuteMainMenu()
     var inputReader = new KeyboardReader();
     var player = new Player(inputReader);
     var renderer = new SpriteRenderer();
-    var mainMenu = new MenuManager(renderer, player);
+    var mainMenu = new MenuManager(renderer, player, new Size(Console.WindowWidth, Console.WindowHeight));
     mainMenu.GameSelected += ExecuteGame;
     new GameLoop(renderer, mainMenu).Start();
 }
