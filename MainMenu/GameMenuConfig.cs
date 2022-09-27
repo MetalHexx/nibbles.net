@@ -4,7 +4,7 @@ namespace MainMenu
 {
     public static class GameMenuConfig    {
         public const int MENU_ZINDEX = 1;
-        public const string MENU_TITLE = "nibbles.net arcade";
+        public const string MENU_TITLE = "Select a game:";
         public const string SNAKES_TITLE = "Snakes";
         public const string TETRIS_TITLE = "Tetris";
         public const string MINECRAFT_2D_TITLE= "Minecraft 2D";

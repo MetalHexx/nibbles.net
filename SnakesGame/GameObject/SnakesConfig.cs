@@ -42,7 +42,7 @@ namespace SnakesGame.GameObject
         public const int BoardSizeY = 27;
 
         public const GameColor GAME_TEXTBOX_FOREGROUND_COLOR = GameColor.White;
-        public const GameColor GAME_TEXTBOX_BACKGROUND_COLOR = GameColor.Magenta;
+        public const GameColor GAME_TEXTBOX_BACKGROUND_COLOR = GameColor.DarkMagenta;
 
         public const string GAME_TITLE = "Nibbles.net";
         public const string GAME_WIN = "Game Over! :)";

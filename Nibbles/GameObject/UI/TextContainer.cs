@@ -20,12 +20,12 @@ namespace Nibbles.GameObject.UI
             SetText(text);
         }
 
-        public void SetText(string text)
+        public virtual void SetText(string text)
         {
             _sprites.Clear();
             var lengthDelta = Text.Length - text.Length;
             Text = text;
-            PadWhiteSpace(lengthDelta);
+            LeftJustify(lengthDelta);
             Build();
         }
 
@@ -36,7 +36,7 @@ namespace Nibbles.GameObject.UI
             SetText(text);
         }
 
-        private void PadWhiteSpace(int padAmount)
+        private void LeftJustify(int padAmount)
         {
             if (padAmount > 0)
             {

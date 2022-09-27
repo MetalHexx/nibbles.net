@@ -5,95 +5,125 @@ using System.Drawing;
 namespace Nibbles.GameObject.UI
 {
     public class Menu : BorderedBox
-    {        
-        private List<GameText> _menuItems = new List<GameText>();
-        public GameText SelectedMenuItem { get; private set; }
+    {
+        public MenuItem SelectedMenuItem { get; private set; }
+
+        private List<MenuItem> _menuItems = new List<MenuItem>();
+        private readonly string _menuText = "";
+        private readonly List<string> _menuItemsText = new List<string>();        
+
         private GameColor SelectedMenuItem_ForegroundColor = GameColor.Black;
         private GameColor SelectedMenuItem_BackgroundColor = GameColor.White;
-        private GameColor UnselectedMenuItem_ForegroundColor = GameColor.White;
+        private GameColor UnselectedMenuItem_ForegroundColor = GameColor.White;        
         private GameColor UnselectedMenuItem_BackgroundColor;
 
         public Menu(Point position, Size size, int zIndex, string menuText, List<string> menuItems, GameColor foregroundColor, GameColor backgroundColor) : base(position, size, zIndex, foregroundColor, backgroundColor)
         {
+            _menuText = menuText;
+            _menuItemsText = menuItems;
             UnselectedMenuItem_BackgroundColor = backgroundColor;
+            Initialize();
+        }
 
-            var menuTitle = new GameText(new Point(position.X + 1, position.Y + 2), 1, menuText, foregroundColor, backgroundColor);
+        private void Initialize()
+        {
+            var yOffset = GetCenteredYPositionDelta();
+            CreateMenuTitle(yOffset);
+            CreateMenuItems(yOffset);
+        }
 
-            for (int i = 0; i < menuItems.Count; i++)
+        private int GetCenteredYPositionDelta()
+        {
+            var menuItemsAndTitleHeight = _menuItemsText.Count + 1;
+            return (Size.Height - menuItemsAndTitleHeight) / 2 + 1;
+        }
+
+        private void CreateMenuTitle(int yOffset)
+        {
+            var menuTitlePositionX = Position.X + (Size.Width / 2) - _menuText.Length / 2;
+            var menuTitle = new GameText(new Point(menuTitlePositionX, Position.Y + yOffset - 1), 1, _menuText, ForegroundColor, BackgroundColor);
+            menuTitle.SpriteCreated += Add;
+            menuTitle.SetText(_menuText);
+        }
+
+        private void CreateMenuItems(int yOffset)
+        {
+            var maxWidth = _menuItemsText.Max(item => item.Length) + 2;
+
+            for (int menuItemIndex = 0; menuItemIndex < _menuItemsText.Count; menuItemIndex++)
             {
-                GameColor fgColor;
-                GameColor bgColor;
+                var menuItem = CreateMenuItem(yOffset + menuItemIndex, maxWidth, _menuItemsText[menuItemIndex]);
 
-                if(i == 0)
+                if (menuItemIndex == 0)
                 {
-                    fgColor = SelectedMenuItem_ForegroundColor;
-                    bgColor = SelectedMenuItem_BackgroundColor;
+                    menuItem.SelectItem();
+                    SelectedMenuItem = menuItem;
                 }
                 else
                 {
-                    fgColor = UnselectedMenuItem_ForegroundColor;
-                    bgColor = UnselectedMenuItem_BackgroundColor;
-                }
-
-                var menuItem = new GameText(new Point(position.X + 2, position.Y + 3 + i), 1, menuItems[i], fgColor, bgColor);
-
-                if(i == 0)
-                {
-                    SelectedMenuItem = menuItem;
-                }
+                    menuItem.DeselectItem();
+                }                
                 menuItem.SpriteCreated += Add;
-                menuItem.SetText(menuItems[i]);  
                 _menuItems.Add(menuItem);
+                menuItem.SetText(_menuItemsText[menuItemIndex]);
             }
+        }
 
-            menuTitle.SpriteCreated += Add;
-            menuTitle.SetText(menuText);
-
+        private MenuItem CreateMenuItem(int yOffset, int maxWidth, string menuItemText)
+        {
+            var menuItemPositionX = Position.X + (Size.Width / 2) - menuItemText.Length / 2;
+            return new MenuItem(new Point(menuItemPositionX, Position.Y + yOffset), 1, menuItemText, maxWidth, UnselectedMenuItem_ForegroundColor, UnselectedMenuItem_BackgroundColor, SelectedMenuItem_ForegroundColor, SelectedMenuItem_BackgroundColor);
         }
 
         public void SelectNextMenuItem(DirectionType direction)
         {
             var currentIndex = _menuItems.IndexOf(SelectedMenuItem);
 
-            SelectedMenuItem.ForegroundColor = UnselectedMenuItem_ForegroundColor;
-            SelectedMenuItem.BackgroundColor = UnselectedMenuItem_BackgroundColor;
+            SelectedMenuItem.DeselectItem();
             SelectedMenuItem.SetText(SelectedMenuItem.Text);
 
             switch (direction)
             {
                 case DirectionType.Down:
-                    
-                    if(currentIndex == _menuItems.Count - 1)
-                    {
-                        currentIndex = 0;
-                    }
-                    else
-                    {
-                        currentIndex++;
-                    }
-                    SelectedMenuItem = _menuItems[currentIndex];
+
+                    SelectNextItemUp(currentIndex);
                     break;
 
                 case DirectionType.Up:
-                    if (currentIndex == 0)
-                    {
-                        currentIndex = _menuItems.Count - 1;
-                    }
-                    else
-                    {
-                        currentIndex--;
-                    }                    
-                    SelectedMenuItem = _menuItems[currentIndex];
+                    SelectNextItemDown(currentIndex);
                     break;
 
                 default: return;
             }
-
-            SelectedMenuItem.ForegroundColor = SelectedMenuItem_ForegroundColor;
-            SelectedMenuItem.BackgroundColor = SelectedMenuItem_BackgroundColor;
+            SelectedMenuItem.SelectItem();
             SelectedMenuItem.SpriteCreated += Add;
             SelectedMenuItem.SetText(SelectedMenuItem.Text);
+        }
 
+        private void SelectNextItemDown(int currentIndex)
+        {
+            if (currentIndex == 0)
+            {
+                currentIndex = _menuItems.Count - 1;
+            }
+            else
+            {
+                currentIndex--;
+            }
+            SelectedMenuItem = _menuItems[currentIndex];
+        }
+
+        private void SelectNextItemUp(int currentIndex)
+        {
+            if (currentIndex == _menuItems.Count - 1)
+            {
+                currentIndex = 0;
+            }
+            else
+            {
+                currentIndex++;
+            }
+            SelectedMenuItem = _menuItems[currentIndex];
         }
     }
 }

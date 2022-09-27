@@ -14,21 +14,21 @@ namespace MainMenu
         private readonly IPlayer _player;
         private Menu _menu;
         private Board _board;
-        private GameText _gameTitle = new(
-            new Point(3, 1),
-            GameConfig.BOARD_TEXT_ZINDEX,
-            GameMenuConfig.BOARD_TITLE,
-            DirectionType.None,
-            GameMenuConfig.BOARD_BORDER_FOREGROUND_COLOR,
-            GameMenuConfig.BOARD_BORDER_BACKGROUND_COLOR,
-            0, 0);
+        private GameText _gameTitle;
 
         public MenuManager(ISpriteRenderer renderer, IPlayer player, Size boardSize) : base(renderer)
         {
             _renderer = renderer;
             _player = player;
 
-            Console.Clear();
+            _gameTitle = new(
+                new Point(3, 1),
+                GameConfig.BOARD_TEXT_ZINDEX,
+                GameMenuConfig.BOARD_TITLE,
+                DirectionType.None,
+                GameMenuConfig.BOARD_BORDER_FOREGROUND_COLOR,
+                GameMenuConfig.BOARD_BORDER_BACKGROUND_COLOR,
+                0, 0);
 
             _board = new(
                 new Point(1, 1),
@@ -50,7 +50,7 @@ namespace MainMenu
                 new Size(30, 10), GameMenuConfig.MENU_ZINDEX, 
                 GameMenuConfig.MENU_TITLE, 
                 menuItems, 
-                GameColor.DarkYellow, 
+                GameColor.Yellow, 
                 GameColor.DarkMagenta);
             
             _menu.SpriteCreated += OnSpriteCreated;
@@ -75,7 +75,7 @@ namespace MainMenu
             if(playerState.ActionState == ActionState.Shooting)
             {
                 GameOver?.Invoke();
-                GameSelected?.Invoke(_menu.SelectedMenuItem.Text);                
+                GameSelected?.Invoke(_menu.SelectedMenuItem.Name);                
             }
         }
 

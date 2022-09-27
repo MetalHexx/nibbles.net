@@ -18,7 +18,7 @@
         public const int BOARD_TEXT_ZINDEX = 1;
 
         public const GameColor GAME_TEXTBOX_FOREGROUND_COLOR = GameColor.White;
-        public const GameColor GAME_TEXTBOX_BACKGROUND_COLOR = GameColor.Magenta;
+        public const GameColor GAME_TEXTBOX_BACKGROUND_COLOR = GameColor.DarkMagenta;
         public const int GAME_TEXTBOX_ZINDEX = 2;
     }
 }
