@@ -25,12 +25,6 @@ namespace Nibbles.Engine
                 Beep(100, 600);
             });
 
-        public void SingleBeepAsync(int frequenceyHz, int durationMs) =>
-            Task.Run(() => Beep(frequenceyHz, durationMs));
-
-        //TODO: support other platforms
-        public void Beep(int frequenceyHz, int durationMs) => Console.Beep(frequenceyHz, durationMs);
-
         public void Pew() =>
             Task.Run(() =>
             {
@@ -38,5 +32,11 @@ namespace Nibbles.Engine
                 Beep(700, 20);
                 Beep(600, 20);
             });
+
+        public void SingleBeepAsync(int frequenceyHz, int durationMs) =>
+            Task.Run(() => Beep(frequenceyHz, durationMs));
+
+        //TODO: support other platforms
+        public void Beep(int frequenceyHz, int durationMs) => Console.Beep(frequenceyHz, durationMs);        
     }
 }
