@@ -5,6 +5,7 @@ namespace SnakesGame.GameObject
 {
     public static class SnakesConfig
     {
+        public static readonly Guid GAME_ID = Guid.Parse("BA19956D-6C56-4EEB-BF1C-8AA34D9C415F");
         public const int MIN_FRAME_RENDER_SPEED_MS = 200;
 
         public const double DEFAULT_SPRITE_VELOCITY_X = 2;

@@ -7,12 +7,14 @@ namespace SnakesGame.Engine
     public class SnakesManager : GameManager
     {
         private readonly ICollisionDetector _collisionDetector;
+        private readonly ITopScoreStore _scoreStore;
         private readonly GameState _state;
 
-        public SnakesManager(GameState state, ISpriteRenderer renderer, ICollisionDetector collisionDetector) : base(renderer)
+        public SnakesManager(GameState state, ISpriteRenderer renderer, ICollisionDetector collisionDetector, ITopScoreStore scoreStore) : base(renderer)
         {
             _state = state;
             _collisionDetector = collisionDetector;
+            _scoreStore = scoreStore;
             InitializeSprites();
         }
 
@@ -35,6 +37,12 @@ namespace SnakesGame.Engine
             RegisterEvents(_state.GameOverTextBox);
             RegisterEvents(_state.Score);
             RegisterEvents(_state.Board);
+        }
+
+        public void ShowTopScores()
+        {
+            var scores = _scoreStore.GetScores(SnakesConfig.GAME_ID);            
+            Console.ReadLine();
         }
 
         public override void GenerateFrame()
@@ -82,6 +90,7 @@ namespace SnakesGame.Engine
         protected override void HandleGameOver(string text)
         {
             _state.GameOverTextBox.SetText(text);
+            _scoreStore.SaveScore(new TopScore(SnakesConfig.GAME_ID, "HEX", _state.Score.Total));
             GameOver?.Invoke();
         }
 

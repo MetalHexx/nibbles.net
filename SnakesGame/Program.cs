@@ -7,7 +7,10 @@ var player = new Player(inputReader);
 var gameState = new GameState(player, new Size(Console.WindowWidth, Console.WindowHeight));
 var renderer = new SpriteRenderer();
 var collisionDetector = new CollisionDetector(gameState);
-var engine = new SnakesManager(gameState, renderer, collisionDetector);
+var scoreStore = new TopScoreStore();
+var snakesGame = new SnakesManager(gameState, renderer, collisionDetector, scoreStore);
 
-new GameLoop(renderer, engine).Start();
+new GameLoop(renderer, snakesGame).Start();
+Console.ReadLine();
+snakesGame.ShowTopScores();
 Console.ReadLine();
