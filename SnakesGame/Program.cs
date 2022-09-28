@@ -8,7 +8,8 @@ var gameState = new GameState(player, new Size(Console.WindowWidth, Console.Wind
 var renderer = new SpriteRenderer();
 var collisionDetector = new CollisionDetector(gameState);
 var scoreStore = new TopScoreStore();
-var snakesGame = new SnakesManager(gameState, renderer, collisionDetector, scoreStore);
+var soundGenerator = new SoundGenerator();
+var snakesGame = new SnakesManager(gameState, renderer, collisionDetector, scoreStore, soundGenerator);
 
 new GameLoop(renderer, snakesGame).Start();
 Console.ReadLine();

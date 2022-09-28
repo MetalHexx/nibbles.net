@@ -8,13 +8,15 @@ namespace SnakesGame.Engine
     {
         private readonly ICollisionDetector _collisionDetector;
         private readonly ITopScoreStore _scoreStore;
+        private readonly ISoundGenerator _soundGenerator;
         private readonly GameState _state;
 
-        public SnakesManager(GameState state, ISpriteRenderer renderer, ICollisionDetector collisionDetector, ITopScoreStore scoreStore) : base(renderer)
+        public SnakesManager(GameState state, ISpriteRenderer renderer, ICollisionDetector collisionDetector, ITopScoreStore scoreStore, ISoundGenerator soundGenerator) : base(renderer)
         {
             _state = state;
             _collisionDetector = collisionDetector;
             _scoreStore = scoreStore;
+            _soundGenerator = soundGenerator;
             InitializeSprites();
         }
 
@@ -89,6 +91,7 @@ namespace SnakesGame.Engine
 
         protected override void HandleGameOver(string text)
         {
+            _soundGenerator.PlayGameOverSoundAsync();
             _state.GameOverTextBox.SetText(text);
             _scoreStore.SaveScore(new TopScore(SnakesConfig.GAME_ID, "HEX", _state.Score.Total));
             GameOver?.Invoke();
@@ -99,7 +102,9 @@ namespace SnakesGame.Engine
             _state.Snake.Feed();
             _state.Score.IncrementAmountEaten();
             _state.CreateFood();
-            _renderer.Add(_state.Food);            
+            _renderer.Add(_state.Food);
+            _soundGenerator.PlayLevelUpSoundAsync();
+            
         }
 
         private void OnVenomDestroyed(Venom venom)
