@@ -76,10 +76,11 @@ namespace SnakesGame.Engine
 
             if (snakeShouldShoot)
             {
-                    _state.Venom = _state.Snake.Shoot();
-                    _state.Venom.SpriteDestroyed += OnSpriteDestroyed;
-                    _state.Venom.SpriteCreated += OnSpriteCreated;
-                    _state.Venom.VenomDestroyed += OnVenomDestroyed;
+                _soundGenerator.Pew();
+                _state.Venom = _state.Snake.Shoot();
+                _state.Venom.SpriteDestroyed += OnSpriteDestroyed;
+                _state.Venom.SpriteCreated += OnSpriteCreated;
+                _state.Venom.VenomDestroyed += OnVenomDestroyed;
             }
             _state.Venom?.Move(timeSinceLastFrame);
         }

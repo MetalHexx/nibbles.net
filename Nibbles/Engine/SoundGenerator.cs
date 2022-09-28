@@ -29,6 +29,14 @@ namespace Nibbles.Engine
             Task.Run(() => Beep(frequenceyHz, durationMs));
 
         //TODO: support other platforms
-        public void Beep(int frequenceyHz, int durationMs) => Console.Beep(frequenceyHz, durationMs);        
+        public void Beep(int frequenceyHz, int durationMs) => Console.Beep(frequenceyHz, durationMs);
+
+        public void Pew() =>
+            Task.Run(() =>
+            {
+                Beep(900, 50);
+                Beep(700, 20);
+                Beep(600, 20);
+            });
     }
 }
