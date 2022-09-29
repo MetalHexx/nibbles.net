@@ -24,9 +24,9 @@ static void ExecuteMainMenu()
     var inputReader = new KeyboardReader();
     var player = new Player(inputReader);
     var renderer = new SpriteRenderer();
-    var mainMenu = new MenuManager(renderer, player, new Size(Console.WindowWidth, Console.WindowHeight));
+    var mainMenu = new MenuStateReducer(renderer, player, new Size(Console.WindowWidth, Console.WindowHeight));
     mainMenu.GameSelected += ExecuteGame;
-    new GameLoop(renderer, mainMenu).Start();
+    new GameMenuLoop(renderer, mainMenu).Start();
 }
 
 static void PlaySnakes()
@@ -38,8 +38,8 @@ static void PlaySnakes()
     var collisionDetector = new CollisionDetector(gameState);
     var scoreStore = new TopScoreStore();
     var soundGenerator = new SoundGenerator();
-    var snakesGame = new SnakesManager(gameState, renderer, collisionDetector, scoreStore, soundGenerator);    
-    new GameLoop(renderer, snakesGame).Start();
+    var snakesGame = new SnakesStateReducer(gameState, renderer, collisionDetector, scoreStore, soundGenerator);    
+    new SnakesGameLoop(renderer, snakesGame).Start();
     Console.ReadLine();
     snakesGame.ShowTopScores();
     

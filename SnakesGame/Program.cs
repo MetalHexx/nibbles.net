@@ -9,9 +9,9 @@ var renderer = new SpriteRenderer();
 var collisionDetector = new CollisionDetector(gameState);
 var scoreStore = new TopScoreStore();
 var soundGenerator = new SoundGenerator();
-var snakesGame = new SnakesManager(gameState, renderer, collisionDetector, scoreStore, soundGenerator);
+var snakesGame = new SnakesStateReducer(gameState, renderer, collisionDetector, scoreStore, soundGenerator);
 
-new GameLoop(renderer, snakesGame).Start();
+new SnakesGameLoop(renderer, snakesGame).Start();
 Console.ReadLine();
 snakesGame.ShowTopScores();
 Console.ReadLine();

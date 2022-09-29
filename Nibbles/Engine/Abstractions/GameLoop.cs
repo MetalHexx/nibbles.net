@@ -2,31 +2,34 @@
 
 namespace Nibbles.Engine
 {
-    public class GameLoop
+    public abstract class GameLoop : IGameLoop
     {
+        public Action? GameOver { get; set; }
         private readonly ISpriteRenderer _renderer;
-        private readonly IGameManager _game;
+        private readonly IGameStateReducer _game;
         private bool _continueGame = true;
-        private long _lastRenderTicks = DateTime.Now.Ticks; 
+        private long _lastRenderTicks = DateTime.Now.Ticks;
 
-        public GameLoop(ISpriteRenderer renderer, IGameManager game)
+        public GameLoop(ISpriteRenderer renderer, IGameStateReducer game)
         {
             _renderer = renderer;
             _game = game;
             _game.GameOver += () => _continueGame = false;
-            _renderer.Render();            
+            _renderer.Render();
         }
-        public void Start()
+        public virtual void Start()
         {
             do
-            {   
+            {
                 _game.GenerateFrame();
                 _renderer.Render();
             }
             while (_continueGame);
+
+            GameOver?.Invoke();
         }
 
-        public long GetTimeSinceRender()
+        protected virtual long GetTimeSinceRender()
         {
             var currentTick = DateTime.Now.Ticks;
             var delta = currentTick - _lastRenderTicks;

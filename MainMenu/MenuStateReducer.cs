@@ -7,7 +7,7 @@ using System.Drawing;
 
 namespace MainMenu
 {
-    public class MenuManager : GameManager
+    public class MenuStateReducer : GameStateReducer
     {
         public Action<string>? GameSelected;
         private readonly ISpriteRenderer _renderer;
@@ -16,7 +16,7 @@ namespace MainMenu
         private Board _board;
         private GameText _gameTitle;
 
-        public MenuManager(ISpriteRenderer renderer, IPlayer player, Size boardSize) : base(renderer)
+        public MenuStateReducer(ISpriteRenderer renderer, IPlayer player, Size boardSize) : base(renderer)
         {
             _renderer = renderer;
             _player = player;

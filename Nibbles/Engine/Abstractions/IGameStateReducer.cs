@@ -1,6 +1,6 @@
 ﻿namespace Nibbles.Engine.Abstractions
 {
-    public interface IGameManager
+    public interface IGameStateReducer
     {
         Action? GameOver { get; set; }
         void GenerateFrame();

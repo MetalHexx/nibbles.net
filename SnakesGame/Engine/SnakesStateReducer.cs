@@ -4,14 +4,14 @@ using SnakesGame.GameObject;
 
 namespace SnakesGame.Engine
 {
-    public class SnakesManager : GameManager
+    public class SnakesStateReducer : GameStateReducer
     {
         private readonly ICollisionDetector _collisionDetector;
         private readonly ITopScoreStore _scoreStore;
         private readonly ISoundGenerator _soundGenerator;
         private readonly GameState _state;
 
-        public SnakesManager(GameState state, ISpriteRenderer renderer, ICollisionDetector collisionDetector, ITopScoreStore scoreStore, ISoundGenerator soundGenerator) : base(renderer)
+        public SnakesStateReducer(GameState state, ISpriteRenderer renderer, ICollisionDetector collisionDetector, ITopScoreStore scoreStore, ISoundGenerator soundGenerator) : base(renderer)
         {
             _state = state;
             _collisionDetector = collisionDetector;
