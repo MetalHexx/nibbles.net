@@ -7,10 +7,10 @@ namespace SnakesGame.Engine
     {
         public void Start()
         {
-            CreateSnakesGame().Start();
+            CreateGame().Start();
         }
 
-        public SnakesGameLoop CreateSnakesGame()
+        private SnakesGameLoop CreateGame()
         {
             var inputReader = new KeyboardReader();
             var player = new Player(inputReader);
