@@ -13,7 +13,7 @@ namespace Nibbles.Engine.Abstractions
         {
             _renderer = renderer;
         }
-        protected abstract void InitializeSprites();
+
         public abstract void GenerateFrame();
         protected abstract void HandleGameWin(string text);
         protected abstract void HandleGameOver(string text);

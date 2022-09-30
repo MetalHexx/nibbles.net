@@ -54,12 +54,10 @@ namespace MainMenu
                 GameColor.DarkMagenta);
             
             _menu.SpriteCreated += OnSpriteCreated;
-
             _renderer.Add(_menu);
             _renderer.Add(_board);
             _renderer.Add(_gameTitle);
             _renderer.Add(_board);
-
         }
 
         public override void GenerateFrame()
@@ -85,11 +83,6 @@ namespace MainMenu
         }
 
         protected override void HandleGameWin(string text)
-        {
-            throw new NotImplementedException();
-        }
-
-        protected override void InitializeSprites()
         {
             throw new NotImplementedException();
         }

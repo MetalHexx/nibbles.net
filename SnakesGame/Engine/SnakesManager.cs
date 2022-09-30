@@ -1,0 +1,26 @@
+﻿using Nibbles.Engine;
+using System.Drawing;
+
+namespace SnakesGame.Engine
+{
+    public class SnakesManager
+    {
+        public void Start()
+        {
+            CreateSnakesGame().Start();
+        }
+
+        public SnakesGameLoop CreateSnakesGame()
+        {
+            var inputReader = new KeyboardReader();
+            var player = new Player(inputReader);
+            var renderer = new SpriteRenderer();
+            var gameState = new GameState(player, new Size(Console.WindowWidth, Console.WindowHeight));
+            var collisionDetector = new CollisionDetector(gameState);
+            var scoreStore = new TopScoreStore();
+            var soundGenerator = new SoundGenerator();
+            var snakesReducer = new SnakesStateReducer(gameState, renderer, collisionDetector, scoreStore, soundGenerator);
+            return new SnakesGameLoop(renderer, snakesReducer);
+        }
+    }
+}

@@ -17,10 +17,10 @@ namespace SnakesGame.Engine
             _collisionDetector = collisionDetector;
             _scoreStore = scoreStore;
             _soundGenerator = soundGenerator;
-            InitializeSprites();
+            Initialize();
         }
 
-        protected override void InitializeSprites()
+        private void Initialize()
         {               
             _renderer.Add(_state.GameTitle);
             _renderer.Add(_state.Score);
