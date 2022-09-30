@@ -7,11 +7,11 @@ namespace SnakesGame.Engine
     public class SnakesStateReducer : GameStateReducer
     {
         private readonly ICollisionDetector _collisionDetector;
-        private readonly ITopScoreStore _scoreStore;
+        private readonly IHighScoreStore _scoreStore;
         private readonly ISoundGenerator _soundGenerator;
         private readonly GameState _state;
 
-        public SnakesStateReducer(GameState state, ISpriteRenderer renderer, ICollisionDetector collisionDetector, ITopScoreStore scoreStore, ISoundGenerator soundGenerator) : base(renderer)
+        public SnakesStateReducer(GameState state, ISpriteRenderer renderer, ICollisionDetector collisionDetector, IHighScoreStore scoreStore, ISoundGenerator soundGenerator) : base(renderer)
         {
             _state = state;
             _collisionDetector = collisionDetector;
@@ -39,12 +39,6 @@ namespace SnakesGame.Engine
             RegisterEvents(_state.GameOverTextBox);
             RegisterEvents(_state.Score);
             RegisterEvents(_state.Board);
-        }
-
-        public void ShowTopScores()
-        {
-            var scores = _scoreStore.GetScores(SnakesConfig.GAME_ID);            
-            Console.ReadLine();
         }
 
         public override void GenerateFrame()

@@ -3,12 +3,12 @@
 namespace Nibbles.Engine
 {
 
-    public class TopScoreStore : ITopScoreStore
+    public class HighScoreStore : IHighScoreStore
     {
         private const string _scoreFilePath = @"\scores\";
-        private const string _scoreFileName = "top-scores.json";
+        private const string _scoreFileName = "high-scores.json";
 
-        public TopScoreStore()
+        public HighScoreStore()
         {
             InitializeDirectory(FullDirectoryPath);
         }

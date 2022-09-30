@@ -12,14 +12,19 @@ namespace MainMenu
         public Action<string>? GameSelected;
         private readonly ISpriteRenderer _renderer;
         private readonly IPlayer _player;
-        private Menu _menu;
-        private Board _board;
-        private GameText _gameTitle;
+        private readonly Board _board;
+        private readonly GameText _gameTitle;
+        private readonly Menu _menu;
 
         public MenuStateReducer(ISpriteRenderer renderer, IPlayer player, Size boardSize) : base(renderer)
         {
             _renderer = renderer;
             _player = player;
+
+            _board = new(
+                new Point(1, 1),
+                new Size(boardSize.Width - 2, boardSize.Height - 1),
+                GameConfig.BOARD_ZINDEX);
 
             _gameTitle = new(
                 new Point(3, 1),
@@ -29,11 +34,6 @@ namespace MainMenu
                 GameMenuConfig.BOARD_BORDER_FOREGROUND_COLOR,
                 GameMenuConfig.BOARD_BORDER_BACKGROUND_COLOR,
                 0, 0);
-
-            _board = new(
-                new Point(1, 1),
-                new Size(boardSize.Width - 2, boardSize.Height - 1),
-                GameConfig.BOARD_ZINDEX);
 
             var menuItems = new List<string>
             {

@@ -1,6 +1,6 @@
 ﻿namespace Nibbles.Engine
 {
-    public interface ITopScoreStore
+    public interface IHighScoreStore
     {
         void SaveScore(TopScore score);
         IEnumerable<TopScore> GetScores(Guid gameId);

@@ -6,7 +6,7 @@ namespace MainMenu
 {
     public class MenuManager
     {
-        private readonly SnakesManager _snakes;
+        private readonly SnakesManager _snakes;        
         public MenuManager()
         {
             _snakes = new SnakesManager();   
@@ -16,7 +16,6 @@ namespace MainMenu
             while (true)
             {
                 CreateMenu().Start();
-                Console.ReadLine();
             }
         }
 

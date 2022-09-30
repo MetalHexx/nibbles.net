@@ -17,10 +17,10 @@ namespace Nibbles.GameObject.UI
         private GameColor UnselectedMenuItem_ForegroundColor = GameColor.White;        
         private GameColor UnselectedMenuItem_BackgroundColor;
 
-        public Menu(Point position, Size size, int zIndex, string menuText, List<string> menuItems, GameColor foregroundColor, GameColor backgroundColor) : base(position, size, zIndex, foregroundColor, backgroundColor)
+        public Menu(Point position, Size size, int zIndex, string menuText, IEnumerable<string> menuItems, GameColor foregroundColor, GameColor backgroundColor) : base(position, size, zIndex, foregroundColor, backgroundColor)
         {
             _menuText = menuText;
-            _menuItemsText = menuItems;
+            _menuItemsText = menuItems.ToList();
             UnselectedMenuItem_BackgroundColor = backgroundColor;
             Initialize();
         }
