@@ -8,6 +8,7 @@
         Right,
         NoInput,
         Spacebar,
-        Enter
+        Enter,
+        Escape
     }
 }

@@ -15,7 +15,8 @@ namespace Nibbles.Engine
     public enum ActionState
     {
         Idle,
-        Shooting
+        Shooting,
+        Quitting
     }
 
     public record PlayerState

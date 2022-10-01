@@ -46,6 +46,11 @@ namespace Tetris
                 var newTetrimino = _state.CreateTetrimino();
                 _renderer.Add(newTetrimino);
                 RegisterEvents(newTetrimino);
+                return;
+            }
+            if(playerState.ActionState == ActionState.Quitting)
+            {
+                GameOver?.Invoke();
             }
         }
 

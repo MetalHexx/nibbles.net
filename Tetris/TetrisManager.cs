@@ -10,8 +10,7 @@ namespace Tetris
         public void Start()
         {
             CreateGame().Start();
-            Console.ReadLine();
-            _highScores.Start(TetrisConfig.GAME_ID);
+            //_highScores.Start(TetrisConfig.GAME_ID);
         }
 
         private TetrisLoop CreateGame()

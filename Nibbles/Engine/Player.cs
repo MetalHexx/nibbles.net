@@ -43,6 +43,7 @@ namespace Nibbles.Engine
             {
                 (ActionState.Idle, InputType.Spacebar) => ActionState.Shooting,
                 (ActionState.Idle, InputType.Enter) => ActionState.Shooting,
+                (ActionState.Idle, InputType.Escape) => ActionState.Quitting,
                 _ => ActionState.Idle
             };
 
