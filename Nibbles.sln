@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MainMenu", "MainMenu\MainMe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HIghScores", "HIghScores\HIghScores.csproj", "{C6C27853-6312-4C5B-A9B7-FABDBAF9E560}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tetris", "Tetris\Tetris.csproj", "{1AC243CF-70C7-4400-BAC0-E9E0C2D6DED1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{C6C27853-6312-4C5B-A9B7-FABDBAF9E560}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C6C27853-6312-4C5B-A9B7-FABDBAF9E560}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C6C27853-6312-4C5B-A9B7-FABDBAF9E560}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1AC243CF-70C7-4400-BAC0-E9E0C2D6DED1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1AC243CF-70C7-4400-BAC0-E9E0C2D6DED1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1AC243CF-70C7-4400-BAC0-E9E0C2D6DED1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1AC243CF-70C7-4400-BAC0-E9E0C2D6DED1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

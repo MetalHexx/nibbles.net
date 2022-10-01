@@ -12,9 +12,9 @@ namespace SnakesGame.Engine
         public Action? VenomBoardCollision { get; set; }
         public Action? VenomFoodCollision { get; set; }
 
-        private readonly GameState _state;
+        private readonly SnakesState _state;
 
-        public CollisionDetector(GameState state) => _state = state;
+        public CollisionDetector(SnakesState state) => _state = state;
 
         public void Detect()
         {

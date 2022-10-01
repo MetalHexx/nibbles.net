@@ -9,9 +9,9 @@ namespace SnakesGame.Engine
         private readonly ICollisionDetector _collisionDetector;
         private readonly IHighScoreStore _scoreStore;
         private readonly ISoundGenerator _soundGenerator;
-        private readonly GameState _state;
+        private readonly SnakesState _state;
 
-        public SnakesStateReducer(GameState state, ISpriteRenderer renderer, ICollisionDetector collisionDetector, IHighScoreStore scoreStore, ISoundGenerator soundGenerator) : base(renderer)
+        public SnakesStateReducer(SnakesState state, ISpriteRenderer renderer, ICollisionDetector collisionDetector, IHighScoreStore scoreStore, ISoundGenerator soundGenerator) : base(renderer)
         {
             _state = state;
             _collisionDetector = collisionDetector;

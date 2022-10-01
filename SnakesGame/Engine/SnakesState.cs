@@ -8,7 +8,7 @@ using System.Drawing;
 
 namespace SnakesGame.Engine
 {
-    public class GameState
+    public class SnakesState
     {
         public IPlayer Player { get; set; }
         public Food Food { get; set; }
@@ -30,7 +30,7 @@ namespace SnakesGame.Engine
             SnakesConfig.BOARD_BORDER_BACKGROUND_COLOR,
             0, 0);
 
-        public GameState(IPlayer player, Size boardSize)
+        public SnakesState(IPlayer player, Size boardSize)
         {
             Player = player;
 

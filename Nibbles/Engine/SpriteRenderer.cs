@@ -33,7 +33,7 @@ namespace Nibbles.Engine
 
         public void Remove(ISpriteContainer sprite)
         {
-            _spritesToAdd.AddRange(sprite.GetSprites());
+            _spritesToRemove.AddRange(sprite.GetSprites());
         }
 
         public void Render()

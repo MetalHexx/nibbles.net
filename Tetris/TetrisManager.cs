@@ -1,31 +1,30 @@
 ﻿using HighScores;
 using Nibbles.Engine;
-using SnakesGame.GameObject;
 using System.Drawing;
 
-namespace SnakesGame.Engine
+namespace Tetris
 {
-    public class SnakesManager
+    public class TetrisManager
     {
         private readonly HighScoreManager _highScores = new HighScoreManager();
         public void Start()
         {
             CreateGame().Start();
             Console.ReadLine();
-            _highScores.Start(SnakesConfig.GAME_ID);            
+            _highScores.Start(TetrisConfig.GAME_ID);
         }
 
-        private SnakesGameLoop CreateGame()
+        private TetrisLoop CreateGame()
         {
             var inputReader = new KeyboardReader();
             var player = new Player(inputReader);
             var renderer = new SpriteRenderer();
-            var gameState = new SnakesState(player, new Size(Console.WindowWidth, Console.WindowHeight));
+            var gameState = new TetrisState(player, new Size(Console.WindowWidth, Console.WindowHeight));
             var collisionDetector = new CollisionDetector(gameState);
             var scoreStore = new HighScoreStore();
             var soundGenerator = new SoundGenerator();
-            var snakesReducer = new SnakesStateReducer(gameState, renderer, collisionDetector, scoreStore, soundGenerator);
-            return new SnakesGameLoop(renderer, snakesReducer);
+            var snakesReducer = new TetrisReducer(gameState, renderer, collisionDetector, scoreStore, soundGenerator);
+            return new TetrisLoop(renderer, snakesReducer);
         }
     }
 }
