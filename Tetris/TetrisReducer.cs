@@ -37,7 +37,14 @@ namespace Tetris
         {
             var timeSinceLastFrame = GetTimeSinceLastFrame();
             var playerState = _state.Player.NextState();
-            _state.Tetrimino.UpdateState(playerState.GetMove().Direction);
+            var playerMove = playerState.GetMove();
+
+            _state.Tetrimino.UpdateRotation(playerMove.Direction);
+
+            if (playerState.MovingState is MovingState.MovingLeft or MovingState.MovingRight)
+            {
+                _state.Tetrimino.InstantMove(playerState.GetMove());
+            }
 
             if(playerState.ActionState == ActionState.Shooting)
             {

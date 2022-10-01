@@ -65,6 +65,16 @@ namespace Nibbles.GameObject.Abstractions
             SpriteCreated?.Invoke(this with { });
         }
 
+        public virtual void InstantMove(PositionTransform transform)
+        {
+            Direction = transform.Direction;
+            _position = Position with
+            {
+                X = _position.X + transform.XDelta,
+                Y = _position.Y + transform.YDelta
+            };
+        }
+
         public virtual void Move(PositionTransform transform, long timeDelta)
         {
             Direction = transform.Direction;

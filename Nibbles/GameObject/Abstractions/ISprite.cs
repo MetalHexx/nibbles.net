@@ -14,6 +14,7 @@ namespace Nibbles.GameObject.Abstractions
         GameColor ForegroundColor { get; }
         GameColor BackgroundColor { get; }
         char DisplayCharacter { get; }
+        void InstantMove(PositionTransform position);   
         void Move(PositionTransform transform, long timeDelta);
         void Move(long timeDelta);
         bool CanRender(long timeDelta);

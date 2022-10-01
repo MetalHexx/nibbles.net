@@ -56,6 +56,23 @@ namespace Nibbles.GameObject.Abstractions
         
         public IEnumerable<ISprite> GetSprites() => _sprites;
 
+        public void InstantMove(PositionTransform transform)
+        {
+            var spritesToRemove = new List<ISprite>();
+            var spritesToAdd = new List<ISprite>();
+
+            foreach (var sprite in _sprites)
+            {
+                var newSprite = new Sprite(sprite.Position, sprite.ZIndex, sprite.Direction, sprite.ForegroundColor, sprite.BackgroundColor, sprite.DisplayCharacter);
+                spritesToRemove.Add(sprite);
+                newSprite.InstantMove(transform);
+                spritesToAdd.Add(newSprite);
+            }
+            RemoveRange(spritesToRemove);
+            AddRange(spritesToAdd);
+            Position = _sprites.First().Position;
+        }
+
         public void Move(long timeDelta)
         {
             if (!CanRender(timeDelta)) return;
@@ -135,6 +152,15 @@ namespace Nibbles.GameObject.Abstractions
         {
             _sprites.AddRange(sprites);
             _sprites.ForEach(sprite => SpriteCreated?.Invoke(sprite));
+        }
+
+        protected void RemoveRange(IEnumerable<ISprite> sprites)
+        {
+            foreach (ISprite sprite in sprites)
+            {
+                _sprites.Remove(sprite);
+                SpriteDestroyed?.Invoke(sprite);
+            }            
         }
 
         protected void Remove(ISprite sprite)

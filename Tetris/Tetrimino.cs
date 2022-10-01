@@ -20,7 +20,7 @@ namespace Tetris
 
         protected abstract int[,] GetRotation(RotationState state);
 
-        public void UpdateState(DirectionType inputDirection)
+        public void UpdateRotation(DirectionType inputDirection)
         {
             _rotationState = (_rotationState, inputDirection) switch
             {
