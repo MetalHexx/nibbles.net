@@ -56,7 +56,7 @@ namespace Nibbles.GameObject.Abstractions
         
         public IEnumerable<ISprite> GetSprites() => _sprites;
 
-        public void InstantMove(PositionTransform transform)
+        public virtual void InstantMove(PositionTransform transform)
         {
             var spritesToRemove = new List<ISprite>();
             var spritesToAdd = new List<ISprite>();
@@ -70,7 +70,11 @@ namespace Nibbles.GameObject.Abstractions
             }
             RemoveRange(spritesToRemove);
             AddRange(spritesToAdd);
-            Position = _sprites.First().Position;
+            Position = _position with 
+            { 
+                X = _position.X + transform.XDelta, 
+                Y = _position.Y + transform.YDelta 
+            };
         }
 
         public void Move(long timeDelta)
