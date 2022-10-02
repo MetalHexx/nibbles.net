@@ -85,7 +85,11 @@ namespace Nibbles.GameObject.Abstractions
             {
                 sprite.Move(timeDelta);
             }
-            Position = _sprites.First().Position;
+            Position = _position with
+            {
+                X = _position.X + _lastMove.XDelta,
+                Y = _position.Y + _lastMove.YDelta
+            };
         }
 
         public virtual void Move(PositionTransform currentMove, long timeDelta)
@@ -123,9 +127,14 @@ namespace Nibbles.GameObject.Abstractions
             }
         }
 
-        public virtual bool CanRender(long timeDelta) => _sprites
-            .First()
-            .CanRender(timeDelta);
+        public virtual bool CanRender(long timeDelta)
+        {
+            if (_sprites.Any() is false) return false;
+
+            return _sprites
+             .First()
+             .CanRender(timeDelta);
+        }
         
 
         public double GetVelocity()

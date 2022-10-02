@@ -13,26 +13,26 @@ namespace Tetris
         protected RotationState _rotationState = RotationState.Up;
         protected RotationState _previousState = RotationState.None;
 
-        public Tetrimino(GameColor color): base(_startingPosition, 1, DirectionType.Down, GameColor.Cyan, GameColor.Cyan, 1, 1)
+        public Tetrimino(GameColor color): base(_startingPosition, 1, DirectionType.Down, GameColor.Cyan, GameColor.Cyan, 0, 0.2)
         {
             _color = color;
         }
 
         protected abstract int[,] GetRotation(RotationState state);
 
-        public void UpdateRotation(DirectionType inputDirection)
-        {
-            _rotationState = (_rotationState, inputDirection) switch
+        public void Rotate(PositionTransform transform, long timeDelta)
+        {   
+            _rotationState = (_rotationState, transform.Direction) switch
             {
-                (RotationState.Up, DirectionType.Up) => RotationState.Right,
-                (RotationState.Right, DirectionType.Up) => RotationState.Down,
-                (RotationState.Down, DirectionType.Up) => RotationState.Left,
-                (RotationState.Left, DirectionType.Up) => RotationState.Up,
+                (RotationState.Up, DirectionType.Up) => RotationState.Left,
+                (RotationState.Left, DirectionType.Up) => RotationState.Down,
+                (RotationState.Down, DirectionType.Up) => RotationState.Right,
+                (RotationState.Right, DirectionType.Up) => RotationState.Up,
                 _ => _rotationState
             };
 
             if (_previousState == _rotationState) return;
-
+            
             _previousState = _rotationState;
             Rotate();
         }
@@ -50,7 +50,7 @@ namespace Tetris
 
                     if (shouldCreate == 1)
                     {
-                        Add(new TetriminoPart(new Point(x + Position.X, y + Position.Y), _color));
+                        Add(new TetriminoPart(new Point(x + Position.X, y + Position.Y), _color, VelocityY));
                     }
                 }
             }

@@ -1,5 +1,6 @@
 ﻿using Nibbles.Engine;
 using Nibbles.Engine.Abstractions;
+using Nibbles.GameObject.Dimensions;
 
 namespace Tetris
 {
@@ -39,14 +40,21 @@ namespace Tetris
             var playerState = _state.Player.NextState();
             var playerMove = playerState.GetMove();
 
-            _state.Tetrimino.UpdateRotation(playerMove.Direction);
+            _state.Tetrimino.Rotate(playerMove, timeSinceLastFrame);            
 
-            if (playerState.MovingState is MovingState.MovingLeft or MovingState.MovingRight)
+            if (playerState.MovingState is MovingState.MovingLeft or MovingState.MovingRight or MovingState.MovingDown)
             {
                 _state.Tetrimino.InstantMove(playerState.GetMove());
             }
 
-            if(playerState.ActionState == ActionState.Shooting)
+            var canMove = _state.Tetrimino.CanRender(timeSinceLastFrame);
+
+            if (canMove)
+            {
+                _state.Tetrimino.InstantMove(new MoveDown(1));
+            }
+
+            if (playerState.ActionState == ActionState.Shooting)
             {
                 var oldTetrimino = _state.Tetrimino;
                 _renderer.Remove(oldTetrimino);
