@@ -26,12 +26,14 @@ namespace Tetris
             _renderer.Add(_state.GameTitle);
             _renderer.Add(_state.Score);
             _renderer.Add(_state.Board);
-            _renderer.Add(_state.Tetrimino);
+            _renderer.Add(_state.ActiveTetrimino);
 
             RegisterContainerEvents(_state.GameOverTextBox);
             RegisterContainerEvents(_state.Score);
             RegisterContainerEvents(_state.Board);
-            RegisterContainerEvents(_state.Tetrimino);
+            RegisterContainerEvents(_state.ActiveTetrimino);
+
+            _collisionDetector.TetriminoCollision += OnTetriminoCollision;
         }
 
         public override void GenerateFrame()
@@ -40,32 +42,43 @@ namespace Tetris
             var playerState = _state.Player.NextState();
             var playerMove = playerState.GetMove();
 
-            _state.Tetrimino.Move(timeSinceLastFrame);
+            _state.ActiveTetrimino.Move(timeSinceLastFrame);
 
 
             if (playerState.MovingState is MovingState.MovingUp)
             {
-                _state.Tetrimino.Rotate(playerMove);
+                _state.ActiveTetrimino.Rotate(playerMove);
             }
             if (playerState.MovingState is MovingState.MovingLeft or MovingState.MovingRight or MovingState.MovingDown)
             {
-                _state.Tetrimino.InstantMove(playerState.GetMove());
-                _state.Tetrimino.InstantMove(new PositionTransform(0, 0, DirectionType.Down));
+                _state.ActiveTetrimino.InstantMove(playerState.GetMove());
+                _state.ActiveTetrimino.InstantMove(new PositionTransform(0, 0, DirectionType.Down));
             }
 
             if (playerState.ActionState == ActionState.Shooting)
             {
-                var oldTetrimino = _state.Tetrimino;
+                var oldTetrimino = _state.ActiveTetrimino;
                 _renderer.Remove(oldTetrimino);
                 _state.CreateTetrimino();                
-                RegisterContainerEvents(_state.Tetrimino);
-                _renderer.Add(_state.Tetrimino);
+                RegisterContainerEvents(_state.ActiveTetrimino);
+                _renderer.Add(_state.ActiveTetrimino);
                 return;
             }
+
+            _collisionDetector.Detect();
+
             if(playerState.ActionState == ActionState.Quitting)
             {
                 GameOver?.Invoke();
             }
+        }
+
+        private void OnTetriminoCollision()
+        {
+            _state.CompletedTetriminos.Add(_state.ActiveTetrimino);
+            _state.CreateTetrimino();
+            RegisterContainerEvents(_state.ActiveTetrimino);
+            _renderer.Add(_state.ActiveTetrimino);
         }
 
         protected override void HandleGameOver(string text)

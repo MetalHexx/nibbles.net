@@ -13,7 +13,8 @@ namespace Tetris
         public IPlayer Player { get; set; }
         public Board Board { get; init; }
         public GameTextBox GameOverTextBox { get; init; }
-        public Tetrimino Tetrimino { get; private set; }
+        public List<Tetrimino> CompletedTetriminos { get; set; } = new List<Tetrimino>();
+        public Tetrimino ActiveTetrimino { get; private set; }
 
         public Score Score { get; init; } = new(
             new Point(TetrisConfig.GAME_TITLE.Length + 4, 1), GameConfig.BOARD_TEXT_ZINDEX, "");
@@ -45,7 +46,7 @@ namespace Tetris
 
         public Tetrimino CreateTetrimino()
         {
-            Tetrimino = (new Random().Next(7)) switch
+            ActiveTetrimino = (new Random().Next(7)) switch
             {
                 0 => new IShapedTetrimino(),
                 1 => new JShapedTetrimino(),
@@ -56,7 +57,7 @@ namespace Tetris
                 6 => new TShapedTetrimino(),
                 _ => throw new ArgumentOutOfRangeException("Invalid tetrino value")
             };
-            return Tetrimino;
+            return ActiveTetrimino;
         }
     }
 }
