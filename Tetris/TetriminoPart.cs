@@ -7,7 +7,7 @@ namespace Tetris
 {
     public record TetriminoPart : Sprite
     {
-        public TetriminoPart(Point point, GameColor color, double velocityY)
-            : base(point, 1, DirectionType.Down, color, color, ' ', 0, velocityY) { }
+        public TetriminoPart(Point point, GameColor color, double velocityY, TimeSpan timeSinceMove)
+            : base(point, 1, DirectionType.Down, color, color, ' ', 0, velocityY, timeSinceMove) { }
     }
 }

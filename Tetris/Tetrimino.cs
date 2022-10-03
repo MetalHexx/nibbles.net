@@ -13,14 +13,37 @@ namespace Tetris
         protected RotationState _rotationState = RotationState.Up;
         protected RotationState _previousState = RotationState.None;
 
-        public Tetrimino(GameColor color): base(_startingPosition, 1, DirectionType.Down, GameColor.Cyan, GameColor.Cyan, 0, 0.2)
+        public Tetrimino(GameColor color): base(_startingPosition, 1, DirectionType.Down, GameColor.Cyan, GameColor.Cyan, 0.2, 0.2)
         {
             _color = color;
+            Rotate();
         }
 
         protected abstract int[,] GetRotation(RotationState state);
 
-        public void Rotate(PositionTransform transform, long timeDelta)
+        public override void InstantMove(PositionTransform transform)
+        {
+            var spritesToRemove = new List<ISprite>();
+            var spritesToAdd = new List<ISprite>();
+
+            foreach (TetriminoPart sprite in _sprites)
+            {
+                var newSprite = sprite with { };
+                spritesToRemove.Add(sprite);
+                newSprite.InstantMove(transform);
+                spritesToAdd.Add(newSprite);
+            }
+            RemoveRange(spritesToRemove);
+            AddRange(spritesToAdd);
+            Position = _position with
+            {
+                X = _position.X + transform.XDelta,
+                Y = _position.Y + transform.YDelta
+            };
+            SpriteContainerChanged?.Invoke(this);
+        }
+
+        public void Rotate(PositionTransform transform)
         {   
             _rotationState = (_rotationState, transform.Direction) switch
             {
@@ -35,10 +58,17 @@ namespace Tetris
             
             _previousState = _rotationState;
             Rotate();
+            SpriteContainerChanged?.Invoke(this);
         }
 
         private void Rotate()
         {
+            var sprite = _sprites.FirstOrDefault();
+            
+            var timeSinceMove = sprite is null 
+                ? new TimeSpan() 
+                : sprite.TimeSinceMove;
+
             Clear();
             var rotationMatrix = GetRotation(_rotationState);
 
@@ -50,7 +80,7 @@ namespace Tetris
 
                     if (shouldCreate == 1)
                     {
-                        Add(new TetriminoPart(new Point(x + Position.X, y + Position.Y), _color, VelocityY));
+                        Add(new TetriminoPart(new Point(x + Position.X, y + Position.Y), _color, VelocityY, timeSinceMove));
                     }
                 }
             }

@@ -6,14 +6,18 @@ namespace Nibbles.GameObject.Abstractions
 {
     public abstract class SpriteContainer : ISpriteContainer
     {
+        public Action<ISpriteContainer>? SpriteContainerChanged { get; set; }
+        public Guid Id { get; } = Guid.NewGuid();
         public Action<ISprite>? SpriteDestroyed { get; set; }
-        public Action<ISprite>? SpriteCreated { get; set; }        
+        public Action<ISprite>? SpriteCreated { get; set; }
         public DirectionType Direction { get; protected set; } = DirectionType.None;
         public double VelocityX { get; private set; } = GameConfig.SPRITE_DEFAULT_VELOCITY_X;
         public double VelocityY { get; private set; } = GameConfig.SPRITE_DEFAULT_VELOCITY_Y;
         public GameColor ForegroundColor { get; set; }
         public GameColor BackgroundColor { get; set; }
-        public char DisplayCharacter { get; protected set; } = ' ';        
+        public char DisplayCharacter { get; protected set; } = ' ';
+
+        public TimeSpan TimeSinceMove { get; private set; }
 
         protected Point _position;
         public Point Position
@@ -26,9 +30,9 @@ namespace Nibbles.GameObject.Abstractions
         protected readonly Queue<PositionTransform> _moveQueue = new Queue<PositionTransform>(2);
         protected PositionTransform _lastMove;
 
-        
+
         public SpriteContainer(Point position, int zIndex, DirectionType direction, GameColor foregroundColor, GameColor backgroundColor, double velocityX, double velocityY)
-        {   
+        {
             Position = position;
             ZIndex = zIndex;
             Direction = direction;
@@ -52,7 +56,24 @@ namespace Nibbles.GameObject.Abstractions
             DisplayCharacter = displayCharacter;
         }
 
-        protected virtual void Build() => Add(new Sprite(Position,ZIndex, Direction, ForegroundColor, BackgroundColor, DisplayCharacter, VelocityX, VelocityY));
+        protected virtual void Build()
+        {
+            Add(CreateSprite());            
+            SpriteContainerChanged?.Invoke(this);
+        }
+
+        protected virtual Sprite CreateSprite()
+        {
+            var sampleSprite = _sprites.FirstOrDefault();
+
+            var timeSinceMove = sampleSprite is null
+                ? new TimeSpan()
+                : sampleSprite.TimeSinceMove;
+
+            var sprite = new Sprite(Position, ZIndex, Direction, ForegroundColor, BackgroundColor, DisplayCharacter, VelocityX, VelocityY, timeSinceMove);
+
+            return sprite;
+        }
         
         public IEnumerable<ISprite> GetSprites() => _sprites;
 
@@ -63,7 +84,7 @@ namespace Nibbles.GameObject.Abstractions
 
             foreach (var sprite in _sprites)
             {
-                var newSprite = new Sprite(sprite.Position, sprite.ZIndex, sprite.Direction, sprite.ForegroundColor, sprite.BackgroundColor, sprite.DisplayCharacter);
+                var newSprite = CreateSprite();
                 spritesToRemove.Add(sprite);
                 newSprite.InstantMove(transform);
                 spritesToAdd.Add(newSprite);
@@ -75,6 +96,7 @@ namespace Nibbles.GameObject.Abstractions
                 X = _position.X + transform.XDelta, 
                 Y = _position.Y + transform.YDelta 
             };
+            SpriteContainerChanged?.Invoke(this);
         }
 
         public void Move(long timeDelta)
@@ -85,11 +107,16 @@ namespace Nibbles.GameObject.Abstractions
             {
                 sprite.Move(timeDelta);
             }
-            Position = _position with
+            Position = Direction switch
             {
-                X = _position.X + _lastMove.XDelta,
-                Y = _position.Y + _lastMove.YDelta
+                DirectionType.Down => Position with { Y = _position.Y + 1 },
+                DirectionType.Up => Position with { Y = _position.Y - 1 },
+                DirectionType.Left => Position with { Y = _position.X - 1 },
+                DirectionType.Right => Position with { Y = _position.X + 1 },
+                _ => throw new Exception("Invalid direction")
             };
+
+            SpriteContainerChanged?.Invoke(this);
         }
 
         public virtual void Move(PositionTransform currentMove, long timeDelta)
@@ -100,6 +127,7 @@ namespace Nibbles.GameObject.Abstractions
 
             ExecuteMoves(timeDelta, _sprites);
             Position = _sprites.First().Position;
+            SpriteContainerChanged?.Invoke(this);
         }
 
         protected virtual void ExecuteMoves(long timeDelta, IEnumerable<ISprite> sprites)
@@ -157,8 +185,15 @@ namespace Nibbles.GameObject.Abstractions
 
         protected void Add(ISprite sprite)
         {
+            //sprite.SpriteCreated += SpriteCreated;            
             _sprites.Add(sprite);
+            sprite.SpriteDestroyed += OnSpriteDestroyed;
             SpriteCreated?.Invoke(sprite);
+        }
+
+        private void OnSpriteDestroyed(ISprite sprite)
+        {
+            SpriteDestroyed?.Invoke(sprite);
         }
 
         protected void AddRange(IEnumerable<ISprite> sprites)

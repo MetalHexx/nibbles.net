@@ -6,6 +6,8 @@ namespace Nibbles.Engine
 {
     public class SpriteRenderer : ISpriteRenderer
     {
+        private readonly List<ISpriteContainer> _spriteContainersToAdd = new();
+        private readonly List<ISpriteContainer> _spriteContainersToRemove = new();
         private readonly List<ISprite> _spritesToAdd = new();
         private readonly List<ISprite> _spritesToRemove = new();
 
@@ -23,7 +25,9 @@ namespace Nibbles.Engine
 
         public void Add(ISpriteContainer sprite)
         {
-            _spritesToAdd.AddRange(sprite.GetSprites());
+            if (_spriteContainersToAdd.Any(s => s.Id == sprite.Id)) return;
+
+            _spriteContainersToAdd.Add(sprite);
         }
 
         public void Remove(ISprite sprite)
@@ -33,15 +37,25 @@ namespace Nibbles.Engine
 
         public void Remove(ISpriteContainer sprite)
         {
-            _spritesToRemove.AddRange(sprite.GetSprites());
+            _spriteContainersToRemove.Add(sprite);
         }
 
         public void Render()
         {
+            _spriteContainersToRemove.ForEach(sprite => 
+                _spritesToRemove.AddRange(sprite.GetSprites()));
+
             Destroy(_spritesToRemove);
             _spritesToRemove.Clear();
+            
+            _spriteContainersToRemove.Clear();
+            
+            _spriteContainersToAdd.ForEach(sprite => 
+                _spritesToAdd.AddRange(sprite.GetSprites()));
+
             Render(_spritesToAdd);
             _spritesToAdd.Clear();
+            _spriteContainersToAdd.Clear();
         }
 
         private static void Render(IEnumerable<ISprite> sprites)

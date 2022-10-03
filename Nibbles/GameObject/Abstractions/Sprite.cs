@@ -22,11 +22,11 @@ namespace Nibbles.GameObject.Abstractions
         }
         public int ZIndex { get; }
 
-        private TimeSpan _timeSinceMove = new TimeSpan();
+        public TimeSpan TimeSinceMove { get; private set; }
 
 
 
-        public Sprite(Point position, int zIndex, DirectionType direction, GameColor foregroundColor, GameColor backgroundColor, char displayCharacter)
+        public Sprite(Point position, int zIndex, DirectionType direction, GameColor foregroundColor, GameColor backgroundColor, char displayCharacter, TimeSpan timeSinceMove = new TimeSpan())
         {
             _position = position;
             ZIndex = zIndex;
@@ -34,9 +34,10 @@ namespace Nibbles.GameObject.Abstractions
             ForegroundColor = foregroundColor;
             BackgroundColor = backgroundColor;
             DisplayCharacter = displayCharacter;
+            TimeSinceMove = timeSinceMove;
         }
 
-        public Sprite(Point position, int zIndex, DirectionType direction, GameColor foregroundColor, GameColor backgroundColor, char displayCharacter, double velocityX, double velocityY)
+        public Sprite(Point position, int zIndex, DirectionType direction, GameColor foregroundColor, GameColor backgroundColor, char displayCharacter, double velocityX, double velocityY, TimeSpan timeSinceMove = new TimeSpan())
         {
             _position = position;
             ZIndex = zIndex;
@@ -46,19 +47,20 @@ namespace Nibbles.GameObject.Abstractions
             DisplayCharacter = displayCharacter;
             VelocityX = velocityX;
             VelocityY = velocityY;
+            TimeSinceMove = timeSinceMove;
         }
 
         public virtual void Move(long timeDelta)
         {
             SpriteDestroyed?.Invoke(this with { });
 
-            var transform = Direction switch
+            PositionTransform transform = Direction switch
             {
-                DirectionType.Up => new PositionTransform(0, -1, Direction),
-                DirectionType.Down => new PositionTransform(0, 1, Direction),
-                DirectionType.Left => new PositionTransform(-1, 0, Direction),
-                DirectionType.Right => new PositionTransform(1, 0, Direction),
-                _ => new PositionTransform(1, 0, Direction),
+                DirectionType.Up => new MoveUp(),
+                DirectionType.Down => new MoveDown(),
+                DirectionType.Left => new MoveLeft(),
+                DirectionType.Right => new MoveLeft(),
+                _ => new MoveRight(),
             };
 
             Move(transform, timeDelta);
@@ -96,15 +98,15 @@ namespace Nibbles.GameObject.Abstractions
             if (velocity == 0) return true;
 
             var timeSpan = new TimeSpan(timeDelta);
-            _timeSinceMove += timeSpan;
+            TimeSinceMove += timeSpan;
 
             var msToWait = GameConfig.MIN_FRAME_RENDER_SPEED_MS / GetVelocity();
 
-            var shouldMove = _timeSinceMove.TotalMilliseconds >= msToWait;
+            var shouldMove = TimeSinceMove.TotalMilliseconds >= msToWait;
 
             if (shouldMove)
             {
-                _timeSinceMove = new TimeSpan();
+                TimeSinceMove = new TimeSpan();
                 return true;
             }
             return false;

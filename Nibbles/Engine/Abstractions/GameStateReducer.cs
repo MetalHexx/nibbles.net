@@ -34,6 +34,17 @@ namespace Nibbles.Engine.Abstractions
             sprite.SpriteDestroyed += OnSpriteDestroyed;
         }
 
+        protected virtual void OnSpriteContainerChanged(ISpriteContainer sprite)
+        {
+            _renderer.Add(sprite);
+        }
+
+        protected virtual void RegisterContainerEvents(ISpriteContainer sprite)
+        {
+            sprite.SpriteContainerChanged += OnSpriteContainerChanged;
+            sprite.SpriteDestroyed += OnSpriteDestroyed;
+        }
+
         public long GetTimeSinceLastFrame()
         {
             var currentTick = DateTime.Now.Ticks;

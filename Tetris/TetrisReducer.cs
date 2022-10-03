@@ -28,10 +28,10 @@ namespace Tetris
             _renderer.Add(_state.Board);
             _renderer.Add(_state.Tetrimino);
 
-            RegisterEvents(_state.GameOverTextBox);
-            RegisterEvents(_state.Score);
-            RegisterEvents(_state.Board);
-            RegisterEvents(_state.Tetrimino);
+            RegisterContainerEvents(_state.GameOverTextBox);
+            RegisterContainerEvents(_state.Score);
+            RegisterContainerEvents(_state.Board);
+            RegisterContainerEvents(_state.Tetrimino);
         }
 
         public override void GenerateFrame()
@@ -40,27 +40,26 @@ namespace Tetris
             var playerState = _state.Player.NextState();
             var playerMove = playerState.GetMove();
 
-            _state.Tetrimino.Rotate(playerMove, timeSinceLastFrame);            
+            _state.Tetrimino.Move(timeSinceLastFrame);
 
+
+            if (playerState.MovingState is MovingState.MovingUp)
+            {
+                _state.Tetrimino.Rotate(playerMove);
+            }
             if (playerState.MovingState is MovingState.MovingLeft or MovingState.MovingRight or MovingState.MovingDown)
             {
                 _state.Tetrimino.InstantMove(playerState.GetMove());
-            }
-
-            var canMove = _state.Tetrimino.CanRender(timeSinceLastFrame);
-
-            if (canMove)
-            {
-                _state.Tetrimino.InstantMove(new MoveDown(1));
+                _state.Tetrimino.InstantMove(new PositionTransform(0, 0, DirectionType.Down));
             }
 
             if (playerState.ActionState == ActionState.Shooting)
             {
                 var oldTetrimino = _state.Tetrimino;
                 _renderer.Remove(oldTetrimino);
-                var newTetrimino = _state.CreateTetrimino();
-                _renderer.Add(newTetrimino);
-                RegisterEvents(newTetrimino);
+                _state.CreateTetrimino();                
+                RegisterContainerEvents(_state.Tetrimino);
+                _renderer.Add(_state.Tetrimino);
                 return;
             }
             if(playerState.ActionState == ActionState.Quitting)
