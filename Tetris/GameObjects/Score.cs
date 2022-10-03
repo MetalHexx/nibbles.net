@@ -2,7 +2,9 @@
 using Nibbles.GameObject.UI;
 using System.Drawing;
 
-public class Score : GameText
+namespace Tetris.GameObjects
+{
+    public class Score : GameText
 {
     public int Moves { get; set; }
     public int LinesCleared = 0;
@@ -37,4 +39,5 @@ public class Score : GameText
     {
         SetText($" | Lines Cleared: {LinesCleared} | Moves: {Moves} | Score: {Total}");
     }
+}
 }

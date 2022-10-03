@@ -3,7 +3,7 @@ using Nibbles.GameObject.Configuration;
 using Nibbles.GameObject.Dimensions;
 using System.Drawing;
 
-namespace Tetris
+namespace Tetris.GameObjects
 {
     public record TetriminoPart : Sprite
     {

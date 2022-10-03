@@ -1,6 +1,6 @@
 ﻿using Nibbles.GameObject.Configuration;
 
-namespace Tetris
+namespace Tetris.GameObjects
 {
     public class OShapedTetrimino : Tetrimino
     {

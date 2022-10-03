@@ -2,7 +2,7 @@
 using Nibbles.GameObject.Dimensions;
 using System.Drawing;
 
-namespace Tetris
+namespace Tetris.GameObjects
 {
     public class IShapedTetrimino : Tetrimino
     {

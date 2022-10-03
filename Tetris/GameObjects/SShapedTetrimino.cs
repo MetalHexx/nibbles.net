@@ -1,10 +1,10 @@
 ﻿using Nibbles.GameObject.Configuration;
 
-namespace Tetris
+namespace Tetris.GameObjects
 {
-    public class TShapedTetrimino : Tetrimino
+    public class SShapedTetrimino : Tetrimino
     {
-        public TShapedTetrimino() : base(GameColor.DarkMagenta) { }
+        public SShapedTetrimino() : base(GameColor.Gray) { }
         protected override int[,] GetRotation(RotationState state)
         {
             switch (state)
@@ -12,8 +12,8 @@ namespace Tetris
                 case RotationState.Up:
                     return new int[,]
                     {
-                        {0,1,0},
-                        {1,1,1},
+                        {0,1,1},
+                        {1,1,0},
                         {0,0,0},
                     };
 
@@ -22,21 +22,21 @@ namespace Tetris
                     {
                         {0,1,0},
                         {0,1,1},
-                        {0,1,0},
+                        {0,0,1},
                     };
 
                 case RotationState.Down:
                     return new int[,]
                     {
                         {0,0,0},
-                        {1,1,1},
-                        {0,1,0},
+                        {0,1,1},
+                        {1,1,0},
                     };
 
                 case RotationState.Left:
                     return new int[,]
                     {
-                        {0,1,0},
+                        {1,0,0},
                         {1,1,0},
                         {0,1,0},
                     };

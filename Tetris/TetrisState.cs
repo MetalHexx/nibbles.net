@@ -4,6 +4,7 @@ using Nibbles.GameObject.Configuration;
 using Nibbles.GameObject.Dimensions;
 using Nibbles.GameObject.UI;
 using System.Drawing;
+using Tetris.GameObjects;
 
 namespace Tetris
 {
