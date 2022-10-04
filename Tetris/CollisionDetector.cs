@@ -1,11 +1,13 @@
-﻿using Nibbles.GameObject.Abstractions;
+﻿using Nibbles.Engine;
+using Nibbles.GameObject.Abstractions;
 using Nibbles.GameObject.UI;
 
 namespace Tetris
 {
     internal class CollisionDetector
     {
-        public Action? TetriminoCollision { get; set; }
+        public Action? TetriminoBottomCollision { get; set; }
+        public Action? TetriminoSideCollision { get; set; }
 
         private TetrisState _state;
 
@@ -20,16 +22,19 @@ namespace Tetris
                 .GetSprites()
                 .Where(boardPart => boardPart is BorderPart);
 
-            DetectTetriminoCollision(
-                boarderParts, 
+            var bottomBorderParts = boarderParts.Where(boardPart => 
+                boardPart.Position.Y == _state.Board.Dimensions.MaxY);
+
+            DetectTetriminoBottomCollision(
+                bottomBorderParts, 
                 _state.ActiveTetrimino.GetSprites());
 
-            DetectTetriminoCollision(
+            DetectTetriminoBottomCollision(
                 _state.CompletedTetriminos.SelectMany(tetrimino => tetrimino.GetSprites()), 
                 _state.ActiveTetrimino.GetSprites());
         }
 
-        private void DetectTetriminoCollision(IEnumerable<ISprite> sprites1, IEnumerable<ISprite> sprites2)
+        private void DetectTetriminoBottomCollision(IEnumerable<ISprite> sprites1, IEnumerable<ISprite> sprites2)
         {
             var collisionsDetected = sprites1.Any(completed =>
                 sprites2.Any(active => 
@@ -38,8 +43,42 @@ namespace Tetris
 
             if (collisionsDetected)
             {
-                TetriminoCollision?.Invoke();
+                TetriminoSideCollision?.Invoke();
             }
+        }
+
+        /// <summary>
+        /// Checks to see if the player is adjacent to and headed toward a side wall.
+        /// </summary>
+        /// <remarks>Checking the direction is crutial otherwise the player can get stuck to the wall</remarks>
+        public bool IsSideCollidingWithSprites()
+        {
+            if (_state.Player.MovingState is MovingState.MovingRight)
+            {
+                var rightBorderParts = _state.Board.GetSprites()
+                .Where(boardPart => boardPart is BorderPart
+                    && boardPart.Position.X == _state.Board.Dimensions.MaxX);
+
+                var isColliding = rightBorderParts.Any(borderPart =>
+                    _state.ActiveTetrimino.GetSprites().Any(active =>
+                        borderPart.Position.Y == active.Position.Y
+                        && (borderPart.Position.X == active.Position.X + 1)));
+
+                return isColliding;
+            }
+            if (_state.Player.MovingState is MovingState.MovingLeft)
+            {
+                var leftBorderParts = _state.Board.GetSprites()
+                .Where(boardPart => boardPart is BorderPart
+                    && boardPart.Position.X == _state.Board.Dimensions.MinX);
+
+                var isColliding = leftBorderParts.Any(borderPart =>
+                    _state.ActiveTetrimino.GetSprites().Any(active =>
+                        borderPart.Position.Y == active.Position.Y
+                        && (borderPart.Position.X == active.Position.X - 1)));
+                return isColliding;
+            }
+            return false;            
         }
     }
 }

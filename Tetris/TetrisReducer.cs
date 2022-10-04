@@ -33,7 +33,7 @@ namespace Tetris
             RegisterContainerEvents(_state.Board);
             RegisterContainerEvents(_state.ActiveTetrimino);
 
-            _collisionDetector.TetriminoCollision += OnTetriminoCollision;
+            _collisionDetector.TetriminoSideCollision += OnTetriminoBottomCollision;
         }
 
         public override void GenerateFrame()
@@ -49,7 +49,11 @@ namespace Tetris
             {
                 _state.ActiveTetrimino.Rotate(playerMove);
             }
-            if (playerState.MovingState is MovingState.MovingLeft or MovingState.MovingRight or MovingState.MovingDown)
+
+            var canMove = (playerState.MovingState is MovingState.MovingLeft or MovingState.MovingRight or MovingState.MovingDown)
+                && _collisionDetector.IsSideCollidingWithSprites() is false;
+
+            if (canMove)
             {
                 _state.ActiveTetrimino.InstantMove(playerState.GetMove());
                 _state.ActiveTetrimino.InstantMove(new PositionTransform(0, 0, DirectionType.Down));
@@ -73,7 +77,7 @@ namespace Tetris
             }
         }
 
-        private void OnTetriminoCollision()
+        private void OnTetriminoBottomCollision()
         {
             _state.CompletedTetriminos.Add(_state.ActiveTetrimino);
             _state.CreateTetrimino();
