@@ -51,7 +51,7 @@ namespace Tetris
             }
 
             var canMove = (playerState.MovingState is MovingState.MovingLeft or MovingState.MovingRight or MovingState.MovingDown)
-                && _collisionDetector.IsSideCollidingWithWallOrCompletedTetriminos() is false;
+                && _collisionDetector.IsSideCollidingWithSprites() is false;
 
             if (canMove)
             {

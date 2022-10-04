@@ -51,7 +51,13 @@ namespace Tetris
         /// Checks to see if the player is adjacent to and headed toward a side wall or the side of the completed tetriminos
         /// </summary>
         /// <remarks>Checking the direction is crutial otherwise the player can get stuck to an adjacent sprite</remarks>
-        public bool IsSideCollidingWithWallOrCompletedTetriminos()
+        public bool IsSideCollidingWithSprites()
+        {
+            return IsLeftCollidingWithSprites() 
+                || IsRightCollidingWithSprites();                 
+        }
+
+        public bool IsRightCollidingWithSprites()
         {
             var activeTetrimino = _state.ActiveTetrimino.GetSprites();
 
@@ -67,6 +73,13 @@ namespace Tetris
                         borderPart.Position.Y == active.Position.Y
                         && (borderPart.Position.X == active.Position.X + 1)));
             }
+            return false;
+        }
+
+        public bool IsLeftCollidingWithSprites()
+        {
+            var activeTetrimino = _state.ActiveTetrimino.GetSprites();
+
             if (_state.Player.MovingState is MovingState.MovingLeft)
             {
                 var leftBorderPartsAndCompletedTetriminos = _state.Board.GetSprites()
@@ -79,7 +92,7 @@ namespace Tetris
                         borderPart.Position.Y == active.Position.Y
                         && (borderPart.Position.X == active.Position.X - 1)));
             }
-            return false;            
+            return false;
         }
     }
 }
