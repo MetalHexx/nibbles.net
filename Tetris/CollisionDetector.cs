@@ -51,32 +51,31 @@ namespace Tetris
         /// Checks to see if the player is adjacent to and headed toward a side wall.
         /// </summary>
         /// <remarks>Checking the direction is crutial otherwise the player can get stuck to the wall</remarks>
-        public bool IsSideCollidingWithSprites()
+        public bool IsSideCollidingWithWallOrCompletedTetriminos()
         {
             if (_state.Player.MovingState is MovingState.MovingRight)
             {
-                var rightBorderParts = _state.Board.GetSprites()
-                .Where(boardPart => boardPart is BorderPart
-                    && boardPart.Position.X == _state.Board.Dimensions.MaxX);
+                var rightBorderAndTetriminos = _state.Board.GetSprites()
+                    .Where(boardPart => boardPart is BorderPart
+                        && boardPart.Position.X == _state.Board.Dimensions.MaxX)
+                    .Concat(_state.CompletedTetriminos.SelectMany(completed => completed.GetSprites()));
 
-                var isColliding = rightBorderParts.Any(borderPart =>
+                return rightBorderAndTetriminos.Any(borderPart =>
                     _state.ActiveTetrimino.GetSprites().Any(active =>
                         borderPart.Position.Y == active.Position.Y
                         && (borderPart.Position.X == active.Position.X + 1)));
-
-                return isColliding;
             }
             if (_state.Player.MovingState is MovingState.MovingLeft)
             {
-                var leftBorderParts = _state.Board.GetSprites()
-                .Where(boardPart => boardPart is BorderPart
-                    && boardPart.Position.X == _state.Board.Dimensions.MinX);
+                var leftBorderPartsAndCompletedTetriminos = _state.Board.GetSprites()
+                    .Where(boardPart => boardPart is BorderPart
+                        && boardPart.Position.X == _state.Board.Dimensions.MinX)
+                    .Concat(_state.CompletedTetriminos.SelectMany(completed => completed.GetSprites()));
 
-                var isColliding = leftBorderParts.Any(borderPart =>
+                return leftBorderPartsAndCompletedTetriminos.Any(borderPart =>
                     _state.ActiveTetrimino.GetSprites().Any(active =>
                         borderPart.Position.Y == active.Position.Y
                         && (borderPart.Position.X == active.Position.X - 1)));
-                return isColliding;
             }
             return false;            
         }
