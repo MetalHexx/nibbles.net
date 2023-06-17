@@ -13,8 +13,8 @@ https://www.youtube.com/watch?v=7r83N3c2kPw&t=1088s  So I decided to give it a g
 The engine name was inspired from a QBasic variation of snakes called "Nibbles" that I used to tinker around with and modify -- one of my first programming activities when I was a kid. :)
 https://www.youtube.com/watch?v=rTzev59RUGw
 
-# Updates
+## Updates
 - I broke the rule and used Newtonsoft so I could serialize some C# objects persist top scores to disk. :)
 - Added experimental Tetris to try using the engine to build another game -- not complete.
-# Promotional Screenshots, lol
+## Promotional Screenshots, lol
 <img src="https://github.com/MetalHexx/nibbles.net/blob/main/nibbles-promo.bmp?raw=true" style=" width:60% ; height:60% " >
