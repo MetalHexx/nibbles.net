@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\HIghScores\HIghScores.csproj" />
+    <ProjectReference Include="..\HIghScores\HighScores.csproj" />
   </ItemGroup>
 
 </Project>

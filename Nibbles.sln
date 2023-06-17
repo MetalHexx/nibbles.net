@@ -7,11 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nibbles", "Nibbles\Nibbles.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SnakesGame", "SnakesGame\SnakesGame.csproj", "{7EC88B92-E459-4949-982E-AE54F608F072}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MainMenu", "MainMenu\MainMenu.csproj", "{1A16738F-55A6-4D4F-B32B-4745DF5A746B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MainMenu", "MainMenu\MainMenu.csproj", "{1A16738F-55A6-4D4F-B32B-4745DF5A746B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HIghScores", "HIghScores\HIghScores.csproj", "{C6C27853-6312-4C5B-A9B7-FABDBAF9E560}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HighScores", "HIghScores\HighScores.csproj", "{C6C27853-6312-4C5B-A9B7-FABDBAF9E560}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tetris", "Tetris\Tetris.csproj", "{1AC243CF-70C7-4400-BAC0-E9E0C2D6DED1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tetris", "Tetris\Tetris.csproj", "{1AC243CF-70C7-4400-BAC0-E9E0C2D6DED1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
