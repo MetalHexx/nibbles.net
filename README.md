@@ -12,4 +12,4 @@ https://www.youtube.com/watch?v=rTzev59RUGw
 - I broke the rule and used Newtonsoft so I could serialize some C# objects persist top scores to disk. :)
 - Added experimental Tetris to try using the engine to build another game -- not complete.
 # Promotional Screenshots, lol
-<img src="https://github.com/MetalHexx/nibbles.net/blob/main/nibbles-promo.bmp?raw=true" style=" width:40% ; height:40% " >
+<img src="https://github.com/MetalHexx/nibbles.net/blob/main/nibbles-promo.bmp?raw=true" style=" width:60% ; height:60% " >
