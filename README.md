@@ -1,5 +1,5 @@
 # nibbles.net
-A little .net console game engine I put together to explore game programming.  Contains two projects, the engine and demo snakes game.  Part of the challenge to build this without 3rd party libraries.
+A little .net console game engine I put together to explore game programming.  Part of the challenge to build this without 3rd party libraries.
 
 ## Background
 I was inspired to a video I saw on YouTube with this dude creating "snakes" on an Apple ][.
@@ -7,3 +7,9 @@ https://www.youtube.com/watch?v=7r83N3c2kPw&t=1088s  So I decided to give it a g
 
 The engine name was inspired from a QBasic variation of snakes called "Nibbles" that I used to tinker around with and modify -- one of my first programming activities when I was a kid. :)
 https://www.youtube.com/watch?v=rTzev59RUGw
+
+# Updates
+- I broke the rule and used Newtonsoft so I could serialize some C# objects persist top scores to disk. :)
+- Added experimental Tetris to try using the engine to build another game -- not complete.
+# Promotional Screenshots, lol
+<img src="https://github.com/MetalHexx/nibbles.net/blob/main/nibbles-promo.bmp?raw=true" style=" width:40% ; height:40% " >
