@@ -16,8 +16,9 @@ https://www.youtube.com/watch?v=rTzev59RUGw
 ## Updates
 - Created snakes game
 - Added experimental Tetris to try using the engine to build another game -- not complete.
-- Added Menu system (technically, this is just another game using the engine)
-- Added Top Score (also another game)
+- Added UI sprites for displaying dialogs, etc
+- Added Menu system (technically, this is just another "game" using the engine)
+- Added Top Score (also another "game")
 - I broke the rule and used Newtonsoft so I could serialize some C# objects persist top scores to disk. :)
 
 <img src="https://github.com/MetalHexx/nibbles.net/blob/main/nibbles-promo.bmp?raw=true" style=" width:60% ; height:60% " >
