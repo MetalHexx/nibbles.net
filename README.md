@@ -1,7 +1,7 @@
 # nibbles.net
 A little .net console game engine I put together to explore game programming. 
 
-# The Challenge
+## The Challenge
  - Create a reusable game engine that can easily be used to create new mini games
  - Don't use 3rd party libraries.  Everything is coded from scratch.
  - The engine is purely based on a .net console window to simulate the golden age of oldschool DOS text based games.
