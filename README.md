@@ -1,5 +1,5 @@
 # nibbles.net
-A little .net console game engine I put together from scratch to explore game programming. Note, this is a work in progress and may never be completed.  Enjoy!
+A little .net console game engine I put together from scratch to explore game programming. I created this for fun and educational purposes.  It's a work in progress and may never be completed. Enjoy!
 
 ## The Challenges
  - Create a game engine that can easily be reused to create mini games
